@@ -1,0 +1,13 @@
+build/
+node_modules/
+"src/serviceWorker.js"
+"**/*.tsx"
+"**/*.ts"
+"src/lang/*.js"
+"src/assets"
+"**/*.test.js"
+"**/*.spec.js"
+"**/*.mdx"
+"src/**/*.scss"
+.prettierrc
+.eslintrc

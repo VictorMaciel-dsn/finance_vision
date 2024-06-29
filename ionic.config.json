@@ -1,0 +1,7 @@
+{
+  "name": "finance_vision",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
