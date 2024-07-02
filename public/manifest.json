@@ -1,0 +1,43 @@
+{
+  "short_name": "Finance Vision",
+  "name": "Finance Vision APP",
+  "icons": [
+    {
+      "src": "assets/icon144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+
+    {
+      "src": "assets/icon64.png",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "assets/icon32.png",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "assets/icon24.png",
+      "sizes": "24x24",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "assets/icon16.png",
+      "sizes": "16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "assets/icon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ],
+  "id": ".",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#2968a3",
+  "background_color": "#0000"
+}
