@@ -12,6 +12,7 @@
 @import "@ionic/react/css/text-transformation.css";
 @import "@ionic/react/css/flex-utils.css";
 @import "@ionic/react/css/display.css";
+@import "primeicons/primeicons.css";
 
 html,
 body,
@@ -25,4 +26,29 @@ body,
     height: 100%;
     width: 100%;
     margin: 0;
+}
+
+.input-form {
+    background-color: var(--color-background);
+    padding: 10px;
+    font-size: var(--size-8);
+    border: 1px solid var(--color-separator);
+    color: var(--color-white);
+    border-radius: 5px;
+    &:focus,
+    &:focus-visible {
+        border-color: var(--color-primary);
+        outline: none;
+    }
+}
+
+.icon-eye {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    i {
+        color: var(--color-text);
+        margin-bottom: 4px;
+        margin-right: 5px;
+    }
 }

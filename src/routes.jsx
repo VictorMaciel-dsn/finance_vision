@@ -2,8 +2,10 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import { ToastContainer } from 'react-toastify';
 import { currentColor } from './atoms/theme';
 import { useRecoilValue } from 'recoil';
-import LoginPage from './views/login/index'
-import HomePage from './views/app/home/index'
+import InitialPage from './views/initialPage/index';
+import SignUpPage from './views/signUpPage';
+import LoginPage from './views/loginPage';
+// import HomePage from './views/app/home/index';
 
 function AppRoutes() {
   const theme = useRecoilValue(currentColor);
@@ -13,9 +15,10 @@ function AppRoutes() {
       <ToastContainer theme={theme} />
       <Router>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/" element={<InitialPage />} />
+          <Route path="/signUp" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/home" element={<HomePage />} />
+          {/* <Route path="/home" element={<HomePage />} /> */}
         </Routes>
       </Router>
     </div>
