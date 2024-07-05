@@ -7,6 +7,7 @@ import { auth } from '../../services';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useSetRecoilState } from 'recoil';
 import { tokenUser } from '../../atoms/user';
+import { IonLoading, useIonToast } from '@ionic/react';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -14,17 +15,30 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const [openEye, setOpenEye] = useState(false);
   const setAccessToken = useSetRecoilState(tokenUser);
+  const [isLoading, setIsLoading] = useState(false);
+  const [toast] = useIonToast();
 
   function submitForm(e) {
     e.preventDefault();
+    setIsLoading(true);
+
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
-        setAccessToken(res.user.accessToken);
-        clearForm();
-        navigate('/home');
+        setTimeout(() => {
+          debugger;
+          setAccessToken(res.user.accessToken);
+          clearForm();
+          navigate('/home');
+          setIsLoading(false);
+        }, 2500);
       })
       .catch(() => {
-        alert('Houve um erro ao realizar o login!');
+        setIsLoading(false);
+        toast({
+          message: 'Houve um erro ao realizar o login!',
+          duration: 2000,
+          position: 'bottom',
+        });
       });
   }
 
@@ -36,6 +50,7 @@ function LoginPage() {
 
   return (
     <>
+      <IonLoading isOpen={isLoading} message={'Entrando...'} />
       <div className="login-page">
         <div className="container-btn">
           <Button

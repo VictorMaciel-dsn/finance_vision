@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../services';
+import { IonLoading, useIonToast } from '@ionic/react';
 
 function SignUpPage() {
   const navigate = useNavigate();
@@ -13,23 +14,44 @@ function SignUpPage() {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [openEye, setOpenEye] = useState(false);
   const [openEyeConfirm, setOpenEyeConfirm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [toast] = useIonToast();
 
   function submitForm(e) {
     e.preventDefault();
+
     if (password !== passwordConfirm) {
       alert('As senhas não são iguais, confira!');
       return;
     } else if (passwordConfirm.length >= 6) {
+      setIsLoading(true);
+
       createUserWithEmailAndPassword(auth, email, passwordConfirm)
         .then(() => {
-          alert('Usuário criado com sucesso!');
-          clearForm();
+          setTimeout(() => {
+            toast({
+              message: 'Usuário criado com sucesso!',
+              duration: 2000,
+              position: 'bottom',
+            });
+            setIsLoading(false);
+            clearForm();
+          }, 2500);
         })
         .catch(() => {
-          alert('Houve um erro ao criar o usuário');
+          setIsLoading(false);
+          toast({
+            message: 'Houve um erro ao criar o usuário!',
+            duration: 2000,
+            position: 'bottom',
+          });
         });
     } else {
-      alert('A senha deve ter pelo menos 6 caracteres!');
+      toast({
+        message: 'A senha deve ter pelo menos 6 caracteres!',
+        duration: 2000,
+        position: 'bottom',
+      });
     }
   }
 
@@ -43,6 +65,7 @@ function SignUpPage() {
 
   return (
     <>
+      <IonLoading isOpen={isLoading} message={'Aguarde...'} />
       <div className="signUp-page">
         <div className="container-btn">
           <Button
