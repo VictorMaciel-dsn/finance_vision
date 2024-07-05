@@ -3,6 +3,8 @@ import { Colxx } from '../../components/common/customBootstrap';
 import { InputText } from 'primereact/inputtext';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../services';
 
 function SignUpPage() {
   const navigate = useNavigate();
@@ -18,16 +20,25 @@ function SignUpPage() {
       alert('As senhas não são iguais, confira!');
       return;
     } else if (passwordConfirm.length >= 6) {
-      let payload = {
-        email: email,
-        password: password,
-      };
-      // Chamar API - FireBase
-      console.log(payload);
-      alert('Registrou!');
+      createUserWithEmailAndPassword(auth, email, passwordConfirm)
+        .then(() => {
+          alert('Usuário criado com sucesso!');
+          clearForm();
+        })
+        .catch(() => {
+          alert('Houve um erro ao criar o usuário');
+        });
     } else {
       alert('A senha deve ter pelo menos 6 caracteres!');
     }
+  }
+
+  function clearForm() {
+    setEmail('');
+    setPassword('');
+    setPasswordConfirm('');
+    setOpenEye(false);
+    setOpenEyeConfirm(false);
   }
 
   return (
@@ -38,6 +49,7 @@ function SignUpPage() {
             className="wow animate__animated animate__fadeIn"
             onClick={() => {
               navigate('/');
+              clearForm();
             }}
           >
             <i className="pi pi-angle-left" />

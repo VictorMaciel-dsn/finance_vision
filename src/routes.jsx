@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import InitialPage from './views/initialPage/index';
 import SignUpPage from './views/signUpPage';
 import LoginPage from './views/loginPage';
-// import HomePage from './views/app/home/index';
+import HomePage from './views/app/home/index';
 
 function AppRoutes() {
   const theme = useRecoilValue(currentColor);
@@ -18,7 +18,7 @@ function AppRoutes() {
           <Route path="/" element={<InitialPage />} />
           <Route path="/signUp" element={<SignUpPage />} />
           <Route path="/login" element={<LoginPage />} />
-          {/* <Route path="/home" element={<HomePage />} /> */}
+          {<Route path="/home" element={<HomePage />} />}
         </Routes>
       </Router>
     </div>

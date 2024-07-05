@@ -1,10 +1,10 @@
 import { atom } from "recoil";
 
 export const keys = {
-  CHANGE_USER: "ATOM/USER/CHANGE_USER",
+  TOKEN_USER: 'ATOM/USER/TOKEN_USER',
 };
 
-export const currentUser = atom({
-  key: keys.CHANGE_USER,
-  default: "",
+export const tokenUser = atom({
+  key: keys.TOKEN_USER,
+  default: '',
 });

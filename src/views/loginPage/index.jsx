@@ -3,17 +3,35 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Row } from 'reactstrap';
 import { Colxx } from '../../components/common/customBootstrap';
 import { InputText } from 'primereact/inputtext';
+import { auth } from '../../services';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useSetRecoilState } from 'recoil';
+import { tokenUser } from '../../atoms/user';
 
 function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [openEye, setOpenEye] = useState(false);
+  const setAccessToken = useSetRecoilState(tokenUser);
 
   function submitForm(e) {
     e.preventDefault();
-    // Chamar API - FireBase
-    alert('Logou!');
+    signInWithEmailAndPassword(auth, email, password)
+      .then((res) => {
+        setAccessToken(res.user.accessToken);
+        clearForm();
+        navigate('/home');
+      })
+      .catch(() => {
+        alert('Houve um erro ao realizar o login!');
+      });
+  }
+
+  function clearForm() {
+    setEmail('');
+    setPassword('');
+    setOpenEye(false);
   }
 
   return (
@@ -24,6 +42,7 @@ function LoginPage() {
             className="wow animate__animated animate__fadeIn"
             onClick={() => {
               navigate('/');
+              clearForm();
             }}
           >
             <i className="pi pi-angle-left" />
