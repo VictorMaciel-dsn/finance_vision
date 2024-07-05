@@ -21,7 +21,11 @@ function SignUpPage() {
     e.preventDefault();
 
     if (password !== passwordConfirm) {
-      alert('As senhas não são iguais, confira!');
+      toast({
+        message: 'As senhas não são iguais, confira!',
+        duration: 2000,
+        position: 'bottom',
+      });
       return;
     } else if (passwordConfirm.length >= 6) {
       setIsLoading(true);
@@ -39,12 +43,14 @@ function SignUpPage() {
           }, 2500);
         })
         .catch(() => {
-          setIsLoading(false);
-          toast({
-            message: 'Houve um erro ao criar o usuário!',
-            duration: 2000,
-            position: 'bottom',
-          });
+          setTimeout(() => {
+            setIsLoading(false);
+            toast({
+              message: 'Houve um erro ao criar o usuário!',
+              duration: 2000,
+              position: 'bottom',
+            });
+          }, 2500);
         });
     } else {
       toast({

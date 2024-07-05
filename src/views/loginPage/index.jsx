@@ -25,7 +25,6 @@ function LoginPage() {
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
         setTimeout(() => {
-          debugger;
           setAccessToken(res.user.accessToken);
           clearForm();
           navigate('/home');
@@ -33,12 +32,14 @@ function LoginPage() {
         }, 2500);
       })
       .catch(() => {
-        setIsLoading(false);
-        toast({
-          message: 'Houve um erro ao realizar o login!',
-          duration: 2000,
-          position: 'bottom',
-        });
+        setTimeout(() => {
+          setIsLoading(false);
+          toast({
+            message: 'Houve um erro ao realizar o login!',
+            duration: 2000,
+            position: 'bottom',
+          });
+        }, 2500);
       });
   }
 
