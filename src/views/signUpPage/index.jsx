@@ -35,6 +35,7 @@ function SignUpPage() {
       <div className="signUp-page">
         <div className="container-btn">
           <Button
+            className="wow animate__animated animate__fadeIn"
             onClick={() => {
               navigate('/');
             }}
@@ -42,12 +43,15 @@ function SignUpPage() {
             <i className="pi pi-angle-left" />
           </Button>
         </div>
-        <div className="title">Inscreva-se</div>
+        <div className="title wow animate__animated animate__fadeIn" data-wow-delay="0.2s">
+          Inscreva-se
+        </div>
         <form onSubmit={(e) => submitForm(e)} className="container-form">
           <Row>
             <Colxx xxs={12}>
               <InputText
-                className="input-form w-100 mb-3"
+                className="input-form w-100 mb-3 wow animate__animated animate__fadeIn"
+                data-wow-delay="0.3s"
                 placeholder="E-mail"
                 required
                 value={email}
@@ -58,7 +62,8 @@ function SignUpPage() {
           <Row>
             <Colxx xxs={11}>
               <InputText
-                className="input-form w-100 mb-3"
+                className="input-form w-100 mb-3 wow animate__animated animate__fadeIn"
+                data-wow-delay="0.4s"
                 placeholder="Senha"
                 required
                 value={password}
@@ -66,7 +71,7 @@ function SignUpPage() {
                 type={openEye ? 'text' : 'password'}
               />
             </Colxx>
-            <Colxx xxs={1} className="icon-eye">
+            <Colxx xxs={1} className="icon-eye wow animate__animated animate__fadeIn" data-wow-delay="0.5s">
               {openEye ? (
                 <i
                   className="pi pi-eye-slash"
@@ -87,7 +92,8 @@ function SignUpPage() {
           <Row>
             <Colxx xxs={11}>
               <InputText
-                className="input-form w-100"
+                className="input-form w-100 wow animate__animated animate__fadeIn"
+                data-wow-delay="0.6s"
                 placeholder="Confirme a senha"
                 required
                 value={passwordConfirm}
@@ -95,7 +101,7 @@ function SignUpPage() {
                 type={openEyeConfirm ? 'text' : 'password'}
               />
             </Colxx>
-            <Colxx xxs={1} className="icon-eye">
+            <Colxx xxs={1} className="icon-eye wow animate__animated animate__fadeIn">
               {openEyeConfirm ? (
                 <i
                   className="pi pi-eye-slash"
@@ -114,7 +120,7 @@ function SignUpPage() {
             </Colxx>
           </Row>
           <Row className="container-action">
-            <Button type="submit" className="btn-confirm">
+            <Button type="submit" className="btn-confirm wow animate__animated animate__fadeIn" data-wow-delay="0.7s">
               Confirmar
             </Button>
           </Row>
