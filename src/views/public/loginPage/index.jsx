@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Row } from 'reactstrap';
-import { Colxx } from '../../components/common/customBootstrap';
+import { Colxx } from '../../../components/common/customBootstrap';
 import { InputText } from 'primereact/inputtext';
-import { auth } from '../../services';
+import { auth } from '../../../services';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useSetRecoilState } from 'recoil';
-import { tokenUser } from '../../atoms/user';
+import { tokenUser } from '../../../atoms/user';
 import { IonLoading, useIonToast } from '@ionic/react';
 
 function LoginPage() {
@@ -27,7 +27,7 @@ function LoginPage() {
         setTimeout(() => {
           setAccessToken(res.user.accessToken);
           clearForm();
-          navigate('/home');
+          navigate('/historic');
           setIsLoading(false);
         }, 2500);
       })

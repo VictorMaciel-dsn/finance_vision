@@ -1,5 +1,5 @@
 import { Button } from 'reactstrap';
-import imgLogo from '../../assets/img/icon.png';
+import imgLogo from '../../../assets/img/icon.png';
 import { useNavigate } from 'react-router-dom';
 
 function InitialPage() {

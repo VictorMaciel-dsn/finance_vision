@@ -7,13 +7,13 @@
         color: var(--color-white);
         text-align: center;
         font-weight: bold;
-        font-size: var(--size-9);
+        font-size: var(--size-1);
     }
     .subtitle-app {
         color: var(--color-white);
         text-align: center;
         font-weight: bold;
-        font-size: var(--size-7);
+        font-size: var(--size-8);
         margin-top: 5px;
     }
     
@@ -28,20 +28,20 @@
         right: 0;
         
         .btn-signUp {
-            font-size: var(--size-8);
+            font-size: var(--size-1);
             width: 18rem;
             height: 2.5rem;
             margin-bottom: 10px;
             background-color: var(--color-white);
-            color: var(--color-primary);
+            color: var(--theme-color-1);
             font-weight: bold;
             border-radius: var(--radius);
         }
         .btn-login {
-            font-size: var(--size-8);
+            font-size: var(--size-1);
             width: 18rem;
             height: 2.5rem;
-            background-color: var(--color-primary);
+            background-color: var(--theme-color-1);
             color: var(--color-white);
             font-weight: bold;
             border-radius: var(--radius);

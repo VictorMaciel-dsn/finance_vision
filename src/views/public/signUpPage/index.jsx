@@ -1,10 +1,10 @@
 import { Button, Row } from 'reactstrap';
-import { Colxx } from '../../components/common/customBootstrap';
+import { Colxx } from '../../../components/common/customBootstrap';
 import { InputText } from 'primereact/inputtext';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../services';
+import { auth } from '../../../services';
 import { IonLoading, useIonToast } from '@ionic/react';
 
 function SignUpPage() {
