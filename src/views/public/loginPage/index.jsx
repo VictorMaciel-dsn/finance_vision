@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Row } from 'reactstrap';
+import { Button, FormGroup, Input, Label, Row } from 'reactstrap';
 import { Colxx } from '../../../components/common/customBootstrap';
 import { InputText } from 'primereact/inputtext';
 import { auth } from '../../../services';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useSetRecoilState } from 'recoil';
-import { tokenUser } from '../../../atoms/user';
 import { IonLoading, useIonToast } from '@ionic/react';
+import { setCurrentUser } from '../../../helpers/utils';
+import { tokenUser } from '../../../atoms/user';
+import { useSetRecoilState } from 'recoil';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ function LoginPage() {
   const setAccessToken = useSetRecoilState(tokenUser);
   const [isLoading, setIsLoading] = useState(false);
   const [toast] = useIonToast();
+  const [keepSession, setKeepSession] = useState(true);
 
   function submitForm(e) {
     e.preventDefault();
@@ -25,7 +27,11 @@ function LoginPage() {
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
         setTimeout(() => {
-          setAccessToken(res.user.accessToken);
+          const token = res.user.accessToken;
+          if (keepSession) {
+            setCurrentUser(token);
+          }
+          setAccessToken(token);
           clearForm();
           navigate('/historic');
           setIsLoading(false);
@@ -110,8 +116,22 @@ function LoginPage() {
               )}
             </Colxx>
           </Row>
+          <Row className="container-keepSession wow animate__animated animate__fadeIn" data-wow-delay="0.6s">
+            <Colxx xxs={12}>
+              <FormGroup switch>
+                <Input
+                  type="switch"
+                  checked={keepSession}
+                  onClick={() => {
+                    setKeepSession(!keepSession);
+                  }}
+                />
+                <Label check>Manter sessão</Label>
+              </FormGroup>
+            </Colxx>
+          </Row>
           <Row className="container-action">
-            <Button type="submit" className="btn-confirm wow animate__animated animate__fadeIn" data-wow-delay="0.6s">
+            <Button type="submit" className="btn-confirm wow animate__animated animate__fadeIn" data-wow-delay="0.7s">
               Acessar
             </Button>
           </Row>

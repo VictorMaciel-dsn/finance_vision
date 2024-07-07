@@ -1,8 +1,6 @@
 import Footer from '../../footer';
 import TopNav from '../../topnav';
 import profileImage from '../../../../assets/img/foto-perfil.jpeg';
-import { useRecoilValue } from 'recoil';
-import { tokenUser } from '../../../../atoms/user';
 import { useEffect, useState } from 'react';
 import { parseJwt } from '../../../../helpers/format';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
@@ -11,10 +9,14 @@ import { auth } from '../../../../services';
 import { useNavigate } from 'react-router-dom';
 import ptBrImage from '../../../../assets/img/pt-br.png';
 import enUsImage from '../../../../assets/img/en-us.png';
+import { getCurrentUser } from '../../../../helpers/utils';
+import { useRecoilValue } from 'recoil';
+import { tokenUser } from '../../../../atoms/user';
 
 function ConfigPage() {
   const navigate = useNavigate();
-  const _userToken = useRecoilValue(tokenUser);
+  const _userToken = getCurrentUser();
+  const userToken = useRecoilValue(tokenUser);
   const [emailUser, setEmailUser] = useState('');
   const [isLang, setIsLang] = useState(false);
   const [ptBr, setPtBr] = useState(true);
@@ -24,6 +26,9 @@ function ConfigPage() {
   useEffect(() => {
     if (_userToken) {
       let token = parseJwt(_userToken);
+      setEmailUser(token.email);
+    } else {
+      let token = parseJwt(userToken);
       setEmailUser(token.email);
     }
   }, [_userToken]);

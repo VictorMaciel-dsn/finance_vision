@@ -44,13 +44,6 @@
             font-size: var(--size-9);
             border: 1px solid var(--color-separator);
 
-            .form-check-input {
-                --bs-form-check-bg: var(--color-separator);
-                border: 1px solid var(--color-separator);
-                width: 2.5em;
-                height: 1.3em;
-            }
-
             .container {
                 display: flex;
                 margin: 0;
