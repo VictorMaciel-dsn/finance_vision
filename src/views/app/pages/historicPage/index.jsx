@@ -1,12 +1,14 @@
 import Footer from '../../footer';
+import TopNav from '../../topnav';
 
 function HistoricPage() {
   return (
     <>
       <div className="historic-page">
+        <TopNav />
         <div>Histórico!</div>
-        <Footer />
       </div>
+      <Footer />
     </>
   );
 }
