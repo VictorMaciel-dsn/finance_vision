@@ -6,5 +6,5 @@ export const keys = {
 
 export const currentColor = atom({
   key: keys.CHANGE_COLOR,
-  default: "light",
+  default: 'dark',
 });

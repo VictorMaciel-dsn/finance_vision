@@ -29,7 +29,7 @@ function TopNav() {
 
   return (
     <>
-      <div className="container-topnav">
+      <div className="container-topnav wow animate__animated animate__fadeIn">
         <div className="label">
           <div className="user-label">{greetingsLabel} Victor!</div>
           <div className='icon-label'>

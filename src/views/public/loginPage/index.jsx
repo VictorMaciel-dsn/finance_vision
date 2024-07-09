@@ -5,10 +5,11 @@ import { Colxx } from '../../../components/common/customBootstrap';
 import { InputText } from 'primereact/inputtext';
 import { auth } from '../../../services';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { IonLoading, useIonToast } from '@ionic/react';
+import { useIonToast } from '@ionic/react';
 import { setCurrentUser } from '../../../helpers/utils';
 import { tokenUser } from '../../../atoms/user';
 import { useSetRecoilState } from 'recoil';
+import LoadingComponent from '../../../components/loading';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -30,10 +31,11 @@ function LoginPage() {
           const token = res.user.accessToken;
           if (keepSession) {
             setCurrentUser(token);
+          } else {
+            setAccessToken(token);
           }
-          setAccessToken(token);
           clearForm();
-          navigate('/historic');
+          navigate('/home');
           setIsLoading(false);
         }, 2500);
       })
@@ -57,7 +59,7 @@ function LoginPage() {
 
   return (
     <>
-      <IonLoading isOpen={isLoading} message={'Entrando...'} />
+      <LoadingComponent isLoading={isLoading} text={'Entrando...'} />
       <div className="login-page">
         <div className="container-btn">
           <Button
@@ -120,9 +122,10 @@ function LoginPage() {
             <Colxx xxs={12}>
               <FormGroup switch>
                 <Input
+                  className={keepSession ? 'active' : ''}
                   type="switch"
                   checked={keepSession}
-                  onClick={() => {
+                  onChange={() => {
                     setKeepSession(!keepSession);
                   }}
                 />

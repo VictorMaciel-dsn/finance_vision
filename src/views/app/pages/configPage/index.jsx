@@ -12,6 +12,8 @@ import enUsImage from '../../../../assets/img/en-us.png';
 import { getCurrentUser } from '../../../../helpers/utils';
 import { useRecoilValue } from 'recoil';
 import { tokenUser } from '../../../../atoms/user';
+import { userStorageKey } from '../../../../constants/defaultValues';
+import { useIonToast } from '@ionic/react';
 
 function ConfigPage() {
   const navigate = useNavigate();
@@ -22,6 +24,7 @@ function ConfigPage() {
   const [ptBr, setPtBr] = useState(true);
   const [enUs, setEnUs] = useState(false);
   const [theme, setTheme] = useState(false);
+  const [toast] = useIonToast();
 
   useEffect(() => {
     if (_userToken) {
@@ -37,10 +40,14 @@ function ConfigPage() {
     signOut(auth)
       .then(() => {
         navigate('/');
+        localStorage.removeItem(userStorageKey);
       })
       .catch(() => {
-        //toast.error("Houve um erro ao se desconectar!");
-        alert('Houve um erro ao se desconectar!');
+        toast({
+          message: 'Houve um erro ao se desconectar!',
+          duration: 2000,
+          position: 'bottom',
+        });
       });
   }
 
@@ -48,7 +55,7 @@ function ConfigPage() {
     <>
       <div className="config-page">
         <TopNav />
-        <div className="screen">
+        <div className="screen wow animate__animated animate__fadeIn">
           <div className="container-img">
             <img src={profileImage} alt="img-user" />
             <label>
@@ -86,9 +93,10 @@ function ConfigPage() {
               <div className="card">
                 <FormGroup switch>
                   <Input
+                    className={ptBr ? 'active' : ''}
                     type="switch"
                     checked={ptBr}
-                    onClick={() => {
+                    onChange={() => {
                       setPtBr(!ptBr);
                       setEnUs(!enUs);
                     }}
@@ -99,9 +107,10 @@ function ConfigPage() {
                 </FormGroup>
                 <FormGroup switch>
                   <Input
+                    className={enUs ? 'active' : ''}
                     type="switch"
                     checked={enUs}
-                    onClick={() => {
+                    onChange={() => {
                       setEnUs(!enUs);
                       setPtBr(!ptBr);
                     }}
@@ -124,9 +133,10 @@ function ConfigPage() {
                 </div>
                 <FormGroup switch>
                   <Input
+                    className={theme ? 'active' : ''}
                     type="switch"
                     checked={theme}
-                    onClick={() => {
+                    onChange={() => {
                       setTheme(!theme);
                       alert('Alterar tema!');
                     }}

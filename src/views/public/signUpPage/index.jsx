@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../services';
-import { IonLoading, useIonToast } from '@ionic/react';
+import { useIonToast } from '@ionic/react';
+import LoadingComponent from '../../../components/loading';
 
 function SignUpPage() {
   const navigate = useNavigate();
@@ -71,7 +72,7 @@ function SignUpPage() {
 
   return (
     <>
-      <IonLoading isOpen={isLoading} message={'Aguarde...'} />
+      <LoadingComponent isLoading={isLoading} text={'Aguarde...'} />
       <div className="signUp-page">
         <div className="container-btn">
           <Button

@@ -10,7 +10,7 @@ function Footer() {
 
   return (
     <>
-      <footer>
+      <footer className="wow animate__animated animate__fadeIn">
         <Row>
           <Colxx xxs={3}>
             <div className={`${currentRoute === 'home' ? 'active container-btn' : 'container-btn'}`}>
