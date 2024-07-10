@@ -2,9 +2,9 @@ import Footer from '../../footer';
 import TopNav from '../../topnav';
 import profileImage from '../../../../assets/img/foto-perfil.jpeg';
 import { useEffect, useState } from 'react';
-import { parseJwt } from '../../../../helpers/format';
+import { parseJwt, validarEmail } from '../../../../helpers/format';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
-import { signOut } from 'firebase/auth';
+import { sendPasswordResetEmail, signOut } from 'firebase/auth';
 import { auth } from '../../../../services';
 import { useNavigate } from 'react-router-dom';
 import ptBrImage from '../../../../assets/img/pt-br.png';
@@ -14,6 +14,8 @@ import { useRecoilValue } from 'recoil';
 import { tokenUser } from '../../../../atoms/user';
 import { userStorageKey } from '../../../../constants/defaultValues';
 import { useIonToast } from '@ionic/react';
+import { InputText } from 'primereact/inputtext';
+import LoadingComponent from '../../../../components/loading';
 
 function ConfigPage() {
   const navigate = useNavigate();
@@ -25,6 +27,9 @@ function ConfigPage() {
   const [enUs, setEnUs] = useState(false);
   const [theme, setTheme] = useState(false);
   const [toast] = useIonToast();
+  const [isChangePassword, setIsChangePassword] = useState(false);
+  const [emailChangePassword, setEmailChangePassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (_userToken) {
@@ -51,8 +56,46 @@ function ConfigPage() {
       });
   }
 
+  function submitChangePassword(e) {
+    e.preventDefault();
+
+    if (validarEmail(emailChangePassword)) {
+      setIsLoading(true);
+      sendPasswordResetEmail(auth, emailChangePassword)
+        .then(() => {
+          setTimeout(() => {
+            setIsLoading(false);
+            setEmailChangePassword('');
+            setIsChangePassword(false);
+            toast({
+              message: 'E-mail enviado com sucesso, verifique!',
+              duration: 2000,
+              position: 'bottom',
+            });
+          }, 2500);
+        })
+        .catch(() => {
+          setTimeout(() => {
+            setIsLoading(false);
+            toast({
+              message: 'Houve um erro ao enviar o e-mail!',
+              duration: 2000,
+              position: 'bottom',
+            });
+          }, 2500);
+        });
+    } else {
+      toast({
+        message: 'E-mail inválido, verifique!',
+        duration: 2000,
+        position: 'bottom',
+      });
+    }
+  }
+
   return (
     <>
+      <LoadingComponent isLoading={isLoading} text={'Aguarde...'} />
       <div className="config-page">
         <TopNav />
         <div className="screen wow animate__animated animate__fadeIn">
@@ -71,7 +114,7 @@ function ConfigPage() {
 
           <div className="container-configs mt-3">
             <label>Preferências</label>
-            <div className="card">
+            <div className={isLang ? 'card active' : 'card'}>
               <div className="container">
                 <div className="label-container">
                   <div className="background-icon first">
@@ -90,7 +133,13 @@ function ConfigPage() {
               </div>
             </div>
             {isLang ? (
-              <div className="card">
+              <div
+                className={
+                  isLang
+                    ? 'card active wow animate__animated animate__fadeIn'
+                    : 'card wow animate__animated animate__fadeIn'
+                }
+              >
                 <FormGroup switch>
                   <Input
                     className={ptBr ? 'active' : ''}
@@ -184,7 +233,7 @@ function ConfigPage() {
                 </div>
               </div>
             </div>
-            <div className="card">
+            <div className={isChangePassword ? 'card active' : 'card'}>
               <div className="container">
                 <div className="label-container">
                   <div className="background-icon first">
@@ -194,16 +243,46 @@ function ConfigPage() {
                 </div>
                 <div className="background-icon">
                   <i
-                    className="pi pi-pencil"
+                    className={isChangePassword ? 'pi pi-angle-up' : 'pi pi-pencil'}
                     onClick={() => {
-                      alert('Alterar senha!');
+                      setIsChangePassword(!isChangePassword);
                     }}
                   />
                 </div>
               </div>
             </div>
+            {isChangePassword ? (
+              <div
+                className={
+                  isChangePassword
+                    ? 'card active wow animate__animated animate__fadeIn'
+                    : 'card wow animate__animated animate__fadeIn'
+                }
+              >
+                <form onSubmit={(e) => submitChangePassword(e)}>
+                  <div className="container">
+                    <div className="label-container">
+                      <div className="background-icon first">
+                        <i className="pi pi-envelope" />
+                      </div>
+                      <InputText
+                        required
+                        className="input-form w-100"
+                        placeholder="Informe seu e-mail!"
+                        value={emailChangePassword}
+                        onChange={(e) => setEmailChangePassword(e.target.value)}
+                      />
+                    </div>
+                    <Button type="submit" className="btn-send">
+                      <i className="pi pi-send" />
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
-
           <div className="container-btn">
             <Button
               className={isLang ? 'mt-3' : 'mt-5'}

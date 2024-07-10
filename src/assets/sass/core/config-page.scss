@@ -67,11 +67,32 @@
                     }
                 }
 
+                .btn-send {
+                    background: #cccccc45;
+                    border: 0;
+                    color: var(--color-white);
+                    padding: 5px;
+                    border-radius: 50%;
+                    height: 2rem;
+                    width: 2rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .input-form {
+                    font-size: var(--size-9);
+                }
+
                 .label-container {
                     display: flex;
                     align-items: center;
                     justify-content: center;
                 }
+            }
+
+            &.active {
+                border: 1px solid var(--theme-color-2);
             }
         }
 

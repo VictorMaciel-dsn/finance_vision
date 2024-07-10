@@ -14,7 +14,6 @@ export function parseJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
-
 export function greetingsLabels() {
   const now = new Date();
   const hour = now.getHours();
@@ -26,4 +25,9 @@ export function greetingsLabels() {
   } else {
     return 'Boa noite,';
   }
+}
+
+export function validarEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(String(email).toLowerCase());
 }
