@@ -10,12 +10,13 @@ import { useNavigate } from 'react-router-dom';
 import ptBrImage from '../../../../assets/img/pt-br.png';
 import enUsImage from '../../../../assets/img/en-us.png';
 import { getCurrentUser } from '../../../../helpers/utils';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { tokenUser } from '../../../../atoms/user';
 import { userStorageKey } from '../../../../constants/defaultValues';
 import { useIonToast } from '@ionic/react';
 import { InputText } from 'primereact/inputtext';
 import LoadingComponent from '../../../../components/loading';
+import { currentColor } from '../../../../atoms/theme';
 
 function ConfigPage() {
   const navigate = useNavigate();
@@ -25,11 +26,12 @@ function ConfigPage() {
   const [isLang, setIsLang] = useState(false);
   const [ptBr, setPtBr] = useState(true);
   const [enUs, setEnUs] = useState(false);
-  const [theme, setTheme] = useState(false);
+  const [themeWhite, setThemeWhite] = useState(false);
   const [toast] = useIonToast();
   const [isChangePassword, setIsChangePassword] = useState(false);
   const [emailChangePassword, setEmailChangePassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [currentTheme, setCurrentTheme] = useRecoilState(currentColor);
 
   useEffect(() => {
     if (_userToken) {
@@ -40,6 +42,14 @@ function ConfigPage() {
       setEmailUser(token.email);
     }
   }, [_userToken]);
+
+  useEffect(() => {
+    if (currentTheme === 'dark') {
+      setThemeWhite(false);
+    } else {
+      setThemeWhite(true);
+    }
+  }, [currentTheme]);
 
   function logout() {
     signOut(auth)
@@ -182,12 +192,16 @@ function ConfigPage() {
                 </div>
                 <FormGroup switch>
                   <Input
-                    className={theme ? 'active' : ''}
+                    className={themeWhite ? 'active' : ''}
                     type="switch"
-                    checked={theme}
-                    onChange={() => {
-                      setTheme(!theme);
-                      alert('Alterar tema!');
+                    checked={themeWhite}
+                    onChange={(e) => {
+                      setThemeWhite(!themeWhite);
+                      if (e.target.checked) {
+                        setCurrentTheme('light');
+                      } else {
+                        setCurrentTheme('dark');
+                      }
                     }}
                   />
                 </FormGroup>

@@ -23,7 +23,7 @@
     }
 
     .title {
-        color: var(--color-white);
+        color: var(--color-primary);
         text-align: center;
         font-weight: bold;
         font-size: var(--size-1);
@@ -39,7 +39,7 @@
             width: 17rem;
             height: 2.5rem;
             background-color: var(--theme-color-1);
-            color: var(--color-white);
+            color: var(--color-primary);
             font-weight: bold;
             border-radius: var(--radius);
         }

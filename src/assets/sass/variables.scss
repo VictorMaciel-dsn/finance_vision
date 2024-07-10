@@ -1,19 +1,66 @@
 :root {
-    --color-background: #121212;
-    --nav-background: #79797930;
-    --footer-background: #79797930;
-    --color-text: #acacac;
-    --color-white: #ffff;
-    --color-separator: rgba(204, 204, 204, 0.3019607843);
-    --color-red: #e74c3c;
-    --theme-color-1: #38b6ff;
-    --theme-color-2: #3877ff;
-    --theme-color-3: #2FD4A6;
-    --theme-color-4: #38f5ff;
-    --theme-color-5: #3838ff;
+    // Tema escuro
+    --color-background_dark: #121212;
+    --nav-background_dark: #79797930;
+    --footer-background_dark: #79797930;
+    --color-text_dark: #acacac;
+    --color-primary_dark: #ffff;
+    --color-separator_dark: rgba(204, 204, 204, 0.3019607843);
+    --color-red_dark: #e74c3c;
+    --theme-color-1_dark: #38b6ff;
+    --theme-color-2_dark: #3877ff;
+    --theme-color-3_dark: #2fd4a6;
+    --theme-color-4_dark: #38f5ff;
+    --theme-color-5_dark: #3838ff;
+
+    // Tema claro
+    --color-background_white: #ffffff;
+    --nav-background_white: #f0f0f0;
+    --footer-background_white: #f0f0f0;
+    --color-text_white: #333333;
+    --color-primary_white: #000000;
+    --color-separator_white: rgba(50, 50, 50, 0.3);
+    --color-red_white: #c0392b;
+    --theme-color-1_white: #0066cc;
+    --theme-color-2_white: #0044cc;
+    --theme-color-3_white: #00997a;
+    --theme-color-4_white: #00b2b2;
+    --theme-color-5_white: #0000cc;
+
+    // Global
     --size-7: 0.7rem;
     --size-8: 0.8rem;
     --size-9: 0.9rem;
     --size-1: 1rem;
     --radius: 10px;
+}
+
+[data-theme="dark"] {
+    --color-background: var(--color-background_dark);
+    --nav-background: var(--nav-background_dark);
+    --footer-background: var(--footer-background_dark);
+    --color-text: var(--color-text_dark);
+    --color-primary: var(--color-primary_dark);
+    --color-separator: var(--color-separator_dark);
+    --color-red: var(--color-red_dark);
+    --theme-color-1: var(--theme-color-1_dark);
+    --theme-color-2: var(--theme-color-2_dark);
+    --theme-color-3: var(--theme-color-3_dark);
+    --theme-color-4: var(--theme-color-4_dark);
+    --theme-color-5: var(--theme-color-5_dark);
+}
+
+[data-theme="light"] {
+    --color-background: var(--color-background_white);
+    --nav-background: var(--nav-background_white);
+    --footer-background: var(--footer-background_white);
+    --color-text: var(--color-text_white);
+    --color-primary: var(--color-primary_white);
+    --color-separator: var(--color-separator_white);
+    --color-red: var(--color-red_white);
+    --theme-color-1: var(--theme-color-1_white);
+    --theme-color-2: var(--theme-color-2_white);
+    --theme-color-3: var(--theme-color-3_white);
+    --theme-color-4: var(--theme-color-4_white);
+    --theme-color-5: var(--theme-color-5_white);
 }

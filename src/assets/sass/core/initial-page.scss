@@ -4,13 +4,13 @@
     background: var(--color-background);
 
     .title-app {
-        color: var(--color-white);
+        color: var(--color-primary);
         text-align: center;
         font-weight: bold;
         font-size: var(--size-1);
     }
     .subtitle-app {
-        color: var(--color-white);
+        color: var(--color-primary);
         text-align: center;
         font-weight: bold;
         font-size: var(--size-8);
@@ -32,7 +32,7 @@
             width: 18rem;
             height: 2.5rem;
             margin-bottom: 10px;
-            background-color: var(--color-white);
+            background-color: var(--color-primary);
             color: var(--theme-color-1);
             font-weight: bold;
             border-radius: var(--radius);
@@ -42,7 +42,7 @@
             width: 18rem;
             height: 2.5rem;
             background-color: var(--theme-color-1);
-            color: var(--color-white);
+            color: var(--color-primary);
             font-weight: bold;
             border-radius: var(--radius);
         }
