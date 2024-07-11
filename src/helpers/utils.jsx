@@ -1,4 +1,4 @@
-import { userStorageKey } from '../constants/defaultValues';
+import { defaultLocale, userStorageKey } from '../constants/defaultValues';
 
 export const getCurrentUser = () => {
   let user = null;
@@ -24,4 +24,19 @@ export const setCurrentUser = (user) => {
   } catch (error) {
     console.log('>>>>: src/helpers/utils.js : setCurrentUser > error', error);
   }
+};
+
+export const getCurrentLanguage = () => {
+  let language = defaultLocale;
+  try {
+    language =
+      localStorage.getItem('currentLanguage') &&
+      localeOptions.filter((x) => x.id === localStorage.getItem('currentLanguage')).length > 0
+        ? localStorage.getItem('currentLanguage')
+        : defaultLocale;
+  } catch (error) {
+    console.log('>>>>: src/helpers/Utils.js : getCurrentLanguage -> error', error);
+    language = defaultLocale;
+  }
+  return language;
 };

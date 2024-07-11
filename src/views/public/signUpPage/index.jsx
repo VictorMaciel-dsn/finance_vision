@@ -7,8 +7,10 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../services';
 import { useIonToast } from '@ionic/react';
 import LoadingComponent from '../../../components/loading';
+import { injectIntl } from 'react-intl';
 
-function SignUpPage() {
+function SignUpPage({ intl }) {
+  const { messages } = intl;
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,7 +25,7 @@ function SignUpPage() {
 
     if (password !== passwordConfirm) {
       toast({
-        message: 'As senhas não são iguais, confira!',
+        message: messages['message.passwordNoEqual'],
         duration: 2000,
         position: 'bottom',
       });
@@ -35,7 +37,7 @@ function SignUpPage() {
         .then(() => {
           setTimeout(() => {
             toast({
-              message: 'Usuário criado com sucesso!',
+              message: messages['message.userCreatedSuccess'],
               duration: 2000,
               position: 'bottom',
             });
@@ -47,7 +49,7 @@ function SignUpPage() {
           setTimeout(() => {
             setIsLoading(false);
             toast({
-              message: 'Houve um erro ao criar o usuário!',
+              message: messages['message.userCreatedError'],
               duration: 2000,
               position: 'bottom',
             });
@@ -55,7 +57,7 @@ function SignUpPage() {
         });
     } else {
       toast({
-        message: 'A senha deve ter pelo menos 6 caracteres!',
+        message: messages['message.passwordSixCharacters'],
         duration: 2000,
         position: 'bottom',
       });
@@ -72,7 +74,7 @@ function SignUpPage() {
 
   return (
     <>
-      <LoadingComponent isLoading={isLoading} text={'Aguarde...'} />
+      <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
       <div className="signUp-page">
         <div className="container-btn">
           <Button
@@ -86,7 +88,7 @@ function SignUpPage() {
           </Button>
         </div>
         <div className="title wow animate__animated animate__fadeIn" data-wow-delay="0.2s">
-          Inscreva-se
+          {messages['message.signUp']}
         </div>
         <form onSubmit={(e) => submitForm(e)} className="container-form">
           <Row>
@@ -94,7 +96,7 @@ function SignUpPage() {
               <InputText
                 className="input-form w-100 mb-3 wow animate__animated animate__fadeIn"
                 data-wow-delay="0.3s"
-                placeholder="E-mail"
+                placeholder={messages['message.email']}
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -106,7 +108,7 @@ function SignUpPage() {
               <InputText
                 className="input-form w-100 mb-3 wow animate__animated animate__fadeIn"
                 data-wow-delay="0.4s"
-                placeholder="Senha"
+                placeholder={messages['message.password']}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -136,7 +138,7 @@ function SignUpPage() {
               <InputText
                 className="input-form w-100 wow animate__animated animate__fadeIn"
                 data-wow-delay="0.6s"
-                placeholder="Confirme a senha"
+                placeholder={messages['message.passwordConfirm']}
                 required
                 value={passwordConfirm}
                 onChange={(e) => setPasswordConfirm(e.target.value)}
@@ -163,7 +165,7 @@ function SignUpPage() {
           </Row>
           <Row className="container-action">
             <Button type="submit" className="btn-confirm wow animate__animated animate__fadeIn" data-wow-delay="0.7s">
-              Confirmar
+              {messages['message.confirm']}
             </Button>
           </Row>
         </form>
@@ -172,4 +174,4 @@ function SignUpPage() {
   );
 }
 
-export default SignUpPage;
+export default injectIntl(SignUpPage);

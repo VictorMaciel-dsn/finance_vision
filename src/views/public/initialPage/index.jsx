@@ -1,8 +1,10 @@
 import { Button } from 'reactstrap';
 import imgLogo from '../../../assets/img/icon.png';
 import { useNavigate } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 
-function InitialPage() {
+function InitialPage({ intl }) {
+  const { messages } = intl;
   const navigate = useNavigate();
 
   return (
@@ -11,10 +13,10 @@ function InitialPage() {
         <div className="container-img">
           <img src={imgLogo} alt="logo" className="wow animate__animated animate__fadeInDown" />
           <div className="title-app wow animate__animated animate__fadeIn" data-wow-delay="0.2s">
-            Bem-vindo ao Finance Vision!
+            {messages['message.welcomeApp']}
           </div>
           <div className="subtitle-app wow animate__animated animate__fadeIn" data-wow-delay="0.3s">
-            Sua vida financeira organizada <i className="pi pi-chart-bar" />
+            {messages['message.subtitle']} <i className="pi pi-chart-bar" />
           </div>
         </div>
         <div className="container-btns">
@@ -25,7 +27,7 @@ function InitialPage() {
               navigate('/signUp');
             }}
           >
-            Inscreva-se
+            {messages['message.signUp']}
           </Button>
           <Button
             className="btn-login wow animate__animated animate__fadeIn"
@@ -34,7 +36,7 @@ function InitialPage() {
               navigate('/login');
             }}
           >
-            Conecte-se
+            {messages['message.login']}
           </Button>
         </div>
       </div>
@@ -42,4 +44,4 @@ function InitialPage() {
   );
 }
 
-export default InitialPage;
+export default injectIntl(InitialPage);

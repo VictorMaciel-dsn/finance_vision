@@ -3,8 +3,10 @@ import { Colxx } from '../../../components/common/customBootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { route } from '../../../atoms/route';
+import { injectIntl } from 'react-intl';
 
-function Footer() {
+function Footer({ intl }) {
+  const { messages } = intl;
   const navigate = useNavigate();
   const currentRoute = useRecoilValue(route);
 
@@ -20,7 +22,7 @@ function Footer() {
                 }}
                 className="pi pi-home"
               />
-              <div className="label">Início</div>
+              <div className="label">{messages['message.home']}</div>
             </div>
           </Colxx>
           <Colxx xxs={2}>
@@ -31,7 +33,7 @@ function Footer() {
                 }}
                 className="pi pi-wallet"
               />
-              <div className="label">Carteira</div>
+              <div className="label">{messages['message.wallet']}</div>
             </div>
           </Colxx>
           <Colxx xxs={2}>
@@ -52,7 +54,7 @@ function Footer() {
                 }}
                 className="pi pi-chart-bar"
               />
-              <div className="label">Histórico</div>
+              <div className="label">{messages['message.historic']}</div>
             </div>
           </Colxx>
           <Colxx xxs={3}>
@@ -63,7 +65,7 @@ function Footer() {
                 }}
                 className="pi pi-cog"
               />
-              <div className="label">Configurações</div>
+              <div className="label">{messages['message.settings']}</div>
             </div>
           </Colxx>
         </Row>
@@ -72,4 +74,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default injectIntl(Footer);

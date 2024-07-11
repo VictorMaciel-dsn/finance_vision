@@ -10,8 +10,10 @@ import { setCurrentUser } from '../../../helpers/utils';
 import { tokenUser } from '../../../atoms/user';
 import { useSetRecoilState } from 'recoil';
 import LoadingComponent from '../../../components/loading';
+import { injectIntl } from 'react-intl';
 
-function LoginPage() {
+function LoginPage({ intl }) {
+  const { messages } = intl;
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -43,7 +45,7 @@ function LoginPage() {
         setTimeout(() => {
           setIsLoading(false);
           toast({
-            message: 'Houve um erro ao realizar o login!',
+            message: messages['message.errorLogin'],
             duration: 2000,
             position: 'bottom',
           });
@@ -59,7 +61,7 @@ function LoginPage() {
 
   return (
     <>
-      <LoadingComponent isLoading={isLoading} text={'Entrando...'} />
+      <LoadingComponent isLoading={isLoading} text={messages['message.entering']} />
       <div className="login-page">
         <div className="container-btn">
           <Button
@@ -73,7 +75,7 @@ function LoginPage() {
           </Button>
         </div>
         <div className="title wow animate__animated animate__fadeIn" data-wow-delay="0.2s">
-          Conecte-se
+          {messages['message.login']}
         </div>
         <form onSubmit={(e) => submitForm(e)} className="container-form">
           <Row>
@@ -81,7 +83,7 @@ function LoginPage() {
               <InputText
                 className="input-form w-100 mb-3 wow animate__animated animate__fadeIn"
                 data-wow-delay="0.3s"
-                placeholder="E-mail"
+                placeholder={messages['message.email']}
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -93,7 +95,7 @@ function LoginPage() {
               <InputText
                 className="input-form w-100 wow animate__animated animate__fadeIn"
                 data-wow-delay="0.4s"
-                placeholder="Senha"
+                placeholder={messages['message.password']}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -129,13 +131,13 @@ function LoginPage() {
                     setKeepSession(!keepSession);
                   }}
                 />
-                <Label check>Manter sessão</Label>
+                <Label check>{messages['message.keepSession']}</Label>
               </FormGroup>
             </Colxx>
           </Row>
           <Row className="container-action">
             <Button type="submit" className="btn-confirm wow animate__animated animate__fadeIn" data-wow-delay="0.7s">
-              Acessar
+              {messages['message.access']}
             </Button>
           </Row>
         </form>
@@ -144,4 +146,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default injectIntl(LoginPage);

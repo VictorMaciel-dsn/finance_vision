@@ -16,8 +16,10 @@ import { userStorageKey } from './constants/defaultValues';
 import { signOut } from 'firebase/auth';
 import { auth } from './services';
 import { useIonToast } from '@ionic/react';
+import { injectIntl } from 'react-intl';
 
-function InnerRoutes() {
+function InnerRoutes({ intl }) {
+  const { messages } = intl;
   const location = useLocation();
   const theme = useRecoilValue(currentColor);
   const setCurrentRoute = useSetRecoilState(route);
@@ -57,14 +59,14 @@ function InnerRoutes() {
         navigate('/');
         localStorage.removeItem(userStorageKey);
         toast({
-          message: 'Sessão expirada, realize novamente o login!',
+          message: messages['message.sessionExpired'],
           duration: 2000,
           position: 'bottom',
         });
       })
       .catch(() => {
         toast({
-          message: 'Houve um erro ao se desconectar!',
+          message: messages['message.disconnectError'],
           duration: 2000,
           position: 'bottom',
         });
@@ -86,12 +88,12 @@ function InnerRoutes() {
   );
 }
 
-function AppRoutes() {
+function AppRoutes({ intl }) {
   return (
     <Router>
-      <InnerRoutes />
+      <InnerRoutes intl={intl} />
     </Router>
   );
 }
 
-export default AppRoutes;
+export default injectIntl(AppRoutes);

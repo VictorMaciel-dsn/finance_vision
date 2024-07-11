@@ -4,8 +4,10 @@ import { greetingsLabels } from '../../../helpers/format';
 import { useRecoilValue } from 'recoil';
 import { route } from '../../../atoms/route';
 import { useEffect, useState } from 'react';
+import { injectIntl } from 'react-intl';
 
-function TopNav() {
+function TopNav({ intl }) {
+  const { messages } = intl;
   const greetingsLabel = greetingsLabels();
   const currentRoute = useRecoilValue(route);
   const [componentLabel, setComponentLabel] = useState('');
@@ -13,16 +15,16 @@ function TopNav() {
 
   useEffect(() => {
     if (currentRoute === 'historic') {
-      setComponentLabel('Histórico');
+      setComponentLabel(messages['message.historic']);
       setClassIcon('pi-chart-bar');
     } else if (currentRoute === 'home') {
-      setComponentLabel('Início');
+      setComponentLabel(messages['message.home']);
       setClassIcon('pi-home');
     } else if (currentRoute === 'wallet') {
-      setComponentLabel('Carteira');
+      setComponentLabel(messages['message.wallet']);
       setClassIcon('pi-wallet');
     } else if (currentRoute === 'config') {
-      setComponentLabel('Configurações');
+      setComponentLabel(messages['message.settings']);
       setClassIcon('pi-cog');
     }
   }, [currentRoute]);
@@ -32,7 +34,7 @@ function TopNav() {
       <div className="container-topnav wow animate__animated animate__fadeIn">
         <div className="label">
           <div className="user-label">{greetingsLabel} Victor!</div>
-          <div className='icon-label'>
+          <div className="icon-label">
             <i className={`pi ${classIcon}`} /> <h3>{componentLabel}</h3>
           </div>
         </div>
@@ -44,4 +46,4 @@ function TopNav() {
   );
 }
 
-export default TopNav;
+export default injectIntl(TopNav);

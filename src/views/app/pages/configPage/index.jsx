@@ -17,9 +17,12 @@ import { useIonToast } from '@ionic/react';
 import { InputText } from 'primereact/inputtext';
 import LoadingComponent from '../../../../components/loading';
 import { currentColor } from '../../../../atoms/theme';
+import { injectIntl } from 'react-intl';
 
-function ConfigPage() {
+function ConfigPage({ intl }) {
+  const { messages } = intl;
   const navigate = useNavigate();
+  const [toast] = useIonToast();
   const _userToken = getCurrentUser();
   const userToken = useRecoilValue(tokenUser);
   const [emailUser, setEmailUser] = useState('');
@@ -27,7 +30,6 @@ function ConfigPage() {
   const [ptBr, setPtBr] = useState(true);
   const [enUs, setEnUs] = useState(false);
   const [themeWhite, setThemeWhite] = useState(false);
-  const [toast] = useIonToast();
   const [isChangePassword, setIsChangePassword] = useState(false);
   const [emailChangePassword, setEmailChangePassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -59,7 +61,7 @@ function ConfigPage() {
       })
       .catch(() => {
         toast({
-          message: 'Houve um erro ao se desconectar!',
+          message: messages['message.disconnectError'],
           duration: 2000,
           position: 'bottom',
         });
@@ -78,7 +80,7 @@ function ConfigPage() {
             setEmailChangePassword('');
             setIsChangePassword(false);
             toast({
-              message: 'E-mail enviado com sucesso, verifique!',
+              message: messages['message.sendEmailSuccess'],
               duration: 2000,
               position: 'bottom',
             });
@@ -88,7 +90,7 @@ function ConfigPage() {
           setTimeout(() => {
             setIsLoading(false);
             toast({
-              message: 'Houve um erro ao enviar o e-mail!',
+              message: messages['message.sendEmailError'],
               duration: 2000,
               position: 'bottom',
             });
@@ -96,7 +98,7 @@ function ConfigPage() {
         });
     } else {
       toast({
-        message: 'E-mail inválido, verifique!',
+        message: messages['message.emailInvalid'],
         duration: 2000,
         position: 'bottom',
       });
@@ -105,7 +107,7 @@ function ConfigPage() {
 
   return (
     <>
-      <LoadingComponent isLoading={isLoading} text={'Aguarde...'} />
+      <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
       <div className="config-page">
         <TopNav />
         <div className="screen wow animate__animated animate__fadeIn">
@@ -116,21 +118,21 @@ function ConfigPage() {
                 emailUser
               ) : (
                 <>
-                  E-mail não encontrado! <i className="pi pi-exclamation-circle" />
+                  {messages['message.emailNotFound']} <i className="pi pi-exclamation-circle" />
                 </>
               )}
             </label>
           </div>
 
           <div className="container-configs mt-3">
-            <label>Preferências</label>
+            <label>{messages['message.preferences']}</label>
             <div className={isLang ? 'card active' : 'card'}>
               <div className="container">
                 <div className="label-container">
                   <div className="background-icon first">
                     <i className="pi pi-language" />
                   </div>
-                  <div className="text">Alterar idioma</div>
+                  <div className="text">{messages['message.changeLanguage']}</div>
                 </div>
                 <div className="background-icon">
                   <i
@@ -161,7 +163,7 @@ function ConfigPage() {
                     }}
                   />
                   <Label check>
-                    <img src={ptBrImage} /> Português
+                    <img src={ptBrImage} /> {messages['message.ptBr']}
                   </Label>
                 </FormGroup>
                 <FormGroup switch>
@@ -175,7 +177,7 @@ function ConfigPage() {
                     }}
                   />
                   <Label check>
-                    <img src={enUsImage} /> Inglês
+                    <img src={enUsImage} /> {messages['message.enUs']}
                   </Label>
                 </FormGroup>
               </div>
@@ -188,7 +190,7 @@ function ConfigPage() {
                   <div className="background-icon first">
                     <i className="pi pi-sun" />
                   </div>
-                  <div className="text">Tema claro</div>
+                  <div className="text">{messages['message.clearTheme']}</div>
                 </div>
                 <FormGroup switch>
                   <Input
@@ -210,14 +212,14 @@ function ConfigPage() {
           </div>
 
           <div className="container-configs mt-3">
-            <label>Conta</label>
+            <label>{messages['message.account']}</label>
             <div className="card">
               <div className="container">
                 <div className="label-container">
                   <div className="background-icon first">
                     <i className="pi pi-image" />
                   </div>
-                  <div className="text">Alterar imagem</div>
+                  <div className="text">{messages['message.changeImage']}</div>
                 </div>
                 <div className="background-icon">
                   <i
@@ -235,7 +237,7 @@ function ConfigPage() {
                   <div className="background-icon first">
                     <i className="pi pi-envelope" />
                   </div>
-                  <div className="text">Alterar e-mail</div>
+                  <div className="text">{messages['message.changeEmail']}</div>
                 </div>
                 <div className="background-icon">
                   <i
@@ -253,7 +255,7 @@ function ConfigPage() {
                   <div className="background-icon first">
                     <i className="pi pi-key" />
                   </div>
-                  <div className="text">Alterar senha</div>
+                  <div className="text">{messages['message.changePassword']}</div>
                 </div>
                 <div className="background-icon">
                   <i
@@ -282,7 +284,7 @@ function ConfigPage() {
                       <InputText
                         required
                         className="input-form w-100"
-                        placeholder="Informe seu e-mail!"
+                        placeholder={messages['message.enterYourEmail']}
                         value={emailChangePassword}
                         onChange={(e) => setEmailChangePassword(e.target.value)}
                       />
@@ -304,7 +306,7 @@ function ConfigPage() {
                 logout();
               }}
             >
-              <i className="pi pi-sign-out" /> Sair
+              <i className="pi pi-sign-out" /> {messages['message.logout']}
             </Button>
           </div>
         </div>
@@ -314,4 +316,4 @@ function ConfigPage() {
   );
 }
 
-export default ConfigPage;
+export default injectIntl(ConfigPage);
