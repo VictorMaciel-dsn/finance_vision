@@ -48,4 +48,7 @@ export default {
   // General messages
   'message.sessionExpired': 'Session expired, login again!',
   'message.disconnectError': 'There was an error disconnecting!',
+  'message.goodMorning': 'Good morning,',
+  'message.goodAfternoon': 'Good afternoon,',
+  'message.goodNight': 'Good night,',
 };

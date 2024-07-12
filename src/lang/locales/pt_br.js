@@ -48,4 +48,7 @@ export default {
   // Mensagens gerais
   'message.sessionExpired': 'Sessão expirada, realize novamente o login!',
   'message.disconnectError': 'Houve um erro ao se desconectar!',
+  'message.goodMorning': 'Bom dia,',
+  'message.goodAfternoon': 'Boa tarde,',
+  'message.goodNight': 'Boa noite,',
 };

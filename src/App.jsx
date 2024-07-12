@@ -24,8 +24,8 @@ const App = () => {
   return (
     <>
       <IntlProvider
-        locale={currentAppLocale.locale}
-        messages={currentAppLocale.messages}
+        locale={currentAppLocale?.locale}
+        messages={currentAppLocale?.messages}
         onError={(err) => {
           if (err.code === 'MISSING_TRANSLATION') {
             return;

@@ -1,4 +1,4 @@
-import enMessages from '../locales/en_us';
+import enMessages from '../locales/en_us.js';
 
 const EnLang = {
   messages: {

@@ -1,4 +1,10 @@
-import { defaultLocale, userStorageKey } from '../constants/defaultValues';
+import {
+  defaultLocale,
+  defaultTheme,
+  langStorageKey,
+  themeStorageKey,
+  userStorageKey,
+} from '../constants/defaultValues';
 
 export const getCurrentUser = () => {
   let user = null;
@@ -29,14 +35,41 @@ export const setCurrentUser = (user) => {
 export const getCurrentLanguage = () => {
   let language = defaultLocale;
   try {
-    language =
-      localStorage.getItem('currentLanguage') &&
-      localeOptions.filter((x) => x.id === localStorage.getItem('currentLanguage')).length > 0
-        ? localStorage.getItem('currentLanguage')
-        : defaultLocale;
+    const storedLanguage = localStorage.getItem(langStorageKey);
+    if (storedLanguage) {
+      language = storedLanguage;
+    }
   } catch (error) {
     console.log('>>>>: src/helpers/Utils.js : getCurrentLanguage -> error', error);
-    language = defaultLocale;
   }
   return language;
+};
+
+export const setCurrentLanguage = (locale) => {
+  try {
+    localStorage.setItem(langStorageKey, locale);
+  } catch (error) {
+    console.log('>>>>: src/helpers/Utils.js : setCurrentLanguage -> error', error);
+  }
+};
+
+export const getCurrentTheme = () => {
+  let theme = defaultTheme;
+  try {
+    const storedTheme = localStorage.getItem(themeStorageKey);
+    if (storedTheme) {
+      theme = storedTheme;
+    }
+  } catch (error) {
+    console.log('>>>>: src/helpers/Utils.js : getCurrentTheme -> error', error);
+  }
+  return theme;
+};
+
+export const setCurrentTheme = (locale) => {
+  try {
+    localStorage.setItem(themeStorageKey, locale);
+  } catch (error) {
+    console.log('>>>>: src/helpers/Utils.js : setCurrentTheme -> error', error);
+  }
 };

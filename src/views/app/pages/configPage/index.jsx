@@ -9,15 +9,23 @@ import { auth } from '../../../../services';
 import { useNavigate } from 'react-router-dom';
 import ptBrImage from '../../../../assets/img/pt-br.png';
 import enUsImage from '../../../../assets/img/en-us.png';
-import { getCurrentUser } from '../../../../helpers/utils';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  getCurrentLanguage,
+  getCurrentTheme,
+  getCurrentUser,
+  setCurrentLanguage,
+  setCurrentTheme,
+} from '../../../../helpers/utils';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { tokenUser } from '../../../../atoms/user';
-import { userStorageKey } from '../../../../constants/defaultValues';
+import { langStorageKey, themeStorageKey, userStorageKey } from '../../../../constants/defaultValues';
 import { useIonToast } from '@ionic/react';
 import { InputText } from 'primereact/inputtext';
 import LoadingComponent from '../../../../components/loading';
 import { currentColor } from '../../../../atoms/theme';
 import { injectIntl } from 'react-intl';
+import { currentLanguage } from '../../../../atoms/lang';
+import { FileUpload } from 'primereact/fileupload';
 
 function ConfigPage({ intl }) {
   const { messages } = intl;
@@ -33,7 +41,21 @@ function ConfigPage({ intl }) {
   const [isChangePassword, setIsChangePassword] = useState(false);
   const [emailChangePassword, setEmailChangePassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [currentTheme, setCurrentTheme] = useRecoilState(currentColor);
+  const setTheme = useSetRecoilState(currentColor);
+  const setLang = useSetRecoilState(currentLanguage);
+  const currentLang = getCurrentLanguage();
+  const currentTheme = getCurrentTheme();
+  const [isChangeImage, setIsChangeImage] = useState(false);
+
+  useEffect(() => {
+    if (currentLang === 'pt-br') {
+      setPtBr(true);
+      setEnUs(false);
+    } else {
+      setPtBr(false);
+      setEnUs(true);
+    }
+  }, [currentLang]);
 
   useEffect(() => {
     if (_userToken) {
@@ -58,6 +80,9 @@ function ConfigPage({ intl }) {
       .then(() => {
         navigate('/');
         localStorage.removeItem(userStorageKey);
+        localStorage.removeItem(langStorageKey);
+        localStorage.removeItem(themeStorageKey);
+        setLang('pt-br');
       })
       .catch(() => {
         toast({
@@ -103,6 +128,11 @@ function ConfigPage({ intl }) {
         position: 'bottom',
       });
     }
+  }
+
+  function submitImage(e) {
+    e.preventDefault();
+    alert(1);
   }
 
   return (
@@ -160,6 +190,8 @@ function ConfigPage({ intl }) {
                     onChange={() => {
                       setPtBr(!ptBr);
                       setEnUs(!enUs);
+                      setLang('pt-br');
+                      setCurrentLanguage('pt-br');
                     }}
                   />
                   <Label check>
@@ -174,6 +206,8 @@ function ConfigPage({ intl }) {
                     onChange={() => {
                       setEnUs(!enUs);
                       setPtBr(!ptBr);
+                      setLang('en');
+                      setCurrentLanguage('en');
                     }}
                   />
                   <Label check>
@@ -200,8 +234,10 @@ function ConfigPage({ intl }) {
                     onChange={(e) => {
                       setThemeWhite(!themeWhite);
                       if (e.target.checked) {
+                        setTheme('light');
                         setCurrentTheme('light');
                       } else {
+                        setTheme('dark');
                         setCurrentTheme('dark');
                       }
                     }}
@@ -210,10 +246,9 @@ function ConfigPage({ intl }) {
               </div>
             </div>
           </div>
-
           <div className="container-configs mt-3">
             <label>{messages['message.account']}</label>
-            <div className="card">
+            <div className={isChangeImage ? 'card active' : 'card'}>
               <div className="container">
                 <div className="label-container">
                   <div className="background-icon first">
@@ -223,32 +258,41 @@ function ConfigPage({ intl }) {
                 </div>
                 <div className="background-icon">
                   <i
-                    className="pi pi-pencil"
+                    className={isChangeImage ? 'pi pi-angle-up' : 'pi pi-pencil'}
                     onClick={() => {
-                      alert('Alterar imagem!');
+                      setIsChangeImage(!isChangeImage);
                     }}
                   />
                 </div>
               </div>
             </div>
-            <div className="card">
-              <div className="container">
-                <div className="label-container">
-                  <div className="background-icon first">
-                    <i className="pi pi-envelope" />
+            {isChangeImage ? (
+              <div
+                className={
+                  isChangeImage
+                    ? 'card active wow animate__animated animate__fadeIn'
+                    : 'card wow animate__animated animate__fadeIn'
+                }
+              >
+                <form onSubmit={(e) => submitImage(e)}>
+                  <div className="container">
+                    {/* Finalizar */}
+                    <FileUpload
+                      mode="basic"
+                      name="demo[]"
+                      url="/api/upload"
+                      accept="image/*"
+                      maxFileSize={1000000}
+                      onUpload={() => {
+                        alert(1);
+                      }}
+                    />
                   </div>
-                  <div className="text">{messages['message.changeEmail']}</div>
-                </div>
-                <div className="background-icon">
-                  <i
-                    className="pi pi-pencil"
-                    onClick={() => {
-                      alert('Alterar e-mail!');
-                    }}
-                  />
-                </div>
+                </form>
               </div>
-            </div>
+            ) : (
+              <></>
+            )}
             <div className={isChangePassword ? 'card active' : 'card'}>
               <div className="container">
                 <div className="label-container">
@@ -301,7 +345,7 @@ function ConfigPage({ intl }) {
           </div>
           <div className="container-btn">
             <Button
-              className={isLang ? 'mt-3' : 'mt-5'}
+              className="mt-2"
               onClick={() => {
                 logout();
               }}

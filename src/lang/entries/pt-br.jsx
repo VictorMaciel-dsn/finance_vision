@@ -1,4 +1,4 @@
-import enMessages from '../locales/pt_br';
+import enMessages from '../locales/pt_br.js';
 
 const PtLang = {
   messages: {
