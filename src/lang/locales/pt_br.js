@@ -44,6 +44,11 @@ export default {
   'message.changePassword': 'Alterar senha',
   'message.enterYourEmail': 'Informe seu e-mail!',
   'message.logout': 'Sair',
+  'message.chooseImage': 'Escolha uma imagem',
+  'message.save': 'Salvar',
+  'message.cancel': 'Cancelar',
+  'message.imageSavedSuccess': 'Imagem salva com sucesso!',
+  'message.imageSavedError': 'Houve um erro ao salvar a imagem!',
 
   // Mensagens gerais
   'message.sessionExpired': 'Sessão expirada, realize novamente o login!',

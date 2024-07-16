@@ -1,11 +1,10 @@
 import Footer from '../../footer';
 import TopNav from '../../topnav';
-import profileImage from '../../../../assets/img/foto-perfil.jpeg';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { parseJwt, validarEmail } from '../../../../helpers/format';
 import { Button, FormGroup, Input, Label } from 'reactstrap';
 import { sendPasswordResetEmail, signOut } from 'firebase/auth';
-import { auth } from '../../../../services';
+import { auth, storage } from '../../../../services';
 import { useNavigate } from 'react-router-dom';
 import ptBrImage from '../../../../assets/img/pt-br.png';
 import enUsImage from '../../../../assets/img/en-us.png';
@@ -16,8 +15,8 @@ import {
   setCurrentLanguage,
   setCurrentTheme,
 } from '../../../../helpers/utils';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { tokenUser } from '../../../../atoms/user';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { tokenUser, updateImageUser } from '../../../../atoms/user';
 import { langStorageKey, themeStorageKey, userStorageKey } from '../../../../constants/defaultValues';
 import { useIonToast } from '@ionic/react';
 import { InputText } from 'primereact/inputtext';
@@ -26,6 +25,9 @@ import { currentColor } from '../../../../atoms/theme';
 import { injectIntl } from 'react-intl';
 import { currentLanguage } from '../../../../atoms/lang';
 import { FileUpload } from 'primereact/fileupload';
+import * as FireBaseStorage from 'firebase/storage';
+import { get, getDatabase, ref, set } from 'firebase/database';
+import defaultProfileImage from '../../../../assets/img/profile-image.jpg';
 
 function ConfigPage({ intl }) {
   const { messages } = intl;
@@ -46,6 +48,12 @@ function ConfigPage({ intl }) {
   const currentLang = getCurrentLanguage();
   const currentTheme = getCurrentTheme();
   const [isChangeImage, setIsChangeImage] = useState(false);
+  const [img, setImg] = useState('');
+  const [nameImg, setNameImg] = useState('');
+  const isFirst = useRef(true);
+  const [profileImage, setProfileImage] = useState('');
+  const [initialNameImage, setInitialNameImage] = useState('');
+  const [isUpdateImage, setIsUpdateImage] = useRecoilState(updateImageUser);
 
   useEffect(() => {
     if (currentLang === 'pt-br') {
@@ -74,6 +82,22 @@ function ConfigPage({ intl }) {
       setThemeWhite(true);
     }
   }, [currentTheme]);
+
+  useEffect(() => {
+    if (isFirst.current || isUpdateImage) {
+      getImage()
+        .then((res) => {
+          if (res !== null) {
+            setProfileImage(res.img);
+            setInitialNameImage(res.imgName);
+          }
+        })
+        .catch((error) => {
+          console.error('Erro ao obter a imagem:', error);
+        });
+      isFirst.current = false;
+    }
+  }, [isUpdateImage]);
 
   function logout() {
     signOut(auth)
@@ -130,9 +154,64 @@ function ConfigPage({ intl }) {
     }
   }
 
-  function submitImage(e) {
-    e.preventDefault();
-    alert(1);
+  function submitChangeImage() {
+    if (!img) return;
+    setIsLoading(true);
+    const storageRef = FireBaseStorage.ref(storage, `files/${nameImg}`);
+    const uploadTask = FireBaseStorage.uploadBytesResumable(storageRef, img);
+
+    uploadTask.on('state_changed', () => {
+      FireBaseStorage.getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        onSave(downloadURL);
+      });
+    });
+  }
+
+  function onSave(img) {
+    const db = getDatabase();
+    const dataRef = ref(db, 'images');
+    const imagePath = `files/${initialNameImage}`;
+    const refItem = FireBaseStorage.ref(storage, imagePath);
+
+    let payload = {
+      img: img,
+      imgName: nameImg,
+    };
+
+    set(dataRef, payload)
+      .then(() => {
+        setImg('');
+        setNameImg('');
+        setIsChangeImage(false);
+        setIsLoading(false);
+        FireBaseStorage.deleteObject(refItem);
+        setIsUpdateImage(true);
+        toast({
+          message: messages['message.imageSavedSuccess'],
+          duration: 2000,
+          position: 'bottom',
+        });
+      })
+      .catch(() => {
+        setIsLoading(false);
+        toast({
+          message: messages['message.imageSavedError'],
+          duration: 2000,
+          position: 'bottom',
+        });
+      });
+  }
+
+  async function getImage() {
+    const db = getDatabase();
+    const dataRef = ref(db, 'images');
+
+    try {
+      const res = await get(dataRef);
+      return res.val();
+    } catch {
+      return null;
+    }
   }
 
   return (
@@ -142,7 +221,7 @@ function ConfigPage({ intl }) {
         <TopNav />
         <div className="screen wow animate__animated animate__fadeIn">
           <div className="container-img">
-            <img src={profileImage} alt="img-user" />
+            <img src={profileImage ? profileImage : defaultProfileImage} />
             <label>
               {emailUser ? (
                 emailUser
@@ -274,21 +353,51 @@ function ConfigPage({ intl }) {
                     : 'card wow animate__animated animate__fadeIn'
                 }
               >
-                <form onSubmit={(e) => submitImage(e)}>
-                  <div className="container">
-                    {/* Finalizar */}
-                    <FileUpload
-                      mode="basic"
-                      name="demo[]"
-                      url="/api/upload"
-                      accept="image/*"
-                      maxFileSize={1000000}
-                      onUpload={() => {
-                        alert(1);
-                      }}
-                    />
-                  </div>
-                </form>
+                <div className="container-fileUpload">
+                  <FileUpload
+                    className={img ? 'mb-2' : ''}
+                    mode="basic"
+                    accept="image/*"
+                    maxFileSize={1000000}
+                    chooseLabel={messages['message.chooseImage']}
+                    onSelect={(e) => {
+                      setImg(e.files[0]);
+                      const id = new Date().getTime() % 10000;
+                      const extension = e.files[0].name.split('.').pop();
+                      const fileName = `${e.files[0].name.split('.').slice(0, -1).join('.')}-${id}.${extension}`;
+                      setNameImg(fileName);
+                    }}
+                  />
+                  {img ? (
+                    <>
+                      <div className="image wow animate__animated animate__fadeIn">
+                        <img src={img?.objectURL} alt="img_user" />
+                      </div>
+                      <div className="actions mt-2">
+                        <Button
+                          className="btn-save"
+                          onClick={() => {
+                            submitChangeImage();
+                          }}
+                        >
+                          <i className="pi pi-save" /> {messages['message.save']}
+                        </Button>
+                        <Button
+                          className="btn-cancel"
+                          onClick={() => {
+                            setImg('');
+                            setNameImg('');
+                            setIsChangeImage(false);
+                          }}
+                        >
+                          <i className="pi pi-times" /> {messages['message.cancel']}
+                        </Button>
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </div>
               </div>
             ) : (
               <></>

@@ -1,0 +1,14 @@
+.p-fileupload{
+    background: var(--theme-color-2);
+    padding: 5px;
+    border-radius: var(--radius);
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    svg{
+        margin-right: 5px;
+    }
+}

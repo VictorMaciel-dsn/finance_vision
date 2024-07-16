@@ -1,10 +1,12 @@
 import { Avatar } from 'primereact/avatar';
-import profileImage from '../../../assets/img/foto-perfil.jpeg';
 import { useRecoilValue } from 'recoil';
 import { route } from '../../../atoms/route';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { injectIntl } from 'react-intl';
 import { currentLanguage } from '../../../atoms/lang';
+import { get, getDatabase, ref } from 'firebase/database';
+import defaultProfileImage from '../../../assets/img/profile-image.jpg';
+import { updateImageUser } from '../../../atoms/user';
 
 function TopNav({ intl }) {
   const { messages } = intl;
@@ -13,6 +15,9 @@ function TopNav({ intl }) {
   const [componentLabel, setComponentLabel] = useState('');
   const [classIcon, setClassIcon] = useState('');
   const lang = useRecoilValue(currentLanguage);
+  const [profileImage, setProfileImage] = useState('');
+  const isFirst = useRef(true);
+  const isUpdateImage = useRecoilValue(updateImageUser);
 
   useEffect(() => {
     if (currentRoute === 'historic') {
@@ -34,6 +39,21 @@ function TopNav({ intl }) {
     }
   }, [currentRoute, lang]);
 
+  useEffect(() => {
+    if (isFirst.current || isUpdateImage) {
+      getImage()
+        .then((res) => {
+          if (res !== null) {
+            setProfileImage(res.img);
+          }
+        })
+        .catch((error) => {
+          console.error('Erro ao obter a imagem:', error);
+        });
+      isFirst.current = false;
+    }
+  }, [isUpdateImage]);
+
   function greetingsLabels() {
     const now = new Date();
     const hour = now.getHours();
@@ -47,6 +67,18 @@ function TopNav({ intl }) {
     }
   }
 
+  async function getImage() {
+    const db = getDatabase();
+    const dataRef = ref(db, 'images');
+
+    try {
+      const res = await get(dataRef);
+      return res.val();
+    } catch {
+      return null;
+    }
+  }
+
   return (
     <>
       <div className="container-topnav wow animate__animated animate__fadeIn">
@@ -57,7 +89,7 @@ function TopNav({ intl }) {
           </div>
         </div>
         <div>
-          <Avatar image={profileImage} size="xlarge" shape="circle" />
+          <Avatar image={profileImage ? profileImage : defaultProfileImage} size="xlarge" shape="circle" />
         </div>
       </div>
     </>

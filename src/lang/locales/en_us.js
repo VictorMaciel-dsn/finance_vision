@@ -44,6 +44,11 @@ export default {
   'message.changePassword': 'Change password',
   'message.enterYourEmail': 'Enter your email!',
   'message.logout': 'Log out',
+  'message.chooseImage': 'Choose an image',
+  'message.save': 'Save',
+  'message.cancel': 'Cancel',
+  'message.imageSavedSuccess': 'Image saved successfully!',
+  'message.imageSavedError': 'There was an error saving the image!',
 
   // General messages
   'message.sessionExpired': 'Session expired, login again!',
