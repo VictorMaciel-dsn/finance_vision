@@ -38,9 +38,9 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
+    // "plugin:unused-imports/recommended",
     "plugin:prettier/recommended"
   ],
-
   "globals": {
     "window": true,
     "document": true,
@@ -52,18 +52,35 @@
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
-
-
-
-  "plugins": ["react", "prettier", "react-hooks"],
+  "plugins": [
+    "react",
+    "prettier",
+    "react-hooks",
+    "unused-imports"
+  ],
   "rules": {
-    "prettier/prettier": "off",
+    "prettier/prettier": "error",
     "react/react-in-jsx-scope": "off",
     "react-hooks/exhaustive-deps": "off",
     "react/display-name": "off",
     "react/no-unknown-property": "off",
     "react/prop-types": "off",
-    "react/no-unescaped-entities": "off"
+    "react/no-unescaped-entities": "off",
+    "no-unused-vars": "error",
+    "no-debugger": "error",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ]
   },
-  "ignorePatterns": ["**/*.tsx", "**/*.ts"]
+  "ignorePatterns": [
+    "**/*.tsx",
+    "**/*.ts"
+  ]
 }

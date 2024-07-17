@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 export const keys = {
   CURRENT_ROUTE: 'ATOM/USER/CURRENT_ROUTE',

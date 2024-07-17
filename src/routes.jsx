@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { currentColor } from './atoms/theme';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import InitialPage from './views/public/initialPage';
 import SignUpPage from './views/public/signUpPage';
 import LoginPage from './views/public/loginPage';

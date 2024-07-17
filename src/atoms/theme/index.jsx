@@ -1,7 +1,7 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 export const keys = {
-  CHANGE_COLOR: "ATOM/THEME/CHANGE_COLOR",
+  CHANGE_COLOR: 'ATOM/THEME/CHANGE_COLOR',
 };
 
 export const currentColor = atom({
