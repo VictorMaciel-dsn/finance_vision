@@ -1,4 +1,4 @@
-.p-fileupload{
+.p-fileupload {
     background: var(--theme-color-2);
     padding: 5px;
     border-radius: var(--radius);
@@ -8,7 +8,31 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    svg{
+    svg {
         margin-right: 5px;
+    }
+}
+
+.p-dropdown {
+    background: var(--footer-background);
+    padding: 5px;
+    font-size: var(--size-7);
+    border-radius: 5px;
+
+    svg {
+        margin-left: 5px;
+    }
+}
+
+.p-dropdown-panel {
+    // background: var(--footer-background);
+    // color: var(--color-text);
+    // Ajustar nos temas
+    background: #262626;
+    color: #acacac;
+    font-size: var(--size-7);
+    ul {
+        padding: 5px 15px 5px 15px;
+        margin: 0;
     }
 }

@@ -4,9 +4,9 @@ import TopNav from '../../topnav';
 function WalletPage() {
   return (
     <>
-      <div className="wallet-page">
+      <div className="reports-page">
         <TopNav />
-        <div>Carteira!</div>
+        <div>Relatórios!</div>
         <Footer />
       </div>
     </>

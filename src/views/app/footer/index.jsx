@@ -26,14 +26,14 @@ function Footer({ intl }) {
             </div>
           </Colxx>
           <Colxx xxs={2}>
-            <div className={`${currentRoute === 'wallet' ? 'active container-btn' : 'container-btn'}`}>
+            <div className={`${currentRoute === 'historic' ? 'active container-btn' : 'container-btn'}`}>
               <i
                 onClick={() => {
-                  navigate('/wallet');
+                  navigate('/historic');
                 }}
-                className="pi pi-wallet"
+                className="pi pi-arrow-right-arrow-left"
               />
-              <div className="label">{messages['message.wallet']}</div>
+              <div className="label">{messages['message.historic']}</div>
             </div>
           </Colxx>
           <Colxx xxs={2}>
@@ -47,14 +47,14 @@ function Footer({ intl }) {
             </Button>
           </Colxx>
           <Colxx xxs={2}>
-            <div className={`${currentRoute === 'historic' ? 'active container-btn' : 'container-btn'}`}>
+            <div className={`${currentRoute === 'reports' ? 'active container-btn' : 'container-btn'}`}>
               <i
                 onClick={() => {
-                  navigate('/historic');
+                  navigate('/reports');
                 }}
-                className="pi pi-chart-bar"
+                className="pi pi-chart-line"
               />
-              <div className="label">{messages['message.historic']}</div>
+              <div className="label">{messages['message.reports']}</div>
             </div>
           </Colxx>
           <Colxx xxs={3}>

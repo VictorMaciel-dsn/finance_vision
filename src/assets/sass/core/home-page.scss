@@ -1,6 +1,80 @@
-.home-page{
+.home-page {
     width: 100%;
     height: 100%;
     background: var(--color-background);
     color: var(--color-text);
+    .container-home {
+        padding-left: 20px;
+        padding-right: 20px;
+
+        .container-filter{
+            display: flex;
+            align-items: center;
+            justify-content: end;
+        }
+
+        .custom-card {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            color: var(--color-text);
+            font-size: var(--size-8);
+            background: var(--footer-background);
+            // border: 1px solid var(--color-separator);
+
+            .custom-item {
+                height: 100%;
+                padding: 10px;
+
+                I {
+                    &.positive {
+                        color: var(--theme-color-3);
+                    }
+
+                    &.negative {
+                        color: var(--color-red);
+                    }
+
+                    &.null {
+                        color: var(--theme-color-2);
+                    }
+                }
+            }
+        }
+
+        .card-credit {
+            color: var(--color-text);
+            font-size: var(--size-8);
+            background: var(--footer-background);
+            height: calc(100vh - 505px);
+            max-height: calc(100vh - 505px);
+            overflow: auto;
+
+            .card-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .custom-btn {
+                    background: rgba(204, 204, 204, 0.2705882353);
+                    padding: 5px;
+                    border-radius: 5px;
+                    font-size: var(--size-7);
+                }
+            }
+
+            .card-body {
+                .no-data {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: var(--size-7);
+
+                    i {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+    }
 }

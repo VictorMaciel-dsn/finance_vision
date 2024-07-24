@@ -23,15 +23,15 @@ function TopNav({ intl }) {
     if (currentRoute === 'historic') {
       const _msg = messages['message.historic'];
       setComponentLabel(_msg);
-      setClassIcon('pi-chart-bar');
+      setClassIcon('pi-arrow-right-arrow-left');
     } else if (currentRoute === 'home') {
       const _msg = messages['message.home'];
       setComponentLabel(_msg);
       setClassIcon('pi-home');
-    } else if (currentRoute === 'wallet') {
-      const _msg = messages['message.wallet'];
+    } else if (currentRoute === 'reports') {
+      const _msg = messages['message.reports'];
       setComponentLabel(_msg);
-      setClassIcon('pi-wallet');
+      setClassIcon('pi-chart-line');
     } else if (currentRoute === 'config') {
       const _msg = messages['message.settings'];
       setComponentLabel(_msg);
