@@ -1,3 +1,5 @@
+import { months } from '../constants/enums';
+
 export function parseJwt(token) {
   var base64Url = token.split('.')[1];
   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -18,3 +20,10 @@ export function validarEmail(email) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(String(email).toLowerCase());
 }
+
+export const getTranslatedMonths = (intl) => {
+  return months.map((month) => ({
+    ...month,
+    label: intl.formatMessage({ id: month.label }),
+  }));
+};

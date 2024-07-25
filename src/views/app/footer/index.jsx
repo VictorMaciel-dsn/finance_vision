@@ -4,14 +4,18 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { route } from '../../../atoms/route';
 import { injectIntl } from 'react-intl';
+import ModalAddInfos from '../../../components/modalAddInfos';
+import { useState } from 'react';
 
 function Footer({ intl }) {
   const { messages } = intl;
   const navigate = useNavigate();
   const currentRoute = useRecoilValue(route);
+  const [modalAddInfos, setModalAddInfos] = useState(false);
 
   return (
     <>
+      <ModalAddInfos isOpen={modalAddInfos} setIsOpen={setModalAddInfos} />
       <footer className="wow animate__animated animate__fadeIn">
         <Row>
           <Colxx xxs={3}>
@@ -37,13 +41,12 @@ function Footer({ intl }) {
             </div>
           </Colxx>
           <Colxx xxs={2}>
-            <Button>
-              <i
-                onClick={() => {
-                  alert('Add!');
-                }}
-                className="pi pi-plus"
-              />
+            <Button
+              onClick={() => {
+                setModalAddInfos(!modalAddInfos);
+              }}
+            >
+              <i className="pi pi-plus" />
             </Button>
           </Colxx>
           <Colxx xxs={2}>

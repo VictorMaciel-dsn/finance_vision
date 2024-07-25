@@ -5,24 +5,34 @@ import { Colxx } from '../../../../components/common/customBootstrap';
 import { useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { months } from '../../../../constants/enums';
+import { injectIntl } from 'react-intl';
+import { getTranslatedMonths } from '../../../../helpers/format';
+import ModalAddCard from '../../../../components/modalAddCards';
+import ModalAddAccounts from '../../../../components/modalAddAccounts';
 
-function HomePage() {
+function HomePage({ intl }) {
+  const { messages } = intl;
   const currentMonth = new Date().getMonth();
   const [selectedMonth, setSelectedMonth] = useState(months[currentMonth].value);
+  const translatedMonths = getTranslatedMonths(intl);
+  const [modalAddCards, setModalAddCards] = useState(false);
+  const [modalAddAccounts, setModalAddAccounts] = useState(false);
 
   return (
     <>
+      <ModalAddCard isOpen={modalAddCards} setIsOpen={setModalAddCards} />
+      <ModalAddAccounts isOpen={modalAddAccounts} setIsOpen={setModalAddAccounts} />
       <div className="home-page">
         <TopNav />
-        <div className="container-home">
+        <div className="container-home wow animate__animated animate__fadeIn">
           <div className="container-filter mb-2">
             <Dropdown
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.value)}
-              options={months}
+              options={translatedMonths}
               optionLabel="label"
               optionValue="value"
-              placeholder="Selecione um mês"
+              placeholder={messages['message.selectMonth']}
               appendTo={document.getElementsByClassName('main')[0]}
             />
           </div>
@@ -33,7 +43,7 @@ function HomePage() {
                   <i className="positive pi pi-money-bill" />
                 </div>
                 <div>
-                  <div>Saldo total</div>
+                  <div>{messages['message.totalBalance']}</div>
                   <strong>R$ 10.000,00</strong>
                 </div>
               </Card>
@@ -46,7 +56,7 @@ function HomePage() {
                   <i className="positive pi pi-dollar" />
                 </div>
                 <div>
-                  <div>Entradas</div>
+                  <div>{messages['message.entries']}</div>
                   <strong>R$ 5.500,00</strong>
                 </div>
               </Card>
@@ -57,7 +67,7 @@ function HomePage() {
                   <i className="negative pi pi-dollar" />
                 </div>
                 <div>
-                  <div>A pagar</div>
+                  <div>{messages['message.payable']}</div>
                   <strong>R$ 500,00</strong>
                 </div>
               </Card>
@@ -70,7 +80,7 @@ function HomePage() {
                   <i className="null pi pi-check-circle" />
                 </div>
                 <div>
-                  <div>Investidos</div>
+                  <div>{messages['message.investees']}</div>
                   <strong>R$ 1.500,00</strong>
                 </div>
               </Card>
@@ -81,7 +91,7 @@ function HomePage() {
                   <i className="negative pi pi-check-circle" />
                 </div>
                 <div>
-                  <div>Pago</div>
+                  <div>{messages['message.paidOut']}</div>
                   <strong>R$ 2.000,00</strong>
                 </div>
               </Card>
@@ -92,20 +102,20 @@ function HomePage() {
               <Card className="card-credit">
                 <CardHeader>
                   <div>
-                    <i className="pi pi-credit-card" /> Meus <strong>cartões</strong>
+                    <i className="pi pi-credit-card" /> {messages['message.myCards']}
                   </div>
                   <div
                     className="custom-btn"
                     onClick={() => {
-                      alert('Adicionar cartão!');
+                      setModalAddCards(!modalAddCards);
                     }}
                   >
-                    <i className="pi pi-plus" /> Adicionar
+                    <i className="pi pi-plus" /> {messages['message.add']}
                   </div>
                 </CardHeader>
                 <CardBody>
                   <div className="no-data">
-                    <i className="pi pi-exclamation-circle" /> Nenhum cartão cadastrado!
+                    <i className="pi pi-exclamation-circle" /> {messages['message.noCardRegistered']}
                   </div>
                 </CardBody>
               </Card>
@@ -116,20 +126,20 @@ function HomePage() {
               <Card className="card-credit">
                 <CardHeader>
                   <div>
-                    <i className="pi pi-wallet" /> Minhas <strong>contas</strong>
+                    <i className="pi pi-wallet" /> {messages['message.myAccounts']}
                   </div>
                   <div
                     className="custom-btn"
                     onClick={() => {
-                      alert('Adicionar conta!');
+                      setModalAddAccounts(!modalAddAccounts);
                     }}
                   >
-                    <i className="pi pi-plus" /> Adicionar
+                    <i className="pi pi-plus" /> {messages['message.add']}
                   </div>
                 </CardHeader>
                 <CardBody>
                   <div className="no-data">
-                    <i className="pi pi-exclamation-circle" /> Nenhuma conta cadastrada!
+                    <i className="pi pi-exclamation-circle" /> {messages['message.noCardRegistered']}
                   </div>
                 </CardBody>
               </Card>
@@ -142,4 +152,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default injectIntl(HomePage);

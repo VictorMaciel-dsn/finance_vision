@@ -24,12 +24,9 @@
     }
 }
 
-.p-dropdown-panel {
-    // background: var(--footer-background);
-    // color: var(--color-text);
-    // Ajustar nos temas
-    background: #262626;
-    color: #acacac;
+.p-dropdown-panel, .p-dropdown-items {
+    background: var(--color-background);
+    color: var(--color-text);
     font-size: var(--size-7);
     ul {
         padding: 5px 15px 5px 15px;
