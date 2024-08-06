@@ -4,7 +4,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { useRecoilValue } from 'recoil';
 import { currentColor } from '../../atoms/theme/index';
 
-function ModalAddCard({ isOpen = false, setIsOpen = () => {}, intl }) {
+function ModalAddCard({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
   const { messages } = intl;
   const theme = useRecoilValue(currentColor);
 

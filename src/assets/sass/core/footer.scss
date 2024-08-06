@@ -29,6 +29,12 @@ footer {
                 font-weight: bold;
                 color: white;
             }
+            &:focus,
+            &:focus-visible,
+            &:hover {
+                background: var(--theme-color-3);
+                border-color: var(--theme-color-3);
+            }
         }
     }
 

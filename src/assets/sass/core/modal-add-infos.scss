@@ -1,1 +1,137 @@
-.modal-add-infos{}
+.modal-add-infos {
+    .modal-content {
+        background: var(--color-background);
+        border: 1px solid #cccccc4d;
+    }
+
+    .modal-header {
+        .modal-title {
+            font-size: var(--size-8);
+            color: var(--color-text);
+        }
+        border-bottom: 1px solid #cccccc4d;
+    }
+
+    .modal-body {
+        color: var(--color-text);
+
+        .card {
+            margin-left: 10px;
+            margin-right: 10px;
+            background: var(--footer-background);
+            color: var(--color-text);
+            padding: 10px;
+            margin: 10px;
+            font-size: var(--size-9);
+            border: 1px solid var(--color-separator);
+
+            .container {
+                display: flex;
+                margin: 0;
+                padding: 0;
+                align-items: center;
+                justify-content: space-between;
+                .label-container {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .background-icon-custom {
+                    color: var(--color-primary);
+                    padding: 5px;
+                    border-radius: 50%;
+                    height: 2rem;
+                    width: 2rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    &.first {
+                        margin-right: 5px;
+                    }
+
+                    i {
+                        &.positive {
+                            color: var(--theme-color-3);
+                        }
+
+                        &.negative {
+                            color: var(--color-red);
+                        }
+
+                        &.null {
+                            color: var(--theme-color-2);
+                        }
+                    }
+                }
+
+                .background-icon {
+                    background: #cccccc45;
+                    color: var(--color-primary);
+                    padding: 5px;
+                    border-radius: 50%;
+                    height: 2rem;
+                    width: 2rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    &.first {
+                        margin-right: 5px;
+                    }
+
+                    i {
+                        &.positive {
+                            color: var(--theme-color-3);
+                        }
+
+                        &.negative {
+                            color: var(--color-red);
+                        }
+
+                        &.null {
+                            color: var(--theme-color-2);
+                        }
+                    }
+                }
+
+                .btn-send {
+                    background: #cccccc45;
+                    border: 0;
+                    color: var(--color-primary);
+                    padding: 5px;
+                    border-radius: 50%;
+                    height: 2rem;
+                    width: 2rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .input-form {
+                    font-size: var(--size-9);
+                }
+            }
+
+            &.active {
+                border: 1px solid var(--theme-color-2);
+            }
+        }
+    }
+
+    .modal-footer {
+        border-top: 1px solid #cccccc4d;
+        .close-btn {
+            background: var(--color-red);
+            border-color: var(--color-red);
+            font-size: var(--size-7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            i {
+                margin-right: 5px;
+            }
+        }
+    }
+}

@@ -81,4 +81,12 @@ export default {
   'message.add': 'Adicionar',
   'message.noCardRegistered': 'Nenhum cartão cadastrado!',
   'message.myAccounts': 'Minhas contas',
+
+  // Modal adicionar informações
+
+  'message.whatValueToAdd': 'Qual valor você quer adicionar?',
+  'message.investments': 'Investimentos',
+  'message.payments': 'Pagamentos',
+  'message.enterTheValue': 'Insira o valor',
+  'message.close': 'Fechar',
 };

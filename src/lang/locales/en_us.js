@@ -81,4 +81,12 @@ export default {
   'message.add': 'Add',
   'message.noCardRegistered': 'No card registered!',
   'message.myAccounts': 'My Accounts',
+
+  // Modal add information
+
+  'message.whatValueToAdd': 'What value do you want to add?',
+  'message.investments': 'Investments',
+  'message.payments': 'Payments',
+  'message.enterTheValue': 'Enter the value',
+  'message.close': 'Close',
 };
