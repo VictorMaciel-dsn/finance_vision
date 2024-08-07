@@ -73,3 +73,43 @@ export const setCurrentTheme = (locale) => {
     console.log('>>>>: src/helpers/Utils.js : setCurrentTheme -> error', error);
   }
 };
+
+export const selectedBankTemplate = (option, props) => {
+  if (option) {
+    return (
+      <div className="d-flex align-items-center">
+        <img
+          alt={option.name}
+          src={option.img}
+          className={`mr-2 flag flag-${option.code.toLowerCase()}`}
+          style={{ width: '25px' }}
+        />
+        <div>{option.name}</div>
+      </div>
+    );
+  }
+
+  return <span>{props.placeholder}</span>;
+};
+
+export const bankOptionTemplate = (option) => {
+  return (
+    <div className="d-flex align-items-center">
+      <img
+        alt={option.name}
+        src={option.img}
+        className={`mr-2 flag flag-${option.code.toLowerCase()}`}
+        style={{ width: '25px' }}
+      />
+      <div>{option.name}</div>
+    </div>
+  );
+};
+
+export const createDaysOptions = () => {
+  const days = [];
+  for (let i = 1; i <= 31; i++) {
+    days.push({ value: i, label: i.toString() });
+  }
+  return days;
+};

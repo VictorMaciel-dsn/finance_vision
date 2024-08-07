@@ -29,6 +29,7 @@ function HomePage({ intl }) {
         <div className="container-home wow animate__animated animate__fadeIn">
           <div className="container-filter mb-2">
             <Dropdown
+              emptyMessage={messages['message.notData']}
               value={selectedMonth}
               onChange={(e) => setSelectedMonth(e.value)}
               options={translatedMonths}

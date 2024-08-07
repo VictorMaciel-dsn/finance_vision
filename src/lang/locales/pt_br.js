@@ -104,4 +104,14 @@ export default {
   'message.selectAccountIcon': 'Selecione o ícone da conta',
   'message.titleAccount': 'Título da conta, Ex: "Nubank"',
   'message.balanceAccount': 'Saldo da conta, Ex: "100,00"',
+
+  // Modal criar cartões
+  'message.notData': 'Nenhum dado disponível',
+  'message.createCard': 'Criar novo cartão',
+  'message.paymentAccount': 'Conta de pagamento',
+  'message.cardIcon': 'Ícone do cartão',
+  'message.cardName': 'Nome do cartão',
+  'message.totalLimit': 'Limite total',
+  'message.closingDay': 'Fecha dia',
+  'message.dueDate': 'Vence dia',
 };

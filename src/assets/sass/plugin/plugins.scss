@@ -15,9 +15,10 @@
 
 .p-dropdown {
     background: var(--footer-background);
-    padding: 5px;
+    border: 1px solid var(--color-separator);
+    padding: 10px;
     font-size: var(--size-7);
-    border-radius: 5px;
+    border-radius: var(--radius);
 
     svg {
         margin-left: 5px;

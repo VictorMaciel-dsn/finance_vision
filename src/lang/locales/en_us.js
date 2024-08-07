@@ -104,4 +104,14 @@ export default {
   'message.selectAccountIcon': 'Select Account Icon',
   'message.titleAccount': 'Account Title, Ex: "Nubank"',
   'message.balanceAccount': 'Account Balance, Ex: "100.00"',
+
+  // Modal to create cards
+  'message.notData': 'No data available',
+  'message.createCard': 'Create new card',
+  'message.paymentAccount': 'Payment account',
+  'message.cardIcon': 'Card icon',
+  'message.cardName': 'Card name',
+  'message.totalLimit': 'Total limit',
+  'message.closingDay': 'Closes day',
+  'message.dueDate': 'Expires day',
 };

@@ -7,7 +7,7 @@
         padding-left: 20px;
         padding-right: 20px;
 
-        .container-filter{
+        .container-filter {
             display: flex;
             align-items: center;
             justify-content: end;
@@ -20,7 +20,6 @@
             color: var(--color-text);
             font-size: var(--size-8);
             background: var(--footer-background);
-            // border: 1px solid var(--color-separator);
 
             .custom-item {
                 height: 100%;
@@ -46,8 +45,8 @@
             color: var(--color-text);
             font-size: var(--size-8);
             background: var(--footer-background);
-            height: calc(100vh - 505px);
-            max-height: calc(100vh - 505px);
+            height: calc(100vh - 550px);
+            max-height: calc(100vh - 550px);
             overflow: auto;
 
             .card-header {

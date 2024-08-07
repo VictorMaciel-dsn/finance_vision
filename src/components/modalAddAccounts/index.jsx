@@ -10,6 +10,7 @@ import { ChevronUpIcon } from 'primereact/icons/chevronup';
 import { getTranslatedBanks } from '../../helpers/format';
 import { InputText } from 'primereact/inputtext';
 import { useIonToast } from '@ionic/react';
+import { bankOptionTemplate, selectedBankTemplate } from '../../helpers/utils';
 
 function ModalAddAccounts({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
   const { messages } = intl;
@@ -19,38 +20,6 @@ function ModalAddAccounts({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
   const [titleAccount, setTitleAccount] = useState('');
   const [balanceAccount, setBalanceAccount] = useState('');
   const [toast] = useIonToast();
-
-  const selectedBankTemplate = (option, props) => {
-    if (option) {
-      return (
-        <div className="d-flex align-items-center">
-          <img
-            alt={option.name}
-            src={option.img}
-            className={`mr-2 flag flag-${option.code.toLowerCase()}`}
-            style={{ width: '25px' }}
-          />
-          <div>{option.name}</div>
-        </div>
-      );
-    }
-
-    return <span>{props.placeholder}</span>;
-  };
-
-  const bankOptionTemplate = (option) => {
-    return (
-      <div className="d-flex align-items-center">
-        <img
-          alt={option.name}
-          src={option.img}
-          className={`mr-2 flag flag-${option.code.toLowerCase()}`}
-          style={{ width: '25px' }}
-        />
-        <div>{option.name}</div>
-      </div>
-    );
-  };
 
   function onSubmitForm(e) {
     e.preventDefault();
@@ -86,6 +55,7 @@ function ModalAddAccounts({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
           <Row className="mb-2">
             <Colxx xxs={12}>
               <Dropdown
+                emptyMessage={messages['message.notData']}
                 appendTo={document.getElementsByClassName('main')[0]}
                 value={selectedBank}
                 onChange={(e) => setSelectedBank(e.value)}
