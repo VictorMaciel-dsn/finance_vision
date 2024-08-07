@@ -1,7 +1,7 @@
 import { Button, Row } from 'reactstrap';
 import { Colxx } from '../../../components/common/customBootstrap';
 import { InputText } from 'primereact/inputtext';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../services';
@@ -19,6 +19,17 @@ function SignUpPage({ intl }) {
   const [openEyeConfirm, setOpenEyeConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [toast] = useIonToast();
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   function submitForm(e) {
     e.preventDefault();
@@ -100,6 +111,7 @@ function SignUpPage({ intl }) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                ref={inputRef}
               />
             </Colxx>
           </Row>
