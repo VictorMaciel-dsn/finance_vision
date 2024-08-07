@@ -89,4 +89,19 @@ export default {
   'message.payments': 'Payments',
   'message.enterTheValue': 'Enter the value',
   'message.close': 'Close',
+
+  // Create accounts modal
+
+  'message.bankOfBrazil': 'Bank of Brazil',
+  'message.itau': 'Itau',
+  'message.bradesco': 'Bradesco',
+  'message.nubank': 'Nubank',
+  'message.c6bank': 'C6 Bank',
+  'message.caixa': 'Caixa',
+  'message.inter': 'Inter',
+  'message.alelo': 'Alelo',
+  'message.sodexo': 'Sodexo',
+  'message.selectAccountIcon': 'Select Account Icon',
+  'message.titleAccount': 'Account Title, Ex: "Nubank"',
+  'message.balanceAccount': 'Account Balance, Ex: "100.00"',
 };

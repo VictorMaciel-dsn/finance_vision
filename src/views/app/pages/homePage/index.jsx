@@ -9,6 +9,8 @@ import { injectIntl } from 'react-intl';
 import { getTranslatedMonths } from '../../../../helpers/format';
 import ModalAddCard from '../../../../components/modalAddCards';
 import ModalAddAccounts from '../../../../components/modalAddAccounts';
+import { ChevronDownIcon } from 'primereact/icons/chevrondown';
+import { ChevronUpIcon } from 'primereact/icons/chevronup';
 
 function HomePage({ intl }) {
   const { messages } = intl;
@@ -34,6 +36,13 @@ function HomePage({ intl }) {
               optionValue="value"
               placeholder={messages['message.selectMonth']}
               appendTo={document.getElementsByClassName('main')[0]}
+              dropdownIcon={(opts) => {
+                return opts.iconProps['data-pr-overlay-visible'] ? (
+                  <ChevronUpIcon {...opts.iconProps} />
+                ) : (
+                  <ChevronDownIcon {...opts.iconProps} />
+                );
+              }}
             />
           </div>
           <Row className="mb-2">

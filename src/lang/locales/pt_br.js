@@ -89,4 +89,19 @@ export default {
   'message.payments': 'Pagamentos',
   'message.enterTheValue': 'Insira o valor',
   'message.close': 'Fechar',
+
+  // Modal criar contas
+
+  'message.bankOfBrazil': 'Banco do Brasil',
+  'message.itau': 'Itaú',
+  'message.bradesco': 'Bradesco',
+  'message.nubank': 'Nubank',
+  'message.c6bank': 'C6 Bank',
+  'message.caixa': 'Caixa',
+  'message.inter': 'Inter',
+  'message.alelo': 'Alelo',
+  'message.sodexo': 'Sodexo',
+  'message.selectAccountIcon': 'Selecione o ícone da conta',
+  'message.titleAccount': 'Título da conta, Ex: "Nubank"',
+  'message.balanceAccount': 'Saldo da conta, Ex: "100,00"',
 };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, FormGroup, Input, Label, Row } from 'reactstrap';
 import { Colxx } from '../../../components/common/customBootstrap';
@@ -22,6 +22,17 @@ function LoginPage({ intl }) {
   const [isLoading, setIsLoading] = useState(false);
   const [toast] = useIonToast();
   const [keepSession, setKeepSession] = useState(true);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   function submitForm(e) {
     e.preventDefault();
@@ -87,6 +98,7 @@ function LoginPage({ intl }) {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                ref={inputRef}
               />
             </Colxx>
           </Row>

@@ -1,4 +1,4 @@
-import { months } from '../constants/enums';
+import { banks, months } from '../constants/enums';
 
 export function parseJwt(token) {
   var base64Url = token.split('.')[1];
@@ -25,5 +25,12 @@ export const getTranslatedMonths = (intl) => {
   return months.map((month) => ({
     ...month,
     label: intl.formatMessage({ id: month.label }),
+  }));
+};
+
+export const getTranslatedBanks = (intl) => {
+  return banks.map((bank) => ({
+    ...bank,
+    name: intl.formatMessage({ id: bank.name }),
   }));
 };

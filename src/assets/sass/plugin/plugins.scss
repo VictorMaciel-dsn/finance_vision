@@ -24,12 +24,24 @@
     }
 }
 
-.p-dropdown-panel, .p-dropdown-items {
+.p-dropdown-panel,
+.p-dropdown-items {
     background: var(--color-background);
+    z-index: 99999 !important;
     color: var(--color-text);
     font-size: var(--size-7);
     ul {
         padding: 5px 15px 5px 15px;
         margin: 0;
     }
+}
+
+.p-dropdown-item-label {
+    img {
+        margin-right: 5px;
+    }
+}
+
+.p-dropdown-item {
+    margin-bottom: 5px;
 }
