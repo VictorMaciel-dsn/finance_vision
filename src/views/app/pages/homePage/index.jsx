@@ -11,6 +11,7 @@ import ModalAddCard from '../../../../components/modalAddCards';
 import ModalAddAccounts from '../../../../components/modalAddAccounts';
 import { ChevronDownIcon } from 'primereact/icons/chevrondown';
 import { ChevronUpIcon } from 'primereact/icons/chevronup';
+import { InputText } from 'primereact/inputtext';
 
 function HomePage({ intl }) {
   const { messages } = intl;
@@ -19,6 +20,7 @@ function HomePage({ intl }) {
   const translatedMonths = getTranslatedMonths(intl);
   const [modalAddCards, setModalAddCards] = useState(false);
   const [modalAddAccounts, setModalAddAccounts] = useState(false);
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
   return (
     <>
@@ -28,6 +30,18 @@ function HomePage({ intl }) {
         <TopNav />
         <div className="container-home wow animate__animated animate__fadeIn">
           <div className="container-filter mb-2">
+            <InputText
+              className="input-form"
+              placeholder="Ano"
+              type="number"
+              value={currentYear}
+              onChange={(e) => {
+                const _val = e.target.value;
+                if (_val.length <= 4) {
+                  setCurrentYear(_val);
+                }
+              }}
+            />
             <Dropdown
               emptyMessage={messages['message.notData']}
               value={selectedMonth}

@@ -55,7 +55,7 @@ function Footer({ intl }) {
                 onClick={() => {
                   navigate('/reports');
                 }}
-                className="pi pi-chart-line"
+                className="pi pi-chart-pie"
               />
               <div className="label">{messages['message.reports']}</div>
             </div>

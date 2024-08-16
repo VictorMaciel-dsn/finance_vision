@@ -9,6 +9,13 @@
         align-items: center;
         justify-content: end;
         padding-right: 10px;
+        .input-form{
+            padding: 5px;
+            font-size: var(--size-7);
+            margin-right: 5px;
+            width: 45px;
+            color: var(--color-text);
+        }
     }
 
     .total-balance {
@@ -27,8 +34,8 @@
     }
 
     .container-historic {
-        min-height: calc(100vh - 230px);
-        max-height: calc(100vh - 230px);
+        min-height: calc(100vh - 225px);
+        max-height: calc(100vh - 225px);
         overflow: auto;
 
         .card {

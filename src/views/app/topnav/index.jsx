@@ -7,6 +7,7 @@ import { currentLanguage } from '../../../atoms/lang';
 import { get, getDatabase, ref } from 'firebase/database';
 import defaultProfileImage from '../../../assets/img/profile-image.jpg';
 import { updateImageUser } from '../../../atoms/user';
+import PanelNotify from '../../../components/panelNotify';
 
 function TopNav({ intl }) {
   const { messages } = intl;
@@ -18,6 +19,8 @@ function TopNav({ intl }) {
   const [profileImage, setProfileImage] = useState('');
   const isFirst = useRef(true);
   const isUpdateImage = useRecoilValue(updateImageUser);
+  const [isNotify, setIsNotify] = useState(false);
+  const opNotify = useRef(null);
 
   useEffect(() => {
     if (currentRoute === 'historic') {
@@ -31,7 +34,7 @@ function TopNav({ intl }) {
     } else if (currentRoute === 'reports') {
       const _msg = messages['message.reports'];
       setComponentLabel(_msg);
-      setClassIcon('pi-chart-line');
+      setClassIcon('pi-chart-pie');
     } else if (currentRoute === 'config') {
       const _msg = messages['message.settings'];
       setComponentLabel(_msg);
@@ -81,15 +84,26 @@ function TopNav({ intl }) {
 
   return (
     <>
+      <PanelNotify op={opNotify} />
       <div className="container-topnav wow animate__animated animate__fadeIn">
         <div className="label">
-          <div className="user-label">{greetingsLabel} Victor!</div>
+          <div className="user-label">
+            {greetingsLabel} Victor! {/* Nome do usuário logado */}
+          </div>
           <div className="icon-label">
             <i className={`pi ${classIcon}`} /> <h3>{componentLabel}</h3>
           </div>
         </div>
-        <div>
+        <div className="container-user">
           <Avatar image={profileImage ? profileImage : defaultProfileImage} size="xlarge" shape="circle" />
+          <div className="background-notify">
+            <i
+              className={`pi pi-bell ${isNotify ? 'active' : ''}`}
+              onClick={(e) => {
+                opNotify.current.toggle(e);
+              }}
+            />
+          </div>
         </div>
       </div>
     </>

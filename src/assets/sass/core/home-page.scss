@@ -11,6 +11,13 @@
             display: flex;
             align-items: center;
             justify-content: end;
+            .input-form{
+                padding: 5px;
+                font-size: var(--size-7);
+                margin-right: 5px;
+                width: 45px;
+                color: var(--color-text);
+            }
         }
 
         .custom-card {

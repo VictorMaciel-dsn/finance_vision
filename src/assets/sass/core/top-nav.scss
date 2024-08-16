@@ -24,8 +24,34 @@
         }
     }
 
-    .p-avatar {
-        width: 2rem;
-        height: 2rem;
+    .container-user {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .background-notify {
+            background: var(--footer-background);
+            color: var(--color-primary);
+            padding: 5px;
+            border-radius: 50%;
+            height: 2rem;
+            width: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            i {
+                font-size: var(--size-9);
+                color: var(--color-text);
+                &.active {
+                    color: var(--theme-color-1);
+                }
+            }
+        }
+
+        .p-avatar {
+            width: 2rem;
+            height: 2rem;
+        }
     }
 }

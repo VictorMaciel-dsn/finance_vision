@@ -3,4 +3,18 @@
     height: 100%;
     background: var(--color-background);
     color: var(--color-text);
+
+    .container-filter {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        padding-right: 10px;
+        .input-form{
+            padding: 5px;
+            font-size: var(--size-7);
+            margin-right: 5px;
+            width: 45px;
+            color: var(--color-text);
+        }
+    }
 }
