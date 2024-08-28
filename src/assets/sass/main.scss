@@ -31,7 +31,7 @@ body,
 .input-form {
     background-color: var(--color-background);
     padding: 10px;
-    font-size: var(--size-1);
+    font-size: var(--size-7);
     border: 1px solid var(--color-separator);
     color: var(--color-primary);
     border-radius: var(--radius);
@@ -74,6 +74,7 @@ body,
 
 .form-check-label {
     margin-left: 5px;
+    font-size: var(--size-7);
 }
 
 .form-check {

@@ -7,7 +7,7 @@
 
     .label {
         .user-label {
-            font-size: var(--size-8);
+            font-size: var(--size-7);
         }
         .icon-label {
             display: flex;
@@ -41,7 +41,7 @@
             justify-content: center;
             margin-left: 10px;
             i {
-                font-size: var(--size-9);
+                font-size: var(--size-7);
                 color: var(--color-text);
                 &.active {
                     color: var(--theme-color-1);

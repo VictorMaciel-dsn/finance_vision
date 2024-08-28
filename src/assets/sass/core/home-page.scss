@@ -25,7 +25,7 @@
             flex-direction: row;
             align-items: center;
             color: var(--color-text);
-            font-size: var(--size-8);
+            font-size: var(--size-7);
             background: var(--footer-background);
 
             .custom-item {
@@ -50,7 +50,7 @@
 
         .card-credit {
             color: var(--color-text);
-            font-size: var(--size-8);
+            font-size: var(--size-7);
             background: var(--footer-background);
             height: calc(100vh - 550px);
             max-height: calc(100vh - 550px);

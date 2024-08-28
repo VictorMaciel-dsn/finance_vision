@@ -34,6 +34,7 @@ function InfoSection({
               <div className="label-container">
                 <InputText
                   required
+                  type="number"
                   className="input-form w-100"
                   placeholder={placeholderText}
                   value={value}

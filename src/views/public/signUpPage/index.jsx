@@ -8,6 +8,7 @@ import { auth } from '../../../services';
 import { useIonToast } from '@ionic/react';
 import LoadingComponent from '../../../components/loading';
 import { injectIntl } from 'react-intl';
+import { getDatabase, push, ref, set } from 'firebase/database';
 
 function SignUpPage({ intl }) {
   const { messages } = intl;
@@ -20,6 +21,7 @@ function SignUpPage({ intl }) {
   const [isLoading, setIsLoading] = useState(false);
   const [toast] = useIonToast();
   const inputRef = useRef(null);
+  const [newUser, setNewUser] = useState('');
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -30,6 +32,12 @@ function SignUpPage({ intl }) {
 
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (newUser) {
+      saveUser(newUser);
+    }
+  }, [newUser]);
 
   function submitForm(e) {
     e.preventDefault();
@@ -45,7 +53,8 @@ function SignUpPage({ intl }) {
       setIsLoading(true);
 
       createUserWithEmailAndPassword(auth, email, passwordConfirm)
-        .then(() => {
+        .then((res) => {
+          setNewUser(res.user.uid);
           setTimeout(() => {
             toast({
               message: messages['message.userCreatedSuccess'],
@@ -81,6 +90,21 @@ function SignUpPage({ intl }) {
     setPasswordConfirm('');
     setOpenEye(false);
     setOpenEyeConfirm(false);
+  }
+
+  function saveUser(idUser) {
+    const db = getDatabase();
+    const userRef = ref(db, `users/${idUser}`);
+
+    set(userRef, '')
+      .then(() => {
+        console.log('Usuário salvo com sucesso!');
+        setNewUser('');
+      })
+      .catch((error) => {
+        console.log('Erro ao salvar usuário!', error);
+        setNewUser('');
+      });
   }
 
   return (

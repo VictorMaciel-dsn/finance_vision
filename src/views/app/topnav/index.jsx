@@ -6,8 +6,10 @@ import { injectIntl } from 'react-intl';
 import { currentLanguage } from '../../../atoms/lang';
 import { get, getDatabase, ref } from 'firebase/database';
 import defaultProfileImage from '../../../assets/img/profile-image.jpg';
-import { updateImageUser } from '../../../atoms/user';
+import { tokenUser, updateImageUser } from '../../../atoms/user';
 import PanelNotify from '../../../components/panelNotify';
+import { parseJwt } from '../../../helpers/format';
+import { getCurrentUser } from '../../../helpers/utils';
 
 function TopNav({ intl }) {
   const { messages } = intl;
@@ -21,6 +23,8 @@ function TopNav({ intl }) {
   const isUpdateImage = useRecoilValue(updateImageUser);
   const [isNotify, setIsNotify] = useState(false);
   const opNotify = useRef(null);
+  const _userToken = getCurrentUser();
+  const userToken = useRecoilValue(tokenUser);
 
   useEffect(() => {
     if (currentRoute === 'historic') {
@@ -72,13 +76,17 @@ function TopNav({ intl }) {
 
   async function getImage() {
     const db = getDatabase();
-    const dataRef = ref(db, 'images');
+    const user = userToken || _userToken;
+    const userId = parseJwt(user).user_id;
 
-    try {
-      const res = await get(dataRef);
-      return res.val();
-    } catch {
-      return null;
+    if (userId) {
+      const dataRef = ref(db, `users/${userId}/image`);
+      try {
+        const res = await get(dataRef);
+        return res.val();
+      } catch {
+        return null;
+      }
     }
   }
 

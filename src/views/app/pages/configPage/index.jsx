@@ -87,7 +87,7 @@ function ConfigPage({ intl }) {
     if (isFirst.current || isUpdateImage) {
       getImage()
         .then((res) => {
-          if (res !== null) {
+          if (res) {
             setProfileImage(res.img);
             setInitialNameImage(res.imgName);
           }
@@ -169,48 +169,57 @@ function ConfigPage({ intl }) {
 
   function onSave(img) {
     const db = getDatabase();
-    const dataRef = ref(db, 'images');
-    const imagePath = `files/${initialNameImage}`;
-    const refItem = FireBaseStorage.ref(storage, imagePath);
+    const user = userToken || _userToken;
+    const userId = parseJwt(user).user_id;
 
-    let payload = {
-      img: img,
-      imgName: nameImg,
-    };
+    if (userId) {
+      const dataRef = ref(db, `users/${userId}/image`);
+      const imagePath = `files/${initialNameImage}`;
+      const refItem = FireBaseStorage.ref(storage, imagePath);
 
-    set(dataRef, payload)
-      .then(() => {
-        setImg('');
-        setNameImg('');
-        setIsChangeImage(false);
-        setIsLoading(false);
-        FireBaseStorage.deleteObject(refItem);
-        setIsUpdateImage(true);
-        toast({
-          message: messages['message.imageSavedSuccess'],
-          duration: 2000,
-          position: 'bottom',
+      let payload = {
+        img: img,
+        imgName: nameImg,
+      };
+
+      set(dataRef, payload)
+        .then(() => {
+          setImg('');
+          setNameImg('');
+          setIsChangeImage(false);
+          setIsLoading(false);
+          FireBaseStorage.deleteObject(refItem);
+          setIsUpdateImage(true);
+          toast({
+            message: messages['message.imageSavedSuccess'],
+            duration: 2000,
+            position: 'bottom',
+          });
+        })
+        .catch(() => {
+          setIsLoading(false);
+          toast({
+            message: messages['message.imageSavedError'],
+            duration: 2000,
+            position: 'bottom',
+          });
         });
-      })
-      .catch(() => {
-        setIsLoading(false);
-        toast({
-          message: messages['message.imageSavedError'],
-          duration: 2000,
-          position: 'bottom',
-        });
-      });
+    }
   }
 
   async function getImage() {
     const db = getDatabase();
-    const dataRef = ref(db, 'images');
+    const user = userToken || _userToken;
+    const userId = parseJwt(user).user_id;
 
-    try {
-      const res = await get(dataRef);
-      return res.val();
-    } catch {
-      return null;
+    if (userId) {
+      const dataRef = ref(db, `users/${userId}/image`);
+      try {
+        const res = await get(dataRef);
+        return res.val();
+      } catch {
+        return null;
+      }
     }
   }
 
