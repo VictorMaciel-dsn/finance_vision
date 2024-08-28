@@ -2,16 +2,21 @@ import { Card, CardBody, CardHeader, Row } from 'reactstrap';
 import Footer from '../../footer';
 import TopNav from '../../topnav';
 import { Colxx } from '../../../../components/common/customBootstrap';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { months } from '../../../../constants/enums';
 import { injectIntl } from 'react-intl';
-import { getTranslatedMonths } from '../../../../helpers/format';
+import { getTranslatedMonths, parseJwt } from '../../../../helpers/format';
 import ModalAddCard from '../../../../components/modalAddCards';
 import ModalAddAccounts from '../../../../components/modalAddAccounts';
 import { ChevronDownIcon } from 'primereact/icons/chevrondown';
 import { ChevronUpIcon } from 'primereact/icons/chevronup';
 import { InputText } from 'primereact/inputtext';
+import { get, getDatabase, ref } from 'firebase/database';
+import { getCurrentUser } from '../../../../helpers/utils';
+import { useRecoilValue } from 'recoil';
+import { tokenUser } from '../../../../atoms/user';
+import LoadingComponent from '../../../../components/loading';
 
 function HomePage({ intl }) {
   const { messages } = intl;
@@ -21,9 +26,67 @@ function HomePage({ intl }) {
   const [modalAddCards, setModalAddCards] = useState(false);
   const [modalAddAccounts, setModalAddAccounts] = useState(false);
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const isFirst = useRef(true);
+  const _userToken = getCurrentUser();
+  const userToken = useRecoilValue(tokenUser);
+  const [totalBalance, setTotalBalance] = useState(0);
+  const [entriesTotal, setEntriesTotal] = useState(0);
+  const [payableTotal, setPayableTotal] = useState(0);
+  const [investedTotal, setInvestedTotal] = useState(0);
+  const [paymentsTotal, setPaymentsTotal] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isFirst.current) return;
+    setIsLoading(true);
+
+    const calculateTotal = (data) => {
+      return Object.values(data || {}).reduce((acc, item) => acc + parseFloat(item.value), 0);
+    };
+
+    const updateTotals = (res) => {
+      delete res.image;
+      const { entries = {}, invested = {}, payable = {}, payments = {} } = res;
+
+      setTotalBalance(calculateTotal(entries) + calculateTotal(invested));
+      setEntriesTotal(calculateTotal(entries));
+      setInvestedTotal(calculateTotal(invested));
+      setPayableTotal(calculateTotal(payable));
+      setPaymentsTotal(calculateTotal(payments));
+    };
+
+    getInfos()
+      .then((res) => {
+        res && updateTotals(res);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        console.error('Erro ao obter as informações:', error);
+      });
+
+    isFirst.current = false;
+  }, []);
+
+  async function getInfos() {
+    const db = getDatabase();
+    const user = userToken || _userToken;
+    const userId = parseJwt(user).user_id;
+
+    if (userId) {
+      const dataRef = ref(db, `users/${userId}`);
+      try {
+        const res = await get(dataRef);
+        return res.val();
+      } catch {
+        return null;
+      }
+    }
+  }
 
   return (
     <>
+      <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
       <ModalAddCard isOpen={modalAddCards} setIsOpen={setModalAddCards} />
       <ModalAddAccounts isOpen={modalAddAccounts} setIsOpen={setModalAddAccounts} />
       <div className="home-page">
@@ -68,7 +131,7 @@ function HomePage({ intl }) {
                 </div>
                 <div>
                   <div>{messages['message.totalBalance']}</div>
-                  <strong>R$ 10.000,00</strong>
+                  <strong>R$ {totalBalance.toFixed(2)}</strong>
                 </div>
               </Card>
             </Colxx>
@@ -81,7 +144,7 @@ function HomePage({ intl }) {
                 </div>
                 <div>
                   <div>{messages['message.entries']}</div>
-                  <strong>R$ 5.500,00</strong>
+                  <strong>R$ {entriesTotal.toFixed(2)}</strong>
                 </div>
               </Card>
             </Colxx>
@@ -92,7 +155,7 @@ function HomePage({ intl }) {
                 </div>
                 <div>
                   <div>{messages['message.payable']}</div>
-                  <strong>R$ 500,00</strong>
+                  <strong>R$ {payableTotal.toFixed(2)}</strong>
                 </div>
               </Card>
             </Colxx>
@@ -105,7 +168,7 @@ function HomePage({ intl }) {
                 </div>
                 <div>
                   <div>{messages['message.investees']}</div>
-                  <strong>R$ 1.500,00</strong>
+                  <strong>R$ {investedTotal.toFixed(2)}</strong>
                 </div>
               </Card>
             </Colxx>
@@ -116,7 +179,7 @@ function HomePage({ intl }) {
                 </div>
                 <div>
                   <div>{messages['message.paidOut']}</div>
-                  <strong>R$ 2.000,00</strong>
+                  <strong>R$ {paymentsTotal.toFixed(2)}</strong>
                 </div>
               </Card>
             </Colxx>

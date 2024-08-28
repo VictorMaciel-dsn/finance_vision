@@ -2,14 +2,19 @@ import { Button, Row } from 'reactstrap';
 import Footer from '../../footer';
 import TopNav from '../../topnav';
 import { Colxx } from '../../../../components/common/customBootstrap';
-import { _dataHistoric, months } from '../../../../constants/enums';
+import { months } from '../../../../constants/enums';
 import { injectIntl } from 'react-intl';
-import { getTranslatedMonths } from '../../../../helpers/format';
+import { getTranslatedMonths, parseJwt } from '../../../../helpers/format';
 import { Dropdown } from 'primereact/dropdown';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronUpIcon } from 'primereact/icons/chevronup';
 import { ChevronDownIcon } from 'primereact/icons/chevrondown';
 import { InputText } from 'primereact/inputtext';
+import { getCurrentUser } from '../../../../helpers/utils';
+import { useRecoilValue } from 'recoil';
+import { tokenUser } from '../../../../atoms/user';
+import { get, getDatabase, ref } from 'firebase/database';
+import LoadingComponent from '../../../../components/loading';
 
 function HistoricPage({ intl }) {
   const { messages } = intl;
@@ -17,9 +22,73 @@ function HistoricPage({ intl }) {
   const [selectedMonth, setSelectedMonth] = useState(months[currentMonth].value);
   const translatedMonths = getTranslatedMonths(intl);
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const isFirst = useRef(true);
+  const _userToken = getCurrentUser();
+  const userToken = useRecoilValue(tokenUser);
+  const [list, setList] = useState([]);
+  const [totalExits, setTotalExits] = useState(0);
+  const [totalEntries, setTotalEntries] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (isFirst.current) {
+      setIsLoading(true);
+
+      getInfos()
+        .then((res) => {
+          if (res) {
+            setIsLoading(false);
+            delete res.image;
+            const _data = res;
+            const _dataFormated = [];
+            let entries = 0;
+            let exits = 0;
+
+            const formatValues = (items, label, updateTotal) => {
+              Object.values(items).forEach((item) => {
+                updateTotal(parseFloat(item.value));
+                _dataFormated.push({ ...item, label });
+              });
+            };
+
+            formatValues(_data.entries, 'Entradas', (value) => (entries += value));
+            formatValues(_data.invested, 'Investimentos', (value) => (entries += value));
+            formatValues(_data.payable, 'A pagar', (value) => (exits += value));
+            formatValues(_data.payments, 'Pagamentos', (value) => (exits += value));
+
+            setTotalExits(exits);
+            setTotalEntries(entries);
+            setList(_dataFormated);
+          }
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          console.error('Erro ao obter as informações:', error);
+        });
+
+      isFirst.current = false;
+    }
+  }, []);
+
+  async function getInfos() {
+    const db = getDatabase();
+    const user = userToken || _userToken;
+    const userId = parseJwt(user).user_id;
+
+    if (userId) {
+      const dataRef = ref(db, `users/${userId}`);
+      try {
+        const res = await get(dataRef);
+        return res.val();
+      } catch {
+        return null;
+      }
+    }
+  }
 
   return (
     <>
+      <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
       <div className="historic-page">
         <TopNav />
         <div className="wow animate__animated animate__fadeIn">
@@ -56,50 +125,51 @@ function HistoricPage({ intl }) {
           </div>
           <Row className="total-balance">
             <Colxx xxs={6}>
-              Entradas: <span className="positive">R$ 2.000,00</span>
+              Entradas: <span className="positive">R$ {totalEntries.toFixed(2)}</span>
             </Colxx>
             <Colxx xxs={6}>
-              Saídas: <span className="negative">R$ 850,00</span>
+              Saídas: <span className="negative">R$ {totalExits.toFixed(2)}</span>
             </Colxx>
           </Row>
           <div className="container-historic">
-            {_dataHistoric.map((item) => (
-              <div key={item.id} className="card">
-                <Row>
-                  <Colxx xxs={8}>
-                    <div>
-                      <b>Tipo:</b> {item.label}
-                    </div>
-                    <div>
-                      <b>Valor:</b> {item.value}
-                    </div>
-                    <div>
-                      <b>Data:</b> {item.date}
-                    </div>
-                  </Colxx>
-                  <Colxx xxs={4}>
-                    <div className="actions-btn">
-                      <Button
-                        className="btn-edit"
-                        onClick={() => {
-                          alert('Editar!');
-                        }}
-                      >
-                        <i className="pi pi-pencil" />
-                      </Button>
-                      <Button
-                        className="btn-del"
-                        onClick={() => {
-                          alert('Excluir!');
-                        }}
-                      >
-                        <i className="pi pi-trash" />
-                      </Button>
-                    </div>
-                  </Colxx>
-                </Row>
-              </div>
-            ))}
+            {list &&
+              list.map((item) => (
+                <div key={item.id} className="card">
+                  <Row>
+                    <Colxx xxs={8}>
+                      <div>
+                        <b>Tipo:</b> <span className={`label ${item.label.toLowerCase()}`}>{item.label}</span>
+                      </div>
+                      <div>
+                        <b>Valor:</b> {item.value}
+                      </div>
+                      <div>
+                        <b>Data:</b> {item.date}
+                      </div>
+                    </Colxx>
+                    <Colxx xxs={4}>
+                      <div className="actions-btn">
+                        <Button
+                          className="btn-edit"
+                          onClick={() => {
+                            alert('Editar!');
+                          }}
+                        >
+                          <i className="pi pi-pencil" />
+                        </Button>
+                        <Button
+                          className="btn-del"
+                          onClick={() => {
+                            alert('Excluir!');
+                          }}
+                        >
+                          <i className="pi pi-trash" />
+                        </Button>
+                      </div>
+                    </Colxx>
+                  </Row>
+                </div>
+              ))}
           </div>
         </div>
       </div>
