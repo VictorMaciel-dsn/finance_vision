@@ -14,8 +14,8 @@ import { ChevronUpIcon } from 'primereact/icons/chevronup';
 import { InputText } from 'primereact/inputtext';
 import { get, getDatabase, ref } from 'firebase/database';
 import { getCurrentUser } from '../../../../helpers/utils';
-import { useRecoilValue } from 'recoil';
-import { tokenUser } from '../../../../atoms/user';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { listUpdate, tokenUser } from '../../../../atoms/user';
 import LoadingComponent from '../../../../components/loading';
 
 function HomePage({ intl }) {
@@ -35,38 +35,41 @@ function HomePage({ intl }) {
   const [investedTotal, setInvestedTotal] = useState(0);
   const [paymentsTotal, setPaymentsTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [updateList, setUpdateList] = useRecoilState(listUpdate);
 
   useEffect(() => {
-    if (!isFirst.current) return;
-    setIsLoading(true);
+    if (isFirst.current || updateList) {
+      setIsLoading(true);
+      setUpdateList(false);
 
-    const calculateTotal = (data) => {
-      return Object.values(data || {}).reduce((acc, item) => acc + parseFloat(item.value), 0);
-    };
+      const calculateTotal = (data) => {
+        return Object.values(data || {}).reduce((acc, item) => acc + parseFloat(item.value), 0);
+      };
 
-    const updateTotals = (res) => {
-      delete res.image;
-      const { entries = {}, invested = {}, payable = {}, payments = {} } = res;
+      const updateTotals = (res) => {
+        delete res.image;
+        const { entries = {}, invested = {}, payable = {}, payments = {} } = res;
 
-      setTotalBalance(calculateTotal(entries) + calculateTotal(invested));
-      setEntriesTotal(calculateTotal(entries));
-      setInvestedTotal(calculateTotal(invested));
-      setPayableTotal(calculateTotal(payable));
-      setPaymentsTotal(calculateTotal(payments));
-    };
+        setTotalBalance(calculateTotal(entries) + calculateTotal(invested));
+        setEntriesTotal(calculateTotal(entries));
+        setInvestedTotal(calculateTotal(invested));
+        setPayableTotal(calculateTotal(payable));
+        setPaymentsTotal(calculateTotal(payments));
+      };
 
-    getInfos()
-      .then((res) => {
-        res && updateTotals(res);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        console.error('Erro ao obter as informações:', error);
-      });
+      getInfos()
+        .then((res) => {
+          res && updateTotals(res);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          setIsLoading(false);
+          console.error('Erro ao obter as informações:', error);
+        });
 
-    isFirst.current = false;
-  }, []);
+      isFirst.current = false;
+    }
+  }, [updateList]);
 
   async function getInfos() {
     const db = getDatabase();

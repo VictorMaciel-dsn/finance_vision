@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { injectIntl } from 'react-intl';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { currentColor } from '../../atoms/theme/index';
 import InfoSection from './infoSection';
 import { getCurrentUser } from '../../helpers/utils';
-import { tokenUser } from '../../atoms/user';
+import { listUpdate, tokenUser } from '../../atoms/user';
 import { parseJwt } from '../../helpers/format';
 import { getDatabase, ref, update, get } from 'firebase/database';
 import LoadingComponent from '../loading';
@@ -23,6 +23,7 @@ function ModalAddInfos({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
   const userToken = useRecoilValue(tokenUser);
   const [isLoading, setIsLoading] = useState(false);
   const [toast] = useIonToast();
+  const setUpdateList = useSetRecoilState(listUpdate);
 
   const submitData = (type, value, setValue) => async (e) => {
     e.preventDefault();
@@ -48,6 +49,7 @@ function ModalAddInfos({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
       await update(userRef, { [`${type}/${payload.id}`]: payload });
 
       setValue('');
+      setUpdateList(true);
       toast({
         message: 'Valor salvo com sucesso!',
         duration: 2000,

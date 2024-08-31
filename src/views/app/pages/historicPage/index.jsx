@@ -11,10 +11,11 @@ import { ChevronUpIcon } from 'primereact/icons/chevronup';
 import { ChevronDownIcon } from 'primereact/icons/chevrondown';
 import { InputText } from 'primereact/inputtext';
 import { getCurrentUser } from '../../../../helpers/utils';
-import { useRecoilValue } from 'recoil';
-import { tokenUser } from '../../../../atoms/user';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { listUpdate, tokenUser } from '../../../../atoms/user';
 import { get, getDatabase, ref } from 'firebase/database';
 import LoadingComponent from '../../../../components/loading';
+import ModalConfirm from '../../../../components/modalConfirm';
 
 function HistoricPage({ intl }) {
   const { messages } = intl;
@@ -29,9 +30,12 @@ function HistoricPage({ intl }) {
   const [totalExits, setTotalExits] = useState(0);
   const [totalEntries, setTotalEntries] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [modalConfirm, setModalConfirm] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [updateList, setUpdateList] = useRecoilState(listUpdate);
 
   useEffect(() => {
-    if (isFirst.current) {
+    if (isFirst.current || updateList) {
       setIsLoading(true);
 
       getInfos()
@@ -45,20 +49,23 @@ function HistoricPage({ intl }) {
             let exits = 0;
 
             const formatValues = (items, label, updateTotal) => {
-              Object.values(items).forEach((item) => {
-                updateTotal(parseFloat(item.value));
-                _dataFormated.push({ ...item, label });
-              });
+              if (items) {
+                Object.values(items).forEach((item) => {
+                  updateTotal(parseFloat(item?.value));
+                  _dataFormated.push({ ...item, label });
+                });
+              }
             };
 
-            formatValues(_data.entries, 'Entradas', (value) => (entries += value));
-            formatValues(_data.invested, 'Investimentos', (value) => (entries += value));
-            formatValues(_data.payable, 'A pagar', (value) => (exits += value));
-            formatValues(_data.payments, 'Pagamentos', (value) => (exits += value));
+            formatValues(_data?.entries, 'Entradas', (value) => (entries += value));
+            formatValues(_data?.invested, 'Investimentos', (value) => (entries += value));
+            formatValues(_data?.payable, 'A pagar', (value) => (exits += value));
+            formatValues(_data?.payments, 'Pagamentos', (value) => (exits += value));
 
             setTotalExits(exits);
             setTotalEntries(entries);
             setList(_dataFormated);
+            setUpdateList(false);
           }
         })
         .catch((error) => {
@@ -68,7 +75,7 @@ function HistoricPage({ intl }) {
 
       isFirst.current = false;
     }
-  }, []);
+  }, [updateList]);
 
   async function getInfos() {
     const db = getDatabase();
@@ -89,6 +96,7 @@ function HistoricPage({ intl }) {
   return (
     <>
       <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
+      <ModalConfirm isOpen={modalConfirm} setIsOpen={setModalConfirm} item={selectedItem} />
       <div className="historic-page">
         <TopNav />
         <div className="wow animate__animated animate__fadeIn">
@@ -160,7 +168,8 @@ function HistoricPage({ intl }) {
                         <Button
                           className="btn-del"
                           onClick={() => {
-                            alert('Excluir!');
+                            setSelectedItem(item);
+                            setModalConfirm(!modalConfirm);
                           }}
                         >
                           <i className="pi pi-trash" />

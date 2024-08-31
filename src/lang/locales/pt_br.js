@@ -114,4 +114,8 @@ export default {
   'message.totalLimit': 'Limite total',
   'message.closingDay': 'Fecha dia',
   'message.dueDate': 'Vence dia',
+
+  // Modal confirmação
+  'message.confirmDelete':'Tem certeza que deseja excluir o registro abaixo?',
+  // Finalizar !!
 };
