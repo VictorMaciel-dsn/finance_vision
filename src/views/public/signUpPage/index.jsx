@@ -22,6 +22,7 @@ function SignUpPage({ intl }) {
   const [toast] = useIonToast();
   const inputRef = useRef(null);
   const [newUser, setNewUser] = useState('');
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -62,7 +63,6 @@ function SignUpPage({ intl }) {
               position: 'bottom',
             });
             setIsLoading(false);
-            clearForm();
           }, 2500);
         })
         .catch(() => {
@@ -88,6 +88,8 @@ function SignUpPage({ intl }) {
     setEmail('');
     setPassword('');
     setPasswordConfirm('');
+    setNewUser('');
+    setUserName('');
     setOpenEye(false);
     setOpenEyeConfirm(false);
   }
@@ -96,14 +98,18 @@ function SignUpPage({ intl }) {
     const db = getDatabase();
     const userRef = ref(db, `users/${idUser}`);
 
-    set(userRef, '')
+    let payload = {
+      userName: userName,
+    };
+
+    set(userRef, payload)
       .then(() => {
         console.log('Usuário salvo com sucesso!');
-        setNewUser('');
+        clearForm();
       })
       .catch((error) => {
         console.log('Erro ao salvar usuário!', error);
-        setNewUser('');
+        clearForm();
       });
   }
 
@@ -136,6 +142,18 @@ function SignUpPage({ intl }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 ref={inputRef}
+              />
+            </Colxx>
+          </Row>
+          <Row>
+            <Colxx xxs={12}>
+              <InputText
+                className="input-form w-100 mb-3 wow animate__animated animate__fadeIn"
+                data-wow-delay="0.3s"
+                placeholder="Nome ou apelido"
+                required
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
               />
             </Colxx>
           </Row>

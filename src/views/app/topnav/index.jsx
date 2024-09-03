@@ -25,6 +25,7 @@ function TopNav({ intl }) {
   const opNotify = useRef(null);
   const _userToken = getCurrentUser();
   const userToken = useRecoilValue(tokenUser);
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
     if (currentRoute === 'historic') {
@@ -48,10 +49,11 @@ function TopNav({ intl }) {
 
   useEffect(() => {
     if (isFirst.current || isUpdateImage) {
-      getImage()
+      getInfos()
         .then((res) => {
-          if (res !== null) {
-            setProfileImage(res.img);
+          if (res) {
+            setProfileImage(res?.image?.img);
+            setUserName(res?.userName);
           }
         })
         .catch((error) => {
@@ -74,13 +76,13 @@ function TopNav({ intl }) {
     }
   }
 
-  async function getImage() {
+  async function getInfos() {
     const db = getDatabase();
     const user = userToken || _userToken;
     const userId = parseJwt(user).user_id;
 
     if (userId) {
-      const dataRef = ref(db, `users/${userId}/image`);
+      const dataRef = ref(db, `users/${userId}`);
       try {
         const res = await get(dataRef);
         return res.val();
@@ -96,7 +98,7 @@ function TopNav({ intl }) {
       <div className="container-topnav wow animate__animated animate__fadeIn">
         <div className="label">
           <div className="user-label">
-            {greetingsLabel} Victor! {/* Nome do usuário logado */}
+            {greetingsLabel} {userName ? userName : '--'}
           </div>
           <div className="icon-label">
             <i className={`pi ${classIcon}`} /> <h3>{componentLabel}</h3>
