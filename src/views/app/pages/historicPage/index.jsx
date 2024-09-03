@@ -13,9 +13,10 @@ import { InputText } from 'primereact/inputtext';
 import { getCurrentUser } from '../../../../helpers/utils';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { listUpdate, tokenUser } from '../../../../atoms/user';
-import { get, getDatabase, ref } from 'firebase/database';
+import { get, getDatabase, ref, update } from 'firebase/database';
 import LoadingComponent from '../../../../components/loading';
 import ModalConfirm from '../../../../components/modalConfirm';
+import { useIonToast } from '@ionic/react';
 
 function HistoricPage({ intl }) {
   const { messages } = intl;
@@ -33,6 +34,9 @@ function HistoricPage({ intl }) {
   const [modalConfirm, setModalConfirm] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [updateList, setUpdateList] = useRecoilState(listUpdate);
+  const [editItemId, setEditItemId] = useState(null);
+  const [editedItem, setEditedItem] = useState({ label: '', value: '' });
+  const [toast] = useIonToast();
 
   useEffect(() => {
     if (isFirst.current || updateList) {
@@ -40,8 +44,8 @@ function HistoricPage({ intl }) {
 
       getInfos()
         .then((res) => {
+          setIsLoading(false);
           if (res) {
-            setIsLoading(false);
             delete res.image;
             const _data = res;
             const _dataFormated = [];
@@ -93,6 +97,61 @@ function HistoricPage({ intl }) {
     }
   }
 
+  const handleEditChange = (field, value) => {
+    setEditedItem({
+      ...editedItem,
+      [field]: value,
+    });
+  };
+
+  const saveEdit = () => {
+    getInfos().then((res) => {
+      if (res) {
+        setIsLoading(true);
+        const _data = res;
+        const targetId = editItemId;
+        const newValue = editedItem.value;
+        const db = getDatabase();
+        const user = userToken || _userToken;
+        const userId = parseJwt(user).user_id;
+        const userRef = ref(db, `users/${userId}`);
+
+        const updateItemById = (data, id, newValue) => {
+          for (const key in data) {
+            if (data[key][id]) {
+              data[key][id].value = newValue;
+              break;
+            }
+          }
+        };
+
+        updateItemById(_data, targetId, newValue);
+
+        update(userRef, _data)
+          .then(() => {
+            setIsLoading(false);
+            toast({
+              message: 'Registro atualizado com sucesso!',
+              duration: 2000,
+              position: 'bottom',
+            });
+            setEditItemId(null);
+            setEditedItem({ label: '', value: '' });
+            setUpdateList(true);
+          })
+          .catch((error) => {
+            setIsLoading(false);
+            toast({
+              message: 'Houve um erro ao atualizar o registro!',
+              duration: 2000,
+              position: 'bottom',
+            });
+            console.error('Erro ao atualizar a lista no Firebase:', error);
+          });
+      }
+    });
+  };
+
   return (
     <>
       <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
@@ -141,44 +200,67 @@ function HistoricPage({ intl }) {
           </Row>
           <div className="container-historic">
             {list &&
-              list.map((item) => (
-                <div key={item.id} className="card">
-                  <Row>
-                    <Colxx xxs={8}>
-                      <div>
-                        <b>Tipo:</b> <span className={`label ${item.label.toLowerCase()}`}>{item.label}</span>
-                      </div>
-                      <div>
-                        <b>Valor:</b> {item.value}
-                      </div>
-                      <div>
-                        <b>Data:</b> {item.date}
-                      </div>
-                    </Colxx>
-                    <Colxx xxs={4}>
-                      <div className="actions-btn">
-                        <Button
-                          className="btn-edit"
-                          onClick={() => {
-                            alert('Editar!');
-                          }}
-                        >
-                          <i className="pi pi-pencil" />
-                        </Button>
-                        <Button
-                          className="btn-del"
-                          onClick={() => {
-                            setSelectedItem(item);
-                            setModalConfirm(!modalConfirm);
-                          }}
-                        >
-                          <i className="pi pi-trash" />
-                        </Button>
-                      </div>
-                    </Colxx>
-                  </Row>
-                </div>
-              ))}
+              list.map((item) => {
+                const isEdit = editItemId === item.id;
+                return (
+                  <div key={item.id} className="card">
+                    <Row>
+                      <Colxx xxs={isEdit ? 7 : 8}>
+                        <div>
+                          <b>Tipo:</b> <span className={`label ${item.label.toLowerCase()}`}>{item.label}</span>
+                        </div>
+                        <div>
+                          <b>Valor:</b>{' '}
+                          {isEdit ? (
+                            <InputText
+                              required
+                              type="number"
+                              className="input-form"
+                              placeholder="Informe o valor"
+                              value={editedItem.value}
+                              onChange={(e) => handleEditChange('value', e.target.value)}
+                            />
+                          ) : (
+                            item.value
+                          )}
+                        </div>
+                        <div>
+                          <b>Data:</b> {item.date}
+                        </div>
+                      </Colxx>
+                      <Colxx xxs={isEdit ? 5 : 4}>
+                        <div className="actions-btn">
+                          {isEdit ? (
+                            <Button className="btn-save" onClick={saveEdit}>
+                              <i className="pi pi-check" />
+                            </Button>
+                          ) : (
+                            <></>
+                          )}
+                          <Button
+                            className="btn-edit"
+                            onClick={() => {
+                              setEditItemId(isEdit ? null : item.id);
+                              setEditedItem(isEdit ? { label: '', value: '' } : item);
+                            }}
+                          >
+                            {isEdit ? <i className="pi pi-times" /> : <i className="pi pi-pencil" />}
+                          </Button>
+                          <Button
+                            className={`btn-del ${isEdit ? 'edit' : ''}`}
+                            onClick={() => {
+                              setSelectedItem(item);
+                              setModalConfirm(!modalConfirm);
+                            }}
+                          >
+                            <i className="pi pi-trash" />
+                          </Button>
+                        </div>
+                      </Colxx>
+                    </Row>
+                  </div>
+                );
+              })}
           </div>
         </div>
       </div>
