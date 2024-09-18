@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Row } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, Row } from 'reactstrap';
 import Footer from '../../footer';
 import TopNav from '../../topnav';
 import { Colxx } from '../../../../components/common/customBootstrap';
@@ -36,6 +36,9 @@ function HomePage({ intl }) {
   const [paymentsTotal, setPaymentsTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [updateList, setUpdateList] = useRecoilState(listUpdate);
+  const userId = getUserId(userToken, _userToken);
+  const [myAccounts, setMyAccounts] = useState([]);
+  const [myCards, setMyCards] = useState([]);
 
   useEffect(() => {
     if (isFirst.current || updateList) {
@@ -67,17 +70,80 @@ function HomePage({ intl }) {
           console.error('Erro ao obter as informações:', error);
         });
 
+      getListAccounts()
+        .then((res) => {
+          const _result = Object.values(res).map((x) => ({
+            name: x.title,
+            balance: Number(x.balance),
+            id: x.id,
+          }));
+
+          setMyAccounts(_result);
+          console.log('Contas:', _result);
+        })
+        .catch((error) => {
+          console.error('Erro ao obter as contas:', error);
+        });
+
+      getListCards()
+        .then((res) => {
+          const _result = Object.values(res).map((x) => ({
+            closingDay: x.closingDay,
+            dueDate: x.dueDate,
+            id: x.id,
+            limitCard: x.limitCard,
+            nameCard: x.nameCard,
+          }));
+
+          setMyCards(_result);
+          console.log('Cartões:', _result);
+        })
+        .catch((error) => {
+          console.error('Erro ao obter os cartões:', error);
+        });
+
       isFirst.current = false;
     }
   }, [updateList]);
 
+  function getUserId(userToken, _userToken) {
+    const user = userToken || _userToken;
+    return parseJwt(user).user_id;
+  }
+
   async function getInfos() {
     const db = getDatabase();
-    const user = userToken || _userToken;
-    const userId = parseJwt(user).user_id;
 
     if (userId) {
       const dataRef = ref(db, `users/${userId}`);
+      try {
+        const res = await get(dataRef);
+        return res.val();
+      } catch {
+        return null;
+      }
+    }
+  }
+
+  async function getListAccounts() {
+    const db = getDatabase();
+
+    if (userId) {
+      const dataRef = ref(db, `users/${userId}/accounts`);
+      try {
+        const res = await get(dataRef);
+        return res.val();
+      } catch {
+        return null;
+      }
+    }
+  }
+
+  async function getListCards() {
+    const db = getDatabase();
+
+    if (userId) {
+      const dataRef = ref(db, `users/${userId}/cards`);
       try {
         const res = await get(dataRef);
         return res.val();
@@ -192,7 +258,9 @@ function HomePage({ intl }) {
               <Card className="card-credit">
                 <CardHeader>
                   <div>
-                    <i className="pi pi-credit-card" /> {messages['message.myCards']}
+                    <b>
+                      <i className="pi pi-credit-card" /> {messages['message.myCards']}
+                    </b>
                   </div>
                   <div
                     className="custom-btn"
@@ -204,9 +272,54 @@ function HomePage({ intl }) {
                   </div>
                 </CardHeader>
                 <CardBody>
-                  <div className="no-data">
-                    <i className="pi pi-exclamation-circle" /> {messages['message.noCardRegistered']}
-                  </div>
+                  {myCards.length > 0 ? (
+                    <>
+                      {myCards.map((x) => (
+                        <div key={x.id} className="container-card">
+                          <Row>
+                            <Colxx xxs={12}>
+                              Nome do cartão: <b>{x.nameCard}</b>
+                            </Colxx>
+                          </Row>
+                          <Row>
+                            <Colxx xxs={7}>
+                              <div>
+                                Dia de fechamento: <b>{x.closingDay}</b>
+                              </div>
+                              <div>
+                                Dia de vencimento: <b>{x.dueDate}</b>
+                              </div>
+                              <div>
+                                Limite: <b>{x.limitCard}</b>
+                              </div>
+                            </Colxx>
+                            <Colxx xxs={5}>
+                              <Button
+                                className="btn-edit"
+                                onClick={() => {
+                                  alert('Edit');
+                                }}
+                              >
+                                <i className="pi pi-pencil" />
+                              </Button>
+                              <Button
+                                className="btn-del"
+                                onClick={() => {
+                                  alert('Del');
+                                }}
+                              >
+                                <i className="pi pi-trash" />
+                              </Button>
+                            </Colxx>
+                          </Row>
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <div className="no-data">
+                      <i className="pi pi-exclamation-circle" /> {messages['message.noCardRegistered']}
+                    </div>
+                  )}
                 </CardBody>
               </Card>
             </Colxx>
@@ -216,7 +329,9 @@ function HomePage({ intl }) {
               <Card className="card-credit">
                 <CardHeader>
                   <div>
-                    <i className="pi pi-wallet" /> {messages['message.myAccounts']}
+                    <b>
+                      <i className="pi pi-wallet" /> {messages['message.myAccounts']}
+                    </b>
                   </div>
                   <div
                     className="custom-btn"
@@ -228,9 +343,48 @@ function HomePage({ intl }) {
                   </div>
                 </CardHeader>
                 <CardBody>
-                  <div className="no-data">
-                    <i className="pi pi-exclamation-circle" /> {messages['message.noCardRegistered']}
-                  </div>
+                  {myAccounts.length > 0 ? (
+                    <>
+                      {myAccounts.map((x) => (
+                        <div key={x.id} className="container-card">
+                          <Row>
+                            <Colxx xxs={12}>
+                              Nome da conta: <b>{x.name}</b>
+                            </Colxx>
+                          </Row>
+                          <Row>
+                            <Colxx xxs={7}>
+                              <div>
+                                Saldo: <b>{x.balance}</b>
+                              </div>
+                            </Colxx>
+                            <Colxx xxs={5}>
+                              <Button
+                                className="btn-edit"
+                                onClick={() => {
+                                  alert('Edit accounts');
+                                }}
+                              >
+                                <i className="pi pi-pencil" />
+                              </Button>
+                              <Button
+                                className="btn-del"
+                                onClick={() => {
+                                  alert('Del accounts');
+                                }}
+                              >
+                                <i className="pi pi-trash" />
+                              </Button>
+                            </Colxx>
+                          </Row>
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <div className="no-data">
+                      <i className="pi pi-exclamation-circle" /> Nenhuma conta cadastrada!
+                    </div>
+                  )}
                 </CardBody>
               </Card>
             </Colxx>

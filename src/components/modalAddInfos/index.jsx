@@ -7,7 +7,7 @@ import InfoSection from './infoSection';
 import { getCurrentUser } from '../../helpers/utils';
 import { listUpdate, tokenUser } from '../../atoms/user';
 import { parseJwt } from '../../helpers/format';
-import { getDatabase, ref, update, get } from 'firebase/database';
+import { getDatabase, ref, update } from 'firebase/database';
 import LoadingComponent from '../loading';
 import { useIonToast } from '@ionic/react';
 
