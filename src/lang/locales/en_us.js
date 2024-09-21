@@ -115,7 +115,7 @@ export default {
   'message.closingDay': 'Closes day',
   'message.dueDate': 'Expires day',
 
-    // Modal confirmação
-    'message.confirmDelete':'Are you sure you want to delete the record below?',
-    // Finalizar !!
+  // Modal confirmação
+  'message.confirmDelete': 'Are you sure you want to delete the record below?',
+  // Finalizar !!
 };

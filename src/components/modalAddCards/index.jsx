@@ -1,26 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { injectIntl } from 'react-intl';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Row } from 'reactstrap';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { currentColor } from '../../atoms/theme/index';
 import { Colxx } from '../common/customBootstrap';
 import { Dropdown } from 'primereact/dropdown';
 import { ChevronUpIcon } from 'primereact/icons/chevronup';
 import { ChevronDownIcon } from 'primereact/icons/chevrondown';
-import { getTranslatedBanks, parseJwt } from '../../helpers/format';
-import { bankOptionTemplate, createDaysOptions, getCurrentUser, selectedBankTemplate } from '../../helpers/utils';
+import { /* getTranslatedBanks */ parseJwt } from '../../helpers/format';
+import {
+  /* bankOptionTemplate */ createDaysOptions,
+  getCurrentUser /* selectedBankTemplate */,
+} from '../../helpers/utils';
 import { InputText } from 'primereact/inputtext';
 import LoadingComponent from '../loading';
 import { useIonToast } from '@ionic/react';
-import { tokenUser } from '../../atoms/user';
+import { listUpdate, tokenUser } from '../../atoms/user';
 import { get, getDatabase, ref, update } from 'firebase/database';
 
-function ModalAddCard({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
+function ModalAddCard({
+  isOpen = false,
+  setIsOpen = () => {},
+  intl = '',
+  selectedCard = null,
+  setSelectedCard = () => {},
+}) {
   const { messages } = intl;
   const theme = useRecoilValue(currentColor);
-  const translatedBanks = getTranslatedBanks(intl);
+  // const translatedBanks = getTranslatedBanks(intl);
   const daysOptions = createDaysOptions();
-  const [selectedCardIcon, setSelectedCardIcon] = useState(null);
+  // const [selectedCardIcon, setSelectedCardIcon] = useState(null);
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [nameCard, setNameCard] = useState('');
   const [limitCard, setLimitCard] = useState('');
@@ -31,6 +40,7 @@ function ModalAddCard({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
   const _userToken = getCurrentUser();
   const userToken = useRecoilValue(tokenUser);
   const [accountOptions, setAccountOptions] = useState([]);
+  const setUpdateList = useSetRecoilState(listUpdate);
 
   useEffect(() => {
     if (isOpen) {
@@ -52,10 +62,21 @@ function ModalAddCard({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
     }
   }, [isOpen]);
 
+  useEffect(() => {
+    if (isOpen && selectedCard) {
+      setNameCard(selectedCard?.nameCard);
+      setLimitCard(selectedCard?.limitCard);
+      setDueDate(selectedCard?.dueDate);
+      setClosingDay(selectedCard?.closingDay);
+      setSelectedAccount(selectedCard?.paymentAccount);
+    }
+  }, [isOpen, selectedCard]);
+
   const toggle = () => {
     setIsOpen(!isOpen);
-    setSelectedCardIcon(null);
+    // setSelectedCardIcon(null);
     setSelectedAccount(null);
+    setSelectedCard(null);
     setNameCard('');
     setLimitCard('');
     setClosingDay(null);
@@ -79,7 +100,7 @@ function ModalAddCard({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
       const userRef = ref(db, `users/${userId}`);
 
       const payload = {
-        id: Math.floor(Math.random() * 1000) + 1,
+        id: selectedCard ? selectedCard?.id : Math.floor(Math.random() * 1000) + 1,
         paymentAccount: selectedAccount,
         nameCard: nameCard,
         limitCard: limitCard,
@@ -90,7 +111,7 @@ function ModalAddCard({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
       await update(userRef, { [`cards/${payload.id}`]: payload });
 
       toggle();
-      // setUpdateList(true);
+      setUpdateList(true);
       toast({
         message: 'Cartão salvo com sucesso!',
         duration: 2000,
@@ -141,7 +162,7 @@ function ModalAddCard({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
             onSubmitForm(e);
           }}
         >
-          <ModalHeader>{messages['message.createCard']}</ModalHeader>
+          <ModalHeader>{!selectedCard ? messages['message.createCard'] : 'Editar cartão'}</ModalHeader>
           <ModalBody>
             <Row className="mb-2">
               <Colxx xxs={12}>
@@ -165,7 +186,7 @@ function ModalAddCard({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
                 />
               </Colxx>
             </Row>
-            <Row className="mb-2">
+            {/* <Row className="mb-2">
               <Colxx xxs={12}>
                 <Dropdown
                   emptyMessage={messages['message.notData']}
@@ -187,7 +208,7 @@ function ModalAddCard({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
                   }}
                 />
               </Colxx>
-            </Row>
+            </Row> */}
             <Row className="mb-2">
               <Colxx xxs={12}>
                 <InputText

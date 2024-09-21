@@ -81,8 +81,8 @@ export const selectedBankTemplate = (option, props) => {
         <img
           alt={option.name}
           src={option.img}
-          className={`mr-2 flag flag-${option.code.toLowerCase()}`}
-          style={{ width: '25px' }}
+          className={`mr-2 flag flag-${option.value.toLowerCase()}`}
+          style={{ width: '25px', marginRight: '10px' }}
         />
         <div>{option.name}</div>
       </div>
@@ -98,8 +98,8 @@ export const bankOptionTemplate = (option) => {
       <img
         alt={option.name}
         src={option.img}
-        className={`mr-2 flag flag-${option.code.toLowerCase()}`}
-        style={{ width: '25px' }}
+        className={`mr-2 flag flag-${option.value.toLowerCase()}`}
+        style={{ width: '25px', marginRight: '10px' }}
       />
       <div>{option.name}</div>
     </div>

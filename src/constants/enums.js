@@ -24,14 +24,13 @@ export const months = [
 ];
 
 export const banks = [
-  { name: 'message.bankOfBrazil', code: 'banco_do_brasil', img: IconBancoDoBrasil },
-  { name: 'message.itau', code: 'itau', img: IconItau },
-  { name: 'message.bradesco', code: 'bradesco', img: IconBradesco },
-  { name: 'message.nubank', code: 'nubank', img: IconNubank },
-  { name: 'message.c6bank', code: 'c6_bank', img: IconC6 },
-  { name: 'message.caixa', code: 'caixa', img: IconCaixa },
-  { name: 'message.inter', code: 'inter', img: IconInter },
-  { name: 'message.alelo', code: 'alelo', img: IconAlelo },
-  { name: 'message.sodexo', code: 'sodexo', img: IconSodexo },
+  { name: 'message.bankOfBrazil', value: 'banco_do_brasil', img: IconBancoDoBrasil },
+  { name: 'message.itau', value: 'itau', img: IconItau },
+  { name: 'message.bradesco', value: 'bradesco', img: IconBradesco },
+  { name: 'message.nubank', value: 'nubank', img: IconNubank },
+  { name: 'message.c6bank', value: 'c6_bank', img: IconC6 },
+  { name: 'message.caixa', value: 'caixa', img: IconCaixa },
+  { name: 'message.inter', value: 'inter', img: IconInter },
+  { name: 'message.alelo', value: 'alelo', img: IconAlelo },
+  { name: 'message.sodexo', value: 'sodexo', img: IconSodexo },
 ];
-

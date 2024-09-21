@@ -8,7 +8,7 @@ import { auth } from '../../../services';
 import { useIonToast } from '@ionic/react';
 import LoadingComponent from '../../../components/loading';
 import { injectIntl } from 'react-intl';
-import { getDatabase, push, ref, set } from 'firebase/database';
+import { getDatabase, ref, set } from 'firebase/database';
 
 function SignUpPage({ intl }) {
   const { messages } = intl;

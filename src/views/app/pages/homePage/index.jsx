@@ -17,6 +17,9 @@ import { getCurrentUser } from '../../../../helpers/utils';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { listUpdate, tokenUser } from '../../../../atoms/user';
 import LoadingComponent from '../../../../components/loading';
+import ModalConfirmDeleteCard from '../../../../components/modalConfirmDeleteCard';
+import ModalConfirmDeleteAccount from '../../../../components/modalConfirmDeleteAccount';
+import PanelTotalBalance from '../../../../components/panelTotalBalance';
 
 function HomePage({ intl }) {
   const { messages } = intl;
@@ -39,6 +42,11 @@ function HomePage({ intl }) {
   const userId = getUserId(userToken, _userToken);
   const [myAccounts, setMyAccounts] = useState([]);
   const [myCards, setMyCards] = useState([]);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [modalConfirmDeleteCard, setModalConfirmDeleteCard] = useState(false);
+  const [selectedAccount, setSelectedAccount] = useState(null);
+  const [modalConfirmDeleteAccount, setModalConfirmDeleteAccount] = useState(false);
+  const opPanelTotalBance = useRef();
 
   useEffect(() => {
     if (isFirst.current || updateList) {
@@ -51,9 +59,13 @@ function HomePage({ intl }) {
 
       const updateTotals = (res) => {
         delete res.image;
-        const { entries = {}, invested = {}, payable = {}, payments = {} } = res;
+        const { entries = {}, invested = {}, payable = {}, payments = {}, accounts = {} } = res;
 
-        setTotalBalance(calculateTotal(entries) + calculateTotal(invested));
+        const totalAccountsBalance = Object.values(accounts).reduce((sum, x) => {
+          return sum + Number(x.balance);
+        }, 0);
+
+        setTotalBalance(calculateTotal(entries) + calculateTotal(invested) + totalAccountsBalance);
         setEntriesTotal(calculateTotal(entries));
         setInvestedTotal(calculateTotal(invested));
         setPayableTotal(calculateTotal(payable));
@@ -72,14 +84,16 @@ function HomePage({ intl }) {
 
       getListAccounts()
         .then((res) => {
-          const _result = Object.values(res).map((x) => ({
-            name: x.title,
-            balance: Number(x.balance),
-            id: x.id,
-          }));
+          if (res) {
+            const _result = Object.values(res).map((x) => ({
+              name: x.title,
+              balance: Number(x.balance),
+              id: x.id,
+              bank: x.bank,
+            }));
 
-          setMyAccounts(_result);
-          console.log('Contas:', _result);
+            setMyAccounts(_result);
+          }
         })
         .catch((error) => {
           console.error('Erro ao obter as contas:', error);
@@ -87,16 +101,18 @@ function HomePage({ intl }) {
 
       getListCards()
         .then((res) => {
-          const _result = Object.values(res).map((x) => ({
-            closingDay: x.closingDay,
-            dueDate: x.dueDate,
-            id: x.id,
-            limitCard: x.limitCard,
-            nameCard: x.nameCard,
-          }));
+          if (res) {
+            const _result = Object.values(res).map((x) => ({
+              closingDay: x.closingDay,
+              dueDate: x.dueDate,
+              id: x.id,
+              limitCard: x.limitCard,
+              nameCard: x.nameCard,
+              paymentAccount: x.paymentAccount,
+            }));
 
-          setMyCards(_result);
-          console.log('Cartões:', _result);
+            setMyCards(_result);
+          }
         })
         .catch((error) => {
           console.error('Erro ao obter os cartões:', error);
@@ -156,8 +172,31 @@ function HomePage({ intl }) {
   return (
     <>
       <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
-      <ModalAddCard isOpen={modalAddCards} setIsOpen={setModalAddCards} />
-      <ModalAddAccounts isOpen={modalAddAccounts} setIsOpen={setModalAddAccounts} />
+      <ModalAddCard
+        isOpen={modalAddCards}
+        setIsOpen={setModalAddCards}
+        selectedCard={selectedCard}
+        setSelectedCard={setSelectedCard}
+      />
+      <ModalConfirmDeleteCard
+        isOpen={modalConfirmDeleteCard}
+        setIsOpen={setModalConfirmDeleteCard}
+        selectedCard={selectedCard}
+        setSelectedCard={setSelectedCard}
+      />
+      <ModalConfirmDeleteAccount
+        isOpen={modalConfirmDeleteAccount}
+        setIsOpen={setModalConfirmDeleteAccount}
+        selectedAccount={selectedAccount}
+        setSelectedAccount={setSelectedAccount}
+      />
+      <ModalAddAccounts
+        isOpen={modalAddAccounts}
+        setIsOpen={setModalAddAccounts}
+        selectedAccount={selectedAccount}
+        setSelectedAccount={setSelectedAccount}
+      />
+      <PanelTotalBalance op={opPanelTotalBance} />
       <div className="home-page">
         <TopNav />
         <div className="container-home wow animate__animated animate__fadeIn">
@@ -198,9 +237,15 @@ function HomePage({ intl }) {
                 <div className="custom-item">
                   <i className="positive pi pi-money-bill" />
                 </div>
-                <div>
+                <div className="total-balance">
                   <div>{messages['message.totalBalance']}</div>
                   <strong>R$ {totalBalance.toFixed(2)}</strong>
+                  <i
+                    className="pi pi-info-circle"
+                    onClick={(e) => {
+                      opPanelTotalBance.current.toggle(e);
+                    }}
+                  />
                 </div>
               </Card>
             </Colxx>
@@ -297,7 +342,8 @@ function HomePage({ intl }) {
                               <Button
                                 className="btn-edit"
                                 onClick={() => {
-                                  alert('Edit');
+                                  setSelectedCard(x);
+                                  setModalAddCards(!modalAddAccounts);
                                 }}
                               >
                                 <i className="pi pi-pencil" />
@@ -305,7 +351,8 @@ function HomePage({ intl }) {
                               <Button
                                 className="btn-del"
                                 onClick={() => {
-                                  alert('Del');
+                                  setSelectedCard(x);
+                                  setModalConfirmDeleteCard(!modalAddAccounts);
                                 }}
                               >
                                 <i className="pi pi-trash" />
@@ -362,7 +409,8 @@ function HomePage({ intl }) {
                               <Button
                                 className="btn-edit"
                                 onClick={() => {
-                                  alert('Edit accounts');
+                                  setSelectedAccount(x);
+                                  setModalAddAccounts(!modalAddAccounts);
                                 }}
                               >
                                 <i className="pi pi-pencil" />
@@ -370,7 +418,8 @@ function HomePage({ intl }) {
                               <Button
                                 className="btn-del"
                                 onClick={() => {
-                                  alert('Del accounts');
+                                  setSelectedAccount(x);
+                                  setModalConfirmDeleteAccount(!modalConfirmDeleteAccount);
                                 }}
                               >
                                 <i className="pi pi-trash" />

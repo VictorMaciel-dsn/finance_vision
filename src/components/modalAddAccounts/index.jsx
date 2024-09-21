@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { injectIntl } from 'react-intl';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Row } from 'reactstrap';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { currentColor } from '../../atoms/theme/index';
 import { Colxx } from '../common/customBootstrap';
 import { Dropdown } from 'primereact/dropdown';
@@ -11,11 +11,17 @@ import { getTranslatedBanks, parseJwt } from '../../helpers/format';
 import { InputText } from 'primereact/inputtext';
 import { useIonToast } from '@ionic/react';
 import { bankOptionTemplate, getCurrentUser, selectedBankTemplate } from '../../helpers/utils';
-import { tokenUser } from '../../atoms/user';
+import { listUpdate, tokenUser } from '../../atoms/user';
 import { getDatabase, ref, update } from 'firebase/database';
 import LoadingComponent from '../loading';
 
-function ModalAddAccounts({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
+function ModalAddAccounts({
+  isOpen = false,
+  setIsOpen = () => {},
+  intl = '',
+  selectedAccount = null,
+  setSelectedAccount = () => {},
+}) {
   const { messages } = intl;
   const theme = useRecoilValue(currentColor);
   const translatedBanks = getTranslatedBanks(intl);
@@ -26,12 +32,22 @@ function ModalAddAccounts({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
   const [isLoading, setIsLoading] = useState(false);
   const _userToken = getCurrentUser();
   const userToken = useRecoilValue(tokenUser);
+  const setUpdateList = useSetRecoilState(listUpdate);
+
+  useEffect(() => {
+    if (isOpen && selectedAccount) {
+      setSelectedBank(selectedAccount?.bank);
+      setTitleAccount(selectedAccount?.name);
+      setBalanceAccount(selectedAccount?.balance);
+    }
+  }, [isOpen, selectedAccount]);
 
   const toggle = () => {
     setIsOpen(!isOpen);
     setSelectedBank(null);
     setTitleAccount('');
     setBalanceAccount('');
+    setSelectedAccount(null);
   };
 
   async function onSubmitForm(e) {
@@ -56,28 +72,28 @@ function ModalAddAccounts({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
 
         const userId = user.user_id;
         const db = getDatabase();
-        const userRef = ref(db, `users/${userId}`);
+        const _ref = ref(db, `users/${userId}`);
 
         const payload = {
-          id: Math.floor(Math.random() * 1000) + 1,
-          bank: selectedBank.code,
+          id: selectedAccount ? selectedAccount.id : Math.floor(Math.random() * 1000) + 1,
+          bank: selectedBank,
           title: titleAccount,
           balance: balanceAccount,
         };
 
-        await update(userRef, { [`accounts/${payload.id}`]: payload });
+        await update(_ref, { [`accounts/${payload.id}`]: payload });
 
         toggle();
-        // setUpdateList(true);
+        setUpdateList(true);
         toast({
-          message: 'Conta salva com sucesso!',
+          message: selectedAccount ? 'Conta editada com sucesso!' : 'Conta salva com sucesso!',
           duration: 2000,
           position: 'bottom',
         });
       } catch (error) {
         console.error(error);
         toast({
-          message: 'Houve um erro ao salvar a conta!',
+          message: selectedAccount ? 'Houve um erro ao editar a conta!' : 'Houve um erro ao salvar a conta!',
           duration: 2000,
           position: 'bottom',
         });
@@ -104,7 +120,7 @@ function ModalAddAccounts({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
             onSubmitForm(e);
           }}
         >
-          <ModalHeader>Criar nova conta</ModalHeader>
+          <ModalHeader>{!selectedAccount ? 'Criar nova conta' : 'Editar conta'}</ModalHeader>
           <ModalBody>
             <Row className="mb-2">
               <Colxx xxs={12}>
@@ -115,6 +131,7 @@ function ModalAddAccounts({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
                   onChange={(e) => setSelectedBank(e.value)}
                   options={translatedBanks}
                   optionLabel="name"
+                  optionValue="value"
                   placeholder={messages['message.selectAccountIcon']}
                   valueTemplate={selectedBankTemplate}
                   itemTemplate={bankOptionTemplate}

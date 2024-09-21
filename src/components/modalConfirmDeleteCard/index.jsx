@@ -3,14 +3,20 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { currentColor } from '../../atoms/theme';
 import { useIonToast } from '@ionic/react';
-import { get, getDatabase, ref, update } from 'firebase/database';
+import { get, getDatabase, ref, set } from 'firebase/database';
 import { getCurrentUser } from '../../helpers/utils';
 import { listUpdate, tokenUser } from '../../atoms/user';
 import { parseJwt } from '../../helpers/format';
 import LoadingComponent from '../loading';
 import { useState } from 'react';
 
-function ModalConfirm({ isOpen = false, setIsOpen = () => {}, intl = '', item = null }) {
+function ModalConfirmDeleteCard({
+  isOpen = false,
+  setIsOpen = () => {},
+  intl = '',
+  selectedCard = null,
+  setSelectedCard = () => {},
+}) {
   const { messages } = intl;
   const theme = useRecoilValue(currentColor);
   const [toast] = useIonToast();
@@ -26,20 +32,16 @@ function ModalConfirm({ isOpen = false, setIsOpen = () => {}, intl = '', item = 
 
         if (res) {
           const _data = res;
-
-          for (let category in _data) {
-            if (_data[category][item?.id]) {
-              delete _data[category][item?.id];
-              break;
-            }
-          }
-
           const db = getDatabase();
           const user = userToken || _userToken;
           const userId = parseJwt(user).user_id;
-          const userRef = ref(db, `users/${userId}`);
+          const _ref = ref(db, `users/${userId}/cards`);
 
-          update(userRef, _data)
+          if (_data[selectedCard?.id]) {
+            delete _data[selectedCard?.id];
+          }
+
+          set(_ref, _data)
             .then(() => {
               setIsLoading(false);
               toast({
@@ -62,7 +64,7 @@ function ModalConfirm({ isOpen = false, setIsOpen = () => {}, intl = '', item = 
         }
       })
       .catch((error) => {
-        console.error('Erro ao obter as informações da lista:', error);
+        console.error('Erro ao obter as informações:', error);
       });
   }
 
@@ -72,7 +74,7 @@ function ModalConfirm({ isOpen = false, setIsOpen = () => {}, intl = '', item = 
     const userId = parseJwt(user).user_id;
 
     if (userId) {
-      const dataRef = ref(db, `users/${userId}`);
+      const dataRef = ref(db, `users/${userId}/cards`);
       try {
         const res = await get(dataRef);
         return res.val();
@@ -90,7 +92,10 @@ function ModalConfirm({ isOpen = false, setIsOpen = () => {}, intl = '', item = 
         centered={true}
         className="modal-confirm"
         isOpen={isOpen}
-        toggle={() => setIsOpen(!isOpen)}
+        toggle={() => {
+          setSelectedCard(null);
+          setIsOpen(!isOpen);
+        }}
       >
         <ModalHeader>
           <i className="pi pi-exclamation-triangle" /> Atenção
@@ -99,13 +104,16 @@ function ModalConfirm({ isOpen = false, setIsOpen = () => {}, intl = '', item = 
           <div className="title">{messages['message.confirmDelete']}</div>
           <div className="item-infos">
             <div>
-              <b>Tipo:</b> {item?.label}
+              <b>Nome do cartão:</b> {selectedCard?.nameCard}
             </div>
             <div>
-              <b>Valor:</b> {item?.value}
+              <b>Dia de fechamento:</b> {selectedCard?.closingDay}
             </div>
             <div>
-              <b>Data:</b> {item?.date}
+              <b>Dia de fechamento:</b> {selectedCard?.dueDate}
+            </div>
+            <div>
+              <b>Limite:</b> {selectedCard?.limitCard}
             </div>
           </div>
         </ModalBody>
@@ -118,7 +126,13 @@ function ModalConfirm({ isOpen = false, setIsOpen = () => {}, intl = '', item = 
           >
             Sim
           </Button>
-          <Button className="btn-no" onClick={() => setIsOpen(!isOpen)}>
+          <Button
+            className="btn-no"
+            onClick={() => {
+              setSelectedCard(null);
+              setIsOpen(!isOpen);
+            }}
+          >
             Não
           </Button>
         </ModalFooter>
@@ -127,4 +141,4 @@ function ModalConfirm({ isOpen = false, setIsOpen = () => {}, intl = '', item = 
   );
 }
 
-export default injectIntl(ModalConfirm);
+export default injectIntl(ModalConfirmDeleteCard);

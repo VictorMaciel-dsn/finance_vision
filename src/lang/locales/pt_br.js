@@ -116,6 +116,6 @@ export default {
   'message.dueDate': 'Vence dia',
 
   // Modal confirmação
-  'message.confirmDelete':'Tem certeza que deseja excluir o registro abaixo?',
+  'message.confirmDelete': 'Tem certeza que deseja excluir o registro abaixo?',
   // Finalizar !!
 };
