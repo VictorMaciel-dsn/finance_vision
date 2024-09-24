@@ -48,12 +48,27 @@ function HomePage({ intl }) {
   const opPanelTotalBance = useRef();
 
   useEffect(() => {
-    if (isFirst.current || updateList) {
+    if (isFirst.current || updateList || (selectedMonth && currentYear.toString().length === 4)) {
       setIsLoading(true);
       setUpdateList(false);
 
+      const getMonthAndYear = (dateStr) => {
+        const [datePart] = dateStr.split(',');
+        const [, month, year] = datePart.trim().split('/');
+        return {
+          month: parseInt(month, 10),
+          year: parseInt(year, 10),
+        };
+      };
+
       const calculateTotal = (data) => {
-        return Object.values(data || {}).reduce((acc, item) => acc + parseFloat(item.value), 0);
+        return Object.values(data || {}).reduce((acc, item) => {
+          const { month, year } = getMonthAndYear(item?.date);
+          if (month === selectedMonth && year === currentYear) {
+            return acc + parseFloat(item.value);
+          }
+          return acc;
+        }, 0);
       };
 
       const updateTotals = (res) => {
@@ -90,7 +105,6 @@ function HomePage({ intl }) {
               id: x.id,
               bank: x.bank,
             }));
-
             setMyAccounts(_result);
           } else {
             setMyAccounts([]);
@@ -111,7 +125,6 @@ function HomePage({ intl }) {
               nameCard: x.nameCard,
               paymentAccount: x.paymentAccount,
             }));
-
             setMyCards(_result);
           } else {
             setMyCards([]);
@@ -123,7 +136,7 @@ function HomePage({ intl }) {
 
       isFirst.current = false;
     }
-  }, [updateList]);
+  }, [updateList, selectedMonth, currentYear]); // Agora escuta também o mês e ano selecionados
 
   function getUserId(userToken, _userToken) {
     const user = userToken || _userToken;

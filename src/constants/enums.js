@@ -9,18 +9,18 @@ import IconAlelo from '../assets/svg/banks/alelo.svg';
 import IconSodexo from '../assets/svg/banks/sodexo.svg';
 
 export const months = [
-  { label: 'message.jan', value: 'JAN' },
-  { label: 'message.feb', value: 'FEB' },
-  { label: 'message.mar', value: 'MAR' },
-  { label: 'message.apr', value: 'APR' },
-  { label: 'message.may', value: 'MAY' },
-  { label: 'message.jun', value: 'JUN' },
-  { label: 'message.jul', value: 'JUL' },
-  { label: 'message.aug', value: 'AUG' },
-  { label: 'message.sep', value: 'SEP' },
-  { label: 'message.oct', value: 'OCT' },
-  { label: 'message.nov', value: 'NOV' },
-  { label: 'message.dec', value: 'DEC' },
+  { label: 'message.jan', value: 1 },
+  { label: 'message.feb', value: 2 },
+  { label: 'message.mar', value: 3 },
+  { label: 'message.apr', value: 4 },
+  { label: 'message.may', value: 5 },
+  { label: 'message.jun', value: 6 },
+  { label: 'message.jul', value: 7 },
+  { label: 'message.aug', value: 8 },
+  { label: 'message.sep', value: 9 },
+  { label: 'message.oct', value: 10 },
+  { label: 'message.nov', value: 11 },
+  { label: 'message.dec', value: 12 },
 ];
 
 export const banks = [

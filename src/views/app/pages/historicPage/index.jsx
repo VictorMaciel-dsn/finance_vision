@@ -39,7 +39,7 @@ function HistoricPage({ intl }) {
   const [toast] = useIonToast();
 
   useEffect(() => {
-    if (isFirst.current || updateList) {
+    if (isFirst.current || updateList || (selectedMonth && currentYear.toString().length === 4)) {
       setIsLoading(true);
 
       getInfos()
@@ -52,11 +52,24 @@ function HistoricPage({ intl }) {
             let entries = 0;
             let exits = 0;
 
+            const getMonthAndYear = (dateStr) => {
+              const [datePart] = dateStr.split(',');
+              const [, month, year] = datePart.trim().split('/');
+              return {
+                month: parseInt(month, 10),
+                year: parseInt(year, 10),
+              };
+            };
+
             const formatValues = (items, label, updateTotal) => {
               if (items) {
                 Object.values(items).forEach((item) => {
-                  updateTotal(parseFloat(item?.value));
-                  _dataFormated.push({ ...item, label });
+                  const { month, year } = getMonthAndYear(item?.date);
+
+                  if (month === selectedMonth && year === currentYear) {
+                    updateTotal(parseFloat(item?.value));
+                    _dataFormated.push({ ...item, label });
+                  }
                 });
               }
             };
@@ -79,7 +92,7 @@ function HistoricPage({ intl }) {
 
       isFirst.current = false;
     }
-  }, [updateList]);
+  }, [updateList, selectedMonth, currentYear]);
 
   async function getInfos() {
     const db = getDatabase();
