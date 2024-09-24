@@ -17,9 +17,8 @@ import { getCurrentUser } from '../../../../helpers/utils';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { listUpdate, tokenUser } from '../../../../atoms/user';
 import LoadingComponent from '../../../../components/loading';
-import ModalConfirmDeleteCard from '../../../../components/modalConfirmDeleteCard';
-import ModalConfirmDeleteAccount from '../../../../components/modalConfirmDeleteAccount';
 import PanelTotalBalance from '../../../../components/panelTotalBalance';
+import ModalDelete from '../../../../components/modalDelete';
 
 function HomePage({ intl }) {
   const { messages } = intl;
@@ -93,6 +92,8 @@ function HomePage({ intl }) {
             }));
 
             setMyAccounts(_result);
+          } else {
+            setMyAccounts([]);
           }
         })
         .catch((error) => {
@@ -112,6 +113,8 @@ function HomePage({ intl }) {
             }));
 
             setMyCards(_result);
+          } else {
+            setMyCards([]);
           }
         })
         .catch((error) => {
@@ -178,17 +181,19 @@ function HomePage({ intl }) {
         selectedCard={selectedCard}
         setSelectedCard={setSelectedCard}
       />
-      <ModalConfirmDeleteCard
+      <ModalDelete
         isOpen={modalConfirmDeleteCard}
         setIsOpen={setModalConfirmDeleteCard}
-        selectedCard={selectedCard}
-        setSelectedCard={setSelectedCard}
+        item={selectedCard}
+        type="card"
+        setSelectedItem={setSelectedCard}
       />
-      <ModalConfirmDeleteAccount
+      <ModalDelete
         isOpen={modalConfirmDeleteAccount}
         setIsOpen={setModalConfirmDeleteAccount}
-        selectedAccount={selectedAccount}
-        setSelectedAccount={setSelectedAccount}
+        item={selectedAccount}
+        type="account"
+        setSelectedItem={setSelectedAccount}
       />
       <ModalAddAccounts
         isOpen={modalAddAccounts}

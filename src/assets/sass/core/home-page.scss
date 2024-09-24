@@ -13,7 +13,7 @@
             justify-content: end;
             .input-form {
                 padding: 5px;
-                font-size: var(--size-7);
+                font-size: var(--size-8);
                 margin-right: 5px;
                 width: 45px;
                 color: var(--color-text);
@@ -25,7 +25,7 @@
             flex-direction: row;
             align-items: center;
             color: var(--color-text);
-            font-size: var(--size-7);
+            font-size: var(--size-8);
             background: var(--footer-background);
 
             .custom-item {
@@ -33,6 +33,7 @@
                 padding: 10px;
 
                 i {
+                    font-size: 1.3rem;
                     &.positive {
                         color: var(--theme-color-3);
                     }
@@ -54,7 +55,7 @@
 
         .card-credit {
             color: var(--color-text);
-            font-size: var(--size-7);
+            font-size: var(--size-8);
             background: var(--footer-background);
 
             .card-header {
@@ -66,16 +67,15 @@
                     background: rgba(204, 204, 204, 0.2705882353);
                     padding: 5px;
                     border-radius: 5px;
-                    font-size: var(--size-7);
+                    font-size: var(--size-8);
                     border: 1px solid var(--color-separator);
                     color: var(--color-text);
-                    font-weight: bold;
                 }
             }
 
             .card-body {
-                height: calc(100vh - 550px);
-                max-height: calc(100vh - 550px);
+                height: calc(100vh - 685px);
+                max-height: calc(100vh - 685px);
                 overflow: auto;
                 padding: 0px 10px;
 
@@ -87,14 +87,14 @@
                     margin-top: 5px;
 
                     .btn-edit {
-                        font-size: var(--size-7);
+                        font-size: var(--size-8);
                         background: var(--theme-color-2);
                         border-color: var(--theme-color-2);
                         margin-right: 5px;
                     }
 
                     .btn-del {
-                        font-size: var(--size-7);
+                        font-size: var(--size-8);
                         background: var(--color-red);
                         border-color: var(--color-red);
                     }
@@ -104,7 +104,9 @@
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: var(--size-7);
+                    font-size: var(--size-8);
+                    width: 100%;
+                    height: 100%;
 
                     i {
                         margin-right: 5px;

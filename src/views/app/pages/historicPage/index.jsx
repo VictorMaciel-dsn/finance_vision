@@ -15,8 +15,8 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { listUpdate, tokenUser } from '../../../../atoms/user';
 import { get, getDatabase, ref, update } from 'firebase/database';
 import LoadingComponent from '../../../../components/loading';
-import ModalConfirmDelete from '../../../../components/modalConfirmDelete';
 import { useIonToast } from '@ionic/react';
+import ModalDelete from '../../../../components/modalDelete';
 
 function HistoricPage({ intl }) {
   const { messages } = intl;
@@ -155,7 +155,13 @@ function HistoricPage({ intl }) {
   return (
     <>
       <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
-      <ModalConfirmDelete isOpen={modalConfirm} setIsOpen={setModalConfirm} item={selectedItem} />
+      <ModalDelete
+        isOpen={modalConfirm}
+        setIsOpen={setModalConfirm}
+        item={selectedItem}
+        type="item"
+        setSelectedItem={setSelectedItem}
+      />
       <div className="historic-page">
         <TopNav />
         <div className="wow animate__animated animate__fadeIn">

@@ -6,7 +6,7 @@
 
     .modal-header {
         .modal-title {
-            font-size: var(--size-7);
+            font-size: var(--size-8);
             color: var(--color-text);
         }
         border-bottom: 1px solid #cccccc4d;
@@ -22,7 +22,7 @@
             color: var(--color-text);
             padding: 10px;
             margin: 10px;
-            font-size: var(--size-7);
+            font-size: var(--size-8);
             border: 1px solid var(--color-separator);
 
             .container {
@@ -110,7 +110,7 @@
                 }
 
                 .input-form {
-                    font-size: var(--size-7);
+                    font-size: var(--size-8);
                 }
             }
 
@@ -125,7 +125,7 @@
         .close-btn {
             background: var(--color-red);
             border-color: var(--color-red);
-            font-size: var(--size-7);
+            font-size: var(--size-8);
             display: flex;
             align-items: center;
             justify-content: center;

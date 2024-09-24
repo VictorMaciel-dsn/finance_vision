@@ -4,13 +4,14 @@ import { Button, FormGroup, Input, Label, Row } from 'reactstrap';
 import { Colxx } from '../../../components/common/customBootstrap';
 import { InputText } from 'primereact/inputtext';
 import { auth } from '../../../services';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import { useIonToast } from '@ionic/react';
 import { setCurrentUser } from '../../../helpers/utils';
 import { tokenUser } from '../../../atoms/user';
 import { useSetRecoilState } from 'recoil';
 import LoadingComponent from '../../../components/loading';
 import { injectIntl } from 'react-intl';
+import { validarEmail } from '../../../helpers/format';
 
 function LoginPage({ intl }) {
   const { messages } = intl;
@@ -23,6 +24,8 @@ function LoginPage({ intl }) {
   const [toast] = useIonToast();
   const [keepSession, setKeepSession] = useState(true);
   const inputRef = useRef(null);
+  const [isChangePassword, setIsChangePassword] = useState(false);
+  const [emailChangePassword, setEmailChangePassword] = useState('');
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -70,9 +73,49 @@ function LoginPage({ intl }) {
     setOpenEye(false);
   }
 
+  function submitChangePassword(e) {
+    e.preventDefault();
+
+    if (validarEmail(emailChangePassword)) {
+      setIsLoading(true);
+      sendPasswordResetEmail(auth, emailChangePassword)
+        .then(() => {
+          setTimeout(() => {
+            setIsLoading(false);
+            setEmailChangePassword('');
+            setIsChangePassword(false);
+            toast({
+              message: messages['message.sendEmailSuccess'],
+              duration: 2000,
+              position: 'bottom',
+            });
+          }, 2500);
+        })
+        .catch(() => {
+          setTimeout(() => {
+            setIsLoading(false);
+            toast({
+              message: messages['message.sendEmailError'],
+              duration: 2000,
+              position: 'bottom',
+            });
+          }, 2500);
+        });
+    } else {
+      toast({
+        message: messages['message.emailInvalid'],
+        duration: 2000,
+        position: 'bottom',
+      });
+    }
+  }
+
   return (
     <>
-      <LoadingComponent isLoading={isLoading} text={messages['message.entering']} />
+      <LoadingComponent
+        isLoading={isLoading}
+        text={isChangePassword ? messages['message.wait'] : messages['message.entering']}
+      />
       <div className="login-page">
         <div className="container-btn">
           <Button
@@ -152,7 +195,53 @@ function LoginPage({ intl }) {
               {messages['message.access']}
             </Button>
           </Row>
+          <Row>
+            <Colxx xxs={12}>
+              <Label
+                className="remember-password wow animate__animated animate__fadeIn"
+                data-wow-delay="0.7s"
+                onClick={() => {
+                  setIsChangePassword(!isChangePassword);
+                }}
+              >
+                Esqueci a senha
+              </Label>
+            </Colxx>
+          </Row>
         </form>
+        {isChangePassword ? (
+          <div className="container-form-remember">
+            <div
+              className={
+                isChangePassword
+                  ? 'card active wow animate__animated animate__fadeIn'
+                  : 'card wow animate__animated animate__fadeIn'
+              }
+            >
+              <form onSubmit={(e) => submitChangePassword(e)}>
+                <div className="container">
+                  <div className="label-container">
+                    <div className="background-icon first">
+                      <i className="pi pi-envelope" />
+                    </div>
+                    <InputText
+                      required
+                      className="input-form w-100"
+                      placeholder={messages['message.enterYourEmail']}
+                      value={emailChangePassword}
+                      onChange={(e) => setEmailChangePassword(e.target.value)}
+                    />
+                  </div>
+                  <Button type="submit" className="btn-send">
+                    <i className="pi pi-send" />
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );
