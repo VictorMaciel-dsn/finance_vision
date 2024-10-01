@@ -10,11 +10,11 @@ import { ChevronDownIcon } from 'primereact/icons/chevrondown';
 import { InputText } from 'primereact/inputtext';
 import { get, getDatabase, ref } from 'firebase/database';
 import { getCurrentUser } from '../../../../helpers/utils';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { tokenUser } from '../../../../atoms/user';
-import LoadingComponent from '../../../../components/loading';
 import Chart from 'chart.js/auto';
 import { currentColor } from '../../../../atoms/theme';
+import { currentIsLoad } from '../../../../atoms/loading';
 
 function GraphicsPage({ intl }) {
   const { messages } = intl;
@@ -24,11 +24,11 @@ function GraphicsPage({ intl }) {
   const translatedMonths = getTranslatedMonths(intl);
   const _userToken = getCurrentUser();
   const userToken = useRecoilValue(tokenUser);
-  const [isLoading, setIsLoading] = useState(false);
   const isFirst = useRef(true);
   const chartPolarRef = useRef(null);
   const chartBarRef = useRef(null);
   const theme = useRecoilValue(currentColor);
+  const setIsLoading = useSetRecoilState(currentIsLoad);
 
   useEffect(() => {
     if (isFirst.current) {
@@ -161,7 +161,6 @@ function GraphicsPage({ intl }) {
 
   return (
     <>
-      <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
       <div className="graphics-page">
         <TopNav />
         <div className="wow animate__animated animate__fadeIn">

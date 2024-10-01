@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { currentColor } from './atoms/theme';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import InitialPage from './views/public/initialPage';
 import SignUpPage from './views/public/signUpPage';
 import LoginPage from './views/public/loginPage';
@@ -18,6 +18,8 @@ import { auth } from './services';
 import { useIonToast } from '@ionic/react';
 import { injectIntl } from 'react-intl';
 import { currentLanguage } from './atoms/lang';
+import { currentIsLoad } from './atoms/loading';
+import LoadingComponent from './components/loading';
 
 function InnerRoutes({ intl }) {
   const { messages } = intl;
@@ -29,6 +31,7 @@ function InnerRoutes({ intl }) {
   const [toast] = useIonToast();
   const currentTheme = getCurrentTheme();
   const setLang = useSetRecoilState(currentLanguage);
+  const isLoading = useRecoilValue(currentIsLoad);
 
   useEffect(() => {
     if (currentTheme === 'dark') {
@@ -89,6 +92,7 @@ function InnerRoutes({ intl }) {
 
   return (
     <div className="main" data-theme={theme}>
+      <LoadingComponent isLoading={isLoading} />
       <Routes>
         <Route path="/" element={<InitialPage />} />
         <Route path="/signUp" element={<SignUpPage />} />

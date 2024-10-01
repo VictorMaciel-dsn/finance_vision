@@ -20,7 +20,6 @@ import { tokenUser, updateImageUser } from '../../../../atoms/user';
 import { langStorageKey, themeStorageKey, userStorageKey } from '../../../../constants/defaultValues';
 import { useIonToast } from '@ionic/react';
 import { InputText } from 'primereact/inputtext';
-import LoadingComponent from '../../../../components/loading';
 import { currentColor } from '../../../../atoms/theme';
 import { injectIntl } from 'react-intl';
 import { currentLanguage } from '../../../../atoms/lang';
@@ -28,6 +27,7 @@ import { FileUpload } from 'primereact/fileupload';
 import * as FireBaseStorage from 'firebase/storage';
 import { get, getDatabase, ref, set } from 'firebase/database';
 import defaultProfileImage from '../../../../assets/img/profile-image.jpg';
+import { currentIsLoad } from '../../../../atoms/loading';
 
 function ConfigPage({ intl }) {
   const { messages } = intl;
@@ -42,7 +42,6 @@ function ConfigPage({ intl }) {
   const [themeWhite, setThemeWhite] = useState(false);
   const [isChangePassword, setIsChangePassword] = useState(false);
   const [emailChangePassword, setEmailChangePassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const setTheme = useSetRecoilState(currentColor);
   const setLang = useSetRecoilState(currentLanguage);
   const currentLang = getCurrentLanguage();
@@ -54,6 +53,7 @@ function ConfigPage({ intl }) {
   const [profileImage, setProfileImage] = useState('');
   const [initialNameImage, setInitialNameImage] = useState('');
   const [isUpdateImage, setIsUpdateImage] = useRecoilState(updateImageUser);
+  const setIsLoading = useSetRecoilState(currentIsLoad);
 
   useEffect(() => {
     if (currentLang === 'pt-br') {
@@ -225,7 +225,6 @@ function ConfigPage({ intl }) {
 
   return (
     <>
-      <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
       <div className="config-page">
         <TopNav />
         <div className="screen wow animate__animated animate__fadeIn">

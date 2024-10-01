@@ -7,8 +7,7 @@ import { get, getDatabase, ref, update, set } from 'firebase/database';
 import { getCurrentUser } from '../../helpers/utils';
 import { listUpdate, tokenUser } from '../../atoms/user';
 import { parseJwt } from '../../helpers/format';
-import LoadingComponent from '../loading';
-import { useState } from 'react';
+import { currentIsLoad } from '../../atoms/loading';
 
 function ModalDelete({
   isOpen = false,
@@ -23,7 +22,7 @@ function ModalDelete({
   const [toast] = useIonToast();
   const _userToken = getCurrentUser();
   const userToken = useRecoilValue(tokenUser);
-  const [isLoading, setIsLoading] = useState(false);
+  const setIsLoading = useSetRecoilState(currentIsLoad);
   const setUpdateList = useSetRecoilState(listUpdate);
 
   function confirmDelete() {
@@ -159,7 +158,6 @@ function ModalDelete({
 
   return (
     <>
-      <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
       <Modal
         data-theme={theme}
         centered={true}

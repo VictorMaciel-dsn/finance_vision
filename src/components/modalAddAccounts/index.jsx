@@ -13,7 +13,7 @@ import { useIonToast } from '@ionic/react';
 import { bankOptionTemplate, getCurrentUser, selectedBankTemplate } from '../../helpers/utils';
 import { listUpdate, tokenUser } from '../../atoms/user';
 import { getDatabase, ref, update } from 'firebase/database';
-import LoadingComponent from '../loading';
+import { currentIsLoad } from '../../atoms/loading';
 
 function ModalAddAccounts({
   isOpen = false,
@@ -29,10 +29,10 @@ function ModalAddAccounts({
   const [titleAccount, setTitleAccount] = useState('');
   const [balanceAccount, setBalanceAccount] = useState('');
   const [toast] = useIonToast();
-  const [isLoading, setIsLoading] = useState(false);
   const _userToken = getCurrentUser();
   const userToken = useRecoilValue(tokenUser);
   const setUpdateList = useSetRecoilState(listUpdate);
+  const setIsLoading = useSetRecoilState(currentIsLoad);
 
   useEffect(() => {
     if (isOpen && selectedAccount) {
@@ -105,7 +105,6 @@ function ModalAddAccounts({
 
   return (
     <>
-      <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
       <Modal
         data-theme={theme}
         centered={true}

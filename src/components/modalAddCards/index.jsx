@@ -13,10 +13,10 @@ import {
   getCurrentUser /* selectedBankTemplate */,
 } from '../../helpers/utils';
 import { InputText } from 'primereact/inputtext';
-import LoadingComponent from '../loading';
 import { useIonToast } from '@ionic/react';
 import { listUpdate, tokenUser } from '../../atoms/user';
 import { get, getDatabase, ref, update } from 'firebase/database';
+import { currentIsLoad } from '../../atoms/loading';
 
 function ModalAddCard({
   isOpen = false,
@@ -35,12 +35,12 @@ function ModalAddCard({
   const [limitCard, setLimitCard] = useState('');
   const [closingDay, setClosingDay] = useState(null);
   const [dueDate, setDueDate] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [toast] = useIonToast();
   const _userToken = getCurrentUser();
   const userToken = useRecoilValue(tokenUser);
   const [accountOptions, setAccountOptions] = useState([]);
   const setUpdateList = useSetRecoilState(listUpdate);
+  const setIsLoading = useSetRecoilState(currentIsLoad);
 
   useEffect(() => {
     if (isOpen) {
@@ -147,7 +147,6 @@ function ModalAddCard({
 
   return (
     <>
-      <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
       <Modal
         data-theme={theme}
         centered={true}

@@ -11,12 +11,12 @@ import { ChevronUpIcon } from 'primereact/icons/chevronup';
 import { ChevronDownIcon } from 'primereact/icons/chevrondown';
 import { InputText } from 'primereact/inputtext';
 import { getCurrentUser } from '../../../../helpers/utils';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { listUpdate, tokenUser } from '../../../../atoms/user';
 import { get, getDatabase, ref, update } from 'firebase/database';
-import LoadingComponent from '../../../../components/loading';
 import { useIonToast } from '@ionic/react';
 import ModalDelete from '../../../../components/modalDelete';
+import { currentIsLoad } from '../../../../atoms/loading';
 
 function HistoricPage({ intl }) {
   const { messages } = intl;
@@ -30,13 +30,13 @@ function HistoricPage({ intl }) {
   const [list, setList] = useState([]);
   const [totalExits, setTotalExits] = useState(0);
   const [totalEntries, setTotalEntries] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const [modalConfirm, setModalConfirm] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [updateList, setUpdateList] = useRecoilState(listUpdate);
   const [editItemId, setEditItemId] = useState(null);
   const [editedItem, setEditedItem] = useState({ label: '', value: '' });
   const [toast] = useIonToast();
+  const setIsLoading = useSetRecoilState(currentIsLoad);
 
   useEffect(() => {
     if (isFirst.current || updateList || (selectedMonth && currentYear.toString().length === 4)) {
@@ -167,7 +167,6 @@ function HistoricPage({ intl }) {
 
   return (
     <>
-      <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
       <ModalDelete
         isOpen={modalConfirm}
         setIsOpen={setModalConfirm}

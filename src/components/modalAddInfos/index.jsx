@@ -8,8 +8,8 @@ import { getCurrentUser } from '../../helpers/utils';
 import { listUpdate, tokenUser } from '../../atoms/user';
 import { parseJwt } from '../../helpers/format';
 import { getDatabase, ref, update } from 'firebase/database';
-import LoadingComponent from '../loading';
 import { useIonToast } from '@ionic/react';
+import { currentIsLoad } from '../../atoms/loading';
 
 function ModalAddInfos({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
   const { messages } = intl;
@@ -21,9 +21,9 @@ function ModalAddInfos({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
   const [payments, setPayments] = useState('');
   const _userToken = getCurrentUser();
   const userToken = useRecoilValue(tokenUser);
-  const [isLoading, setIsLoading] = useState(false);
   const [toast] = useIonToast();
   const setUpdateList = useSetRecoilState(listUpdate);
+  const setIsLoading = useSetRecoilState(currentIsLoad);
 
   const submitData = (type, value, setValue) => async (e) => {
     e.preventDefault();
@@ -69,7 +69,6 @@ function ModalAddInfos({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
 
   return (
     <>
-      <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
       <Modal
         data-theme={theme}
         centered={true}

@@ -9,9 +9,9 @@ import { useIonToast } from '@ionic/react';
 import { setCurrentUser } from '../../../helpers/utils';
 import { tokenUser } from '../../../atoms/user';
 import { useSetRecoilState } from 'recoil';
-import LoadingComponent from '../../../components/loading';
 import { injectIntl } from 'react-intl';
 import { validarEmail } from '../../../helpers/format';
+import { currentIsLoad, currentTextLoad } from '../../../atoms/loading';
 
 function LoginPage({ intl }) {
   const { messages } = intl;
@@ -20,12 +20,12 @@ function LoginPage({ intl }) {
   const [password, setPassword] = useState('');
   const [openEye, setOpenEye] = useState(false);
   const setAccessToken = useSetRecoilState(tokenUser);
-  const [isLoading, setIsLoading] = useState(false);
   const [toast] = useIonToast();
   const [keepSession, setKeepSession] = useState(true);
   const inputRef = useRef(null);
   const [isChangePassword, setIsChangePassword] = useState(false);
   const [emailChangePassword, setEmailChangePassword] = useState('');
+  const setIsLoading = useSetRecoilState(currentIsLoad);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -112,10 +112,6 @@ function LoginPage({ intl }) {
 
   return (
     <>
-      <LoadingComponent
-        isLoading={isLoading}
-        text={isChangePassword ? messages['message.wait'] : messages['message.entering']}
-      />
       <div className="login-page">
         <div className="container-btn">
           <Button

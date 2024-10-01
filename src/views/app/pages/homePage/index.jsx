@@ -14,11 +14,11 @@ import { ChevronUpIcon } from 'primereact/icons/chevronup';
 import { InputText } from 'primereact/inputtext';
 import { get, getDatabase, ref } from 'firebase/database';
 import { getCurrentUser } from '../../../../helpers/utils';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { listUpdate, tokenUser } from '../../../../atoms/user';
-import LoadingComponent from '../../../../components/loading';
 import PanelTotalBalance from '../../../../components/panelTotalBalance';
 import ModalDelete from '../../../../components/modalDelete';
+import { currentIsLoad } from '../../../../atoms/loading';
 
 function HomePage({ intl }) {
   const { messages } = intl;
@@ -36,7 +36,6 @@ function HomePage({ intl }) {
   const [payableTotal, setPayableTotal] = useState(0);
   const [investedTotal, setInvestedTotal] = useState(0);
   const [paymentsTotal, setPaymentsTotal] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const [updateList, setUpdateList] = useRecoilState(listUpdate);
   const userId = getUserId(userToken, _userToken);
   const [myAccounts, setMyAccounts] = useState([]);
@@ -46,6 +45,7 @@ function HomePage({ intl }) {
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [modalConfirmDeleteAccount, setModalConfirmDeleteAccount] = useState(false);
   const opPanelTotalBance = useRef();
+  const setIsLoading = useSetRecoilState(currentIsLoad);
 
   useEffect(() => {
     if (isFirst.current || updateList || (selectedMonth && currentYear.toString().length === 4)) {
@@ -187,7 +187,6 @@ function HomePage({ intl }) {
 
   return (
     <>
-      <LoadingComponent isLoading={isLoading} text={messages['message.wait']} />
       <ModalAddCard
         isOpen={modalAddCards}
         setIsOpen={setModalAddCards}
