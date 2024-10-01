@@ -50,14 +50,14 @@ function Footer({ intl }) {
             </Button>
           </Colxx>
           <Colxx xxs={2}>
-            <div className={`${currentRoute === 'reports' ? 'active container-btn' : 'container-btn'}`}>
+            <div className={`${currentRoute === 'graphics' ? 'active container-btn' : 'container-btn'}`}>
               <i
                 onClick={() => {
-                  navigate('/reports');
+                  navigate('/graphics');
                 }}
                 className="pi pi-chart-pie"
               />
-              <div className="label">{messages['message.reports']}</div>
+              <div className="label">{messages['message.graphics']}</div>
             </div>
           </Colxx>
           <Colxx xxs={3}>

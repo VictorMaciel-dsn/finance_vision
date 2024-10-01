@@ -24,7 +24,7 @@ export default {
 
   // Footer and TopNav
   'message.home': 'Home',
-  'message.reports': 'Reports',
+  'message.graphics': 'Graphics',
   'message.historic': 'History',
   'message.settings': 'Settings',
 

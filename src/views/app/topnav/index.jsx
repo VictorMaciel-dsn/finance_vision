@@ -10,6 +10,7 @@ import { tokenUser, updateImageUser } from '../../../atoms/user';
 import PanelNotify from '../../../components/panelNotify';
 import { parseJwt } from '../../../helpers/format';
 import { getCurrentUser } from '../../../helpers/utils';
+import { TbBrandOpenai } from 'react-icons/tb';
 
 function TopNav({ intl }) {
   const { messages } = intl;
@@ -36,8 +37,8 @@ function TopNav({ intl }) {
       const _msg = messages['message.home'];
       setComponentLabel(_msg);
       setClassIcon('pi-home');
-    } else if (currentRoute === 'reports') {
-      const _msg = messages['message.reports'];
+    } else if (currentRoute === 'graphics') {
+      const _msg = messages['message.graphics'];
       setComponentLabel(_msg);
       setClassIcon('pi-chart-pie');
     } else if (currentRoute === 'config') {
@@ -107,8 +108,13 @@ function TopNav({ intl }) {
         <div className="container-user">
           <Avatar image={profileImage ? profileImage : defaultProfileImage} size="xlarge" shape="circle" />
           <div className="background-notify">
-            <i
+            {/*             <i
               className={`pi pi-bell ${isNotify ? 'active' : ''}`}
+              onClick={(e) => {
+                opNotify.current.toggle(e);
+              }}
+            /> */}
+            <TbBrandOpenai
               onClick={(e) => {
                 opNotify.current.toggle(e);
               }}

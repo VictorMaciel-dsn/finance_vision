@@ -6,7 +6,7 @@ import SignUpPage from './views/public/signUpPage';
 import LoginPage from './views/public/loginPage';
 import HistoricPage from './views/app/pages/historicPage';
 import HomePage from './views/app/pages/homePage';
-import ReportsPage from './views/app/pages/reportsPage';
+import GraphicsPage from './views/app/pages/graphicsPage';
 import ConfigPage from './views/app/pages/configPage';
 import { route } from './atoms/route';
 import { useEffect } from 'react';
@@ -96,7 +96,7 @@ function InnerRoutes({ intl }) {
         <Route path="/historic" element={<HistoricPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/config" element={<ConfigPage />} />
-        <Route path="/reports" element={<ReportsPage />} />
+        <Route path="/graphics" element={<GraphicsPage />} />
       </Routes>
     </div>
   );
