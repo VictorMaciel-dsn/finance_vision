@@ -4,7 +4,6 @@ import TopNav from '../../topnav';
 import { Colxx } from '../../../../components/common/customBootstrap';
 import { useEffect, useRef, useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
-import { months } from '../../../../constants/enums';
 import { injectIntl } from 'react-intl';
 import { getTranslatedMonths, parseJwt } from '../../../../helpers/format';
 import ModalAddCard from '../../../../components/modalAddCards';
@@ -19,15 +18,13 @@ import { listUpdate, tokenUser } from '../../../../atoms/user';
 import PanelTotalBalance from '../../../../components/panelTotalBalance';
 import ModalDelete from '../../../../components/modalDelete';
 import { currentIsLoad } from '../../../../atoms/loading';
+import { isCurrentMonth, isCurrentYear } from '../../../../atoms/filters';
 
 function HomePage({ intl }) {
   const { messages } = intl;
-  const currentMonth = new Date().getMonth();
-  const [selectedMonth, setSelectedMonth] = useState(months[currentMonth].value);
   const translatedMonths = getTranslatedMonths(intl);
   const [modalAddCards, setModalAddCards] = useState(false);
   const [modalAddAccounts, setModalAddAccounts] = useState(false);
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const isFirst = useRef(true);
   const _userToken = getCurrentUser();
   const userToken = useRecoilValue(tokenUser);
@@ -46,6 +43,8 @@ function HomePage({ intl }) {
   const [modalConfirmDeleteAccount, setModalConfirmDeleteAccount] = useState(false);
   const opPanelTotalBance = useRef();
   const setIsLoading = useSetRecoilState(currentIsLoad);
+  const [selectedMonth, setSelectedMonth] = useRecoilState(isCurrentMonth);
+  const [currentYear, setCurrentYear] = useRecoilState(isCurrentYear);
 
   useEffect(() => {
     if (isFirst.current || updateList || (selectedMonth && currentYear.toString().length === 4)) {

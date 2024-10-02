@@ -2,7 +2,6 @@ import { Button, Row } from 'reactstrap';
 import Footer from '../../footer';
 import TopNav from '../../topnav';
 import { Colxx } from '../../../../components/common/customBootstrap';
-import { months } from '../../../../constants/enums';
 import { injectIntl } from 'react-intl';
 import { getTranslatedMonths, parseJwt } from '../../../../helpers/format';
 import { Dropdown } from 'primereact/dropdown';
@@ -17,13 +16,13 @@ import { get, getDatabase, ref, update } from 'firebase/database';
 import { useIonToast } from '@ionic/react';
 import ModalDelete from '../../../../components/modalDelete';
 import { currentIsLoad } from '../../../../atoms/loading';
+import { isCurrentMonth, isCurrentYear } from '../../../../atoms/filters';
 
 function HistoricPage({ intl }) {
   const { messages } = intl;
-  const currentMonth = new Date().getMonth();
-  const [selectedMonth, setSelectedMonth] = useState(months[currentMonth].value);
   const translatedMonths = getTranslatedMonths(intl);
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [selectedMonth, setSelectedMonth] = useRecoilState(isCurrentMonth);
+  const [currentYear, setCurrentYear] = useRecoilState(isCurrentYear);
   const isFirst = useRef(true);
   const _userToken = getCurrentUser();
   const userToken = useRecoilValue(tokenUser);

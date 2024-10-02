@@ -4,11 +4,11 @@ import TopNav from '../../topnav';
 import { months } from '../../../../constants/enums';
 import { getTranslatedMonths, parseJwt } from '../../../../helpers/format';
 import { Dropdown } from 'primereact/dropdown';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { get, getDatabase, ref } from 'firebase/database';
 import { getCurrentUser } from '../../../../helpers/utils';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { ResponsiveBar } from '@nivo/bar';
 import { ResponsivePie } from '@nivo/pie';
 import { tokenUser } from '../../../../atoms/user';
@@ -16,31 +16,55 @@ import { currentColor } from '../../../../atoms/theme';
 import { currentIsLoad } from '../../../../atoms/loading';
 import { ChevronUpIcon } from 'primereact/icons/chevronup';
 import { ChevronDownIcon } from 'primereact/icons/chevrondown';
+import { isCurrentMonth, isCurrentYear } from '../../../../atoms/filters';
 
 function GraphicsPage({ intl }) {
   const { messages } = intl;
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-  const [selectedMonth, setSelectedMonth] = useState(months[new Date().getMonth()].value);
   const translatedMonths = getTranslatedMonths(intl);
+  const [selectedMonth, setSelectedMonth] = useRecoilState(isCurrentMonth);
+  const [currentYear, setCurrentYear] = useRecoilState(isCurrentYear);
   const userToken = useRecoilValue(tokenUser) || getCurrentUser();
   const theme = useRecoilValue(currentColor);
   const setIsLoading = useSetRecoilState(currentIsLoad);
   const [chartData, setChartData] = useState(null);
+  const isFirst = useRef(true);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetchUserData()
-      .then((res) => {
-        setIsLoading(false);
-        res && setChartData(processChartData(res));
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        console.error('Erro ao obter as informações:', error);
-      });
-  }, []);
+    const fetchAndProcessData = async () => {
+      if (!isFirst.current && !(selectedMonth && currentYear.toString().length === 4)) return;
 
-  async function fetchUserData() {
+      setIsLoading(true);
+
+      try {
+        const res = await getInfos();
+        if (res) {
+          const { image, ..._data } = res;
+
+          const filterValues = (items) =>
+            Object.values(items || []).filter(({ date }) => {
+              const [, month, year] = date.split(',')[0].trim().split('/');
+              return parseInt(month, 10) === selectedMonth && parseInt(year, 10) === currentYear;
+            });
+
+          const filteredData = ['entries', 'invested', 'payable', 'payments'].reduce((acc, key) => {
+            acc[key] = filterValues(_data[key]);
+            return acc;
+          }, {});
+
+          setChartData(processChartData(filteredData));
+        }
+      } catch (error) {
+        console.error('Erro ao obter as informações:', error);
+      } finally {
+        setIsLoading(false);
+        isFirst.current = false;
+      }
+    };
+
+    fetchAndProcessData();
+  }, [selectedMonth, currentYear]);
+
+  async function getInfos() {
     const userId = parseJwt(userToken).user_id;
     if (!userId) return null;
 
@@ -73,7 +97,7 @@ function GraphicsPage({ intl }) {
     <div className="graphics-page">
       <TopNav />
       <div className="wow animate__animated animate__fadeIn">
-        <div className="container-filter mb-2">
+        <div className="container-filter">
           <InputText
             className="input-form"
             placeholder="Ano"
@@ -96,66 +120,51 @@ function GraphicsPage({ intl }) {
         <div className="container-graphics">
           {chartData && (
             <>
-              {/* Gráfico em Donut */}
               <div className="donut-chart-container">
                 <ResponsivePie
                   data={chartData}
-                  margin={{ top: 0, right: 110, bottom: 0, left: 115 }} // Ajustando margens
+                  margin={{ top: 0, right: 110, bottom: 0, left: 115 }}
                   innerRadius={0.5}
                   padAngle={0.7}
                   cornerRadius={3}
                   activeOuterRadiusOffset={8}
-                  colors={({ id }) => {
-                    switch (id) {
-                      case 'Entradas':
-                        return 'var(--theme-color-3)';
-                      case 'A pagar':
-                        return 'var(--color-red)';
-                      case 'Investimentos':
-                        return 'var(--theme-color-2)';
-                      case 'Pagamentos':
-                        return 'var(--color-red)';
-                      default:
-                        return '#ccc'; // Cor de fallback
-                    }
-                  }}
+                  colors={({ id }) =>
+                    ({
+                      Entradas: 'var(--theme-color-3)',
+                      'A pagar': 'var(--color-red)',
+                      Investimentos: 'var(--theme-color-2)',
+                      Pagamentos: 'var(--color-red)',
+                    })[id] || '#ccc'
+                  }
                   borderWidth={1}
                   borderColor="#cccccc4d"
                   arcLinkLabelsTextColor={theme === 'dark' ? '#acacac' : '#333333'}
                   arcLinkLabelsThickness={2}
                   arcLinkLabelsColor={{ from: 'color' }}
                   arcLabelsRadiusOffset={0.5}
-                  arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
+                  arcLabelsTextColor="#fff"
                   theme={{
                     textColor: theme === 'dark' ? '#acacac' : '#333333',
                     tooltip: { container: { background: theme === 'dark' ? '#333' : '#fff' } },
                   }}
                 />
               </div>
-
-              {/* Gráfico de Barras */}
               <div className="bar-chart-container">
                 <ResponsiveBar
                   data={chartData}
                   keys={['value']}
                   indexBy="id"
-                  margin={{ top: 0, right: 10, bottom: 100, left: 50 }} // Ajuste nas margens
+                  margin={{ top: 10, right: 10, bottom: 100, left: 50 }}
                   padding={0.4}
-                  colors={({ data }) => {
-                    switch (data.id) {
-                      case 'Entradas':
-                        return 'var(--theme-color-3)';
-                      case 'A pagar':
-                        return 'var(--color-red)';
-                      case 'Investimentos':
-                        return 'var(--theme-color-2)';
-                      case 'Pagamentos':
-                        return 'var(--color-red)';
-                      default:
-                        return '#ccc'; // Cor de fallback
-                    }
-                  }}
-                  borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
+                  colors={({ data }) =>
+                    ({
+                      Entradas: 'var(--theme-color-3)',
+                      'A pagar': 'var(--color-red)',
+                      Investimentos: 'var(--theme-color-2)',
+                      Pagamentos: 'var(--color-red)',
+                    })[data.id] || '#ccc'
+                  }
+                  borderColor="#cccccc4d"
                   axisBottom={{
                     tickSize: 5,
                     tickPadding: 5,
@@ -163,7 +172,8 @@ function GraphicsPage({ intl }) {
                     legend: 'Categoria',
                     legendPosition: 'middle',
                     legendOffset: 50,
-                    tickTextColor: theme === 'dark' ? '#acacac' : '#333333', // Cor dos ticks conforme o tema
+                    tickTextColor: theme === 'dark' ? '#acacac' : '#333333',
+                    legendTextColor: theme === 'dark' ? '#acacac' : '#333333',
                   }}
                   axisLeft={{
                     tickSize: 5,
@@ -172,14 +182,18 @@ function GraphicsPage({ intl }) {
                     legendPosition: 'middle',
                     legendOffset: -40,
                     tickValues: 'auto',
-                    tickTextColor: theme === 'dark' ? '#acacac' : '#333333', // Cor dos ticks conforme o tema
+                    tickTextColor: theme === 'dark' ? '#acacac' : '#333333',
+                    legendTextColor: theme === 'dark' ? '#acacac' : '#333333',
                   }}
                   theme={{
-                    textColor: theme === 'dark' ? '#acacac' : '#333333', // Cor do texto geral conforme o tema
+                    axis: {
+                      ticks: { text: { fill: theme === 'dark' ? '#acacac' : '#333333' } },
+                      legend: { text: { fill: theme === 'dark' ? '#acacac' : '#333333' } },
+                    },
+                    textColor: theme === 'dark' ? '#acacac' : '#333333',
                     tooltip: { container: { background: theme === 'dark' ? '#333' : '#fff' } },
                   }}
-                  // Adicionando a propriedade para mudar a cor dos labels das barras
-                  labelTextColor={theme === 'dark' ? '#acacac' : '#333333'} // Cor do texto dos labels das colunas
+                  labelTextColor="#ffff"
                 />
               </div>
             </>
