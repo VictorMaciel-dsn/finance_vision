@@ -11,7 +11,7 @@ import { tokenUser } from '../../../atoms/user';
 import { useSetRecoilState } from 'recoil';
 import { injectIntl } from 'react-intl';
 import { validarEmail } from '../../../helpers/format';
-import { currentIsLoad, currentTextLoad } from '../../../atoms/loading';
+import { currentIsLoad } from '../../../atoms/loading';
 
 function LoginPage({ intl }) {
   const { messages } = intl;

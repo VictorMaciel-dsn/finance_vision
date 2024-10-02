@@ -1,4 +1,4 @@
-.graphics-page{
+.graphics-page {
     width: 100%;
     height: 100%;
     background: var(--color-background);
@@ -9,7 +9,8 @@
         align-items: center;
         justify-content: end;
         padding-right: 10px;
-        .input-form{
+
+        .input-form {
             padding: 5px;
             font-size: var(--size-8);
             margin-right: 5px;
@@ -17,7 +18,40 @@
             color: var(--color-text);
         }
     }
-    .container-graphics{
-        
+
+    .container-graphics {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        max-height: 100%; // Corrigir o tamanho total
+        overflow: hidden;
+    }
+
+    /* Ajustes para o gráfico circular (donut) */
+    .donut-chart-container {
+        width: 90%;
+        max-width: 400px;
+        height: 40vh; // Ajuste a altura do gráfico em donut
+    }
+
+    /* Ajustes para o gráfico de barras */
+    .bar-chart-container {
+        width: 90%;
+        max-width: 400px;
+        height: 40vh; // Ajuste a altura do gráfico de barras para dividir o espaço com o gráfico em donut
+        margin-top: 20px;
+    }
+
+    /* Adiciona um breakpoint para melhor responsividade em telas menores */
+    @media (max-width: 768px) {
+        .container-graphics {
+            flex-direction: column;
+        }
+
+        .donut-chart-container,
+        .bar-chart-container {
+            width: 100%; // Ocupa toda a largura da tela em dispositivos menores
+        }
     }
 }
