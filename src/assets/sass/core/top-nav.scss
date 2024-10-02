@@ -29,29 +29,40 @@
         align-items: center;
         justify-content: center;
 
-        .background-notify {
+        .p-avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        .background-chat {
             background: var(--footer-background);
             color: var(--color-primary);
             padding: 5px;
             border-radius: 50%;
-            height: 2rem;
-            width: 2rem;
+            height: 2.5rem;
+            width: 2.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-left: 10px;
+            animation: pulse 1.5s infinite;
+
             i {
-                font-size: var(--size-8);
-                color: var(--color-text);
-                &.active {
-                    color: var(--theme-color-1);
-                }
+                font-size: var(--size-1);
+                color: #00997a;
             }
         }
+    }
 
-        .p-avatar {
-            width: 2rem;
-            height: 2rem;
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
         }
     }
 }

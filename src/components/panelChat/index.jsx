@@ -1,16 +1,16 @@
 import { injectIntl } from 'react-intl';
 import { OverlayPanel } from 'primereact/overlaypanel';
 
-function PanelNotify({ intl, op }) {
+function PanelChat({ intl, op }) {
   const { messages } = intl;
 
   return (
     <>
       <OverlayPanel ref={op} appendTo={document.getElementsByClassName('main')[0]}>
-        Notificações - TESTE - 123
+        ChatBOT - 123
       </OverlayPanel>
     </>
   );
 }
 
-export default injectIntl(PanelNotify);
+export default injectIntl(PanelChat);

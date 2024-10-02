@@ -7,10 +7,9 @@ import { currentLanguage } from '../../../atoms/lang';
 import { get, getDatabase, ref } from 'firebase/database';
 import defaultProfileImage from '../../../assets/img/profile-image.jpg';
 import { tokenUser, updateImageUser } from '../../../atoms/user';
-import PanelNotify from '../../../components/panelNotify';
+import PanelChat from '../../../components/panelChat';
 import { parseJwt } from '../../../helpers/format';
 import { getCurrentUser } from '../../../helpers/utils';
-import { TbBrandOpenai } from 'react-icons/tb';
 
 function TopNav({ intl }) {
   const { messages } = intl;
@@ -22,7 +21,6 @@ function TopNav({ intl }) {
   const [profileImage, setProfileImage] = useState('');
   const isFirst = useRef(true);
   const isUpdateImage = useRecoilValue(updateImageUser);
-  const [isNotify, setIsNotify] = useState(false);
   const opNotify = useRef(null);
   const _userToken = getCurrentUser();
   const userToken = useRecoilValue(tokenUser);
@@ -95,7 +93,7 @@ function TopNav({ intl }) {
 
   return (
     <>
-      <PanelNotify op={opNotify} />
+      <PanelChat op={opNotify} />
       <div className="container-topnav wow animate__animated animate__fadeIn">
         <div className="label">
           <div className="user-label">
@@ -107,14 +105,9 @@ function TopNav({ intl }) {
         </div>
         <div className="container-user">
           <Avatar image={profileImage ? profileImage : defaultProfileImage} size="xlarge" shape="circle" />
-          <div className="background-notify">
-            {/*             <i
-              className={`pi pi-bell ${isNotify ? 'active' : ''}`}
-              onClick={(e) => {
-                opNotify.current.toggle(e);
-              }}
-            /> */}
-            <TbBrandOpenai
+          <div className="background-chat">
+            <i
+              className="pi pi-microchip-ai"
               onClick={(e) => {
                 opNotify.current.toggle(e);
               }}
