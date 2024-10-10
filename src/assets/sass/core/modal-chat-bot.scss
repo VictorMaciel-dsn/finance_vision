@@ -1,0 +1,22 @@
+.modal-chat-bot {
+    .modal-content {
+        background: var(--color-background);
+        border: 1px solid #cccccc4d;
+    }
+
+    .modal-body {
+        max-height: 40rem;
+        min-height: 40rem;
+        overflow: auto;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #cccccc4d;
+
+        .btn-closed {
+            font-size: var(--size-8);
+            background: var(--color-red);
+            border-color: var(--color-red);
+        }
+    }
+}

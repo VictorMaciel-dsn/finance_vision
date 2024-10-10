@@ -1,7 +1,6 @@
 import { injectIntl } from 'react-intl';
 import Footer from '../../footer';
 import TopNav from '../../topnav';
-import { months } from '../../../../constants/enums';
 import { getTranslatedMonths, parseJwt } from '../../../../helpers/format';
 import { Dropdown } from 'primereact/dropdown';
 import { useEffect, useRef, useState } from 'react';

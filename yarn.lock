@@ -2207,6 +2207,37 @@
   resolved "https://registry.yarnpkg.com/@stencil/core/-/core-4.19.2.tgz#02d377aa0133fa211f5e4c1ace4baa329ed1cde2"
   integrity sha512-ZdnbHmHEl8E5vN0GWDtONe5w6j3CrSqqxZM4hNLBPkV/aouWKug7D5/Mi6RazfYO5U4fmHQYLwMz60rHcx0G4g==
 
+"@typebot.io/js@^0.3.20":
+  version "0.3.20"
+  resolved "https://registry.yarnpkg.com/@typebot.io/js/-/js-0.3.20.tgz#650b7d87b3e2149ec2338efcf595eed358bdf22a"
+  integrity sha512-ckmP8FUE3PHYrVZFF9gZpBzxnfMg4YvuMyfgVwfupXyzQ7hh2lt/nrauAspZ3dpwiQhVzrmKJaH6C/sTDTxjpw==
+  dependencies:
+    "@ai-sdk/ui-utils" "0.0.36"
+    "@ark-ui/solid" "3.9.0"
+    "@fix-webm-duration/fix" "1.0.1"
+    "@stripe/stripe-js" "1.54.1"
+    "@typebot.io/blocks-bubbles" "0.0.1"
+    "@typebot.io/blocks-inputs" "0.0.1"
+    "@typebot.io/blocks-logic" "0.0.1"
+    "@typebot.io/bot-engine" "0.0.1"
+    "@typebot.io/env" "0.0.1"
+    "@typebot.io/lib" "0.0.1"
+    "@typebot.io/rich-text" "0.0.1"
+    "@typebot.io/settings" "0.0.1"
+    "@typebot.io/theme" "0.0.1"
+    clsx "2.0.0"
+    dompurify "3.0.6"
+    ky "1.2.4"
+    marked "9.0.3"
+    partysocket "1.0.2"
+    solid-element "1.7.1"
+    solid-js "1.7.8"
+
+"@typebot.io/react@^0.3.20":
+  version "0.3.20"
+  resolved "https://registry.yarnpkg.com/@typebot.io/react/-/react-0.3.20.tgz#582c8a24704b08e4382aa6d6fee1974e17fecdf5"
+  integrity sha512-ciAXtnYS0N9PThSbbo0NaIraY9JVnXnv9IsBlNQb1Tuzy7uuhxmshDW5NVQQOykAZnMChRU1wGNegmk1W7mlHA==
+
 "@types/babel__core@^7.20.5":
   version "7.20.5"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.20.5.tgz#3df15f27ba85319caa07ba08d0721889bb39c017"

@@ -23,6 +23,8 @@
     "@nivo/bar": "^0.87.0",
     "@nivo/core": "^0.87.0",
     "@nivo/pie": "^0.87.0",
+    "@typebot.io/js": "^0.3.20",
+    "@typebot.io/react": "^0.3.20",
     "animate.css": "^4.1.1",
     "bootstrap": "^5.3.3",
     "eslint-plugin-prettier": "^5.1.3",
