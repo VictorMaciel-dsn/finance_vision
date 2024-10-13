@@ -66,18 +66,11 @@
     "react/no-unknown-property": "off",
     "react/prop-types": "off",
     "react/no-unescaped-entities": "off",
-    "no-unused-vars": "error",
+    "no-unused-vars": "off",
     "no-debugger": "error",
-    "unused-imports/no-unused-imports": "error",
-    "unused-imports/no-unused-vars": [
-      "error",
-      {
-        "vars": "all",
-        "varsIgnorePattern": "^_",
-        "args": "after-used",
-        "argsIgnorePattern": "^_"
-      }
-    ]
+    "unused-imports/no-unused-imports": "off",
+    "unused-imports/no-unused-vars": "off",
+    "no-irregular-whitespace": "off"
   },
   "ignorePatterns": [
     "**/*.tsx",

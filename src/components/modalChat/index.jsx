@@ -1,6 +1,6 @@
 import { injectIntl } from 'react-intl';
 import { Standard } from '@typebot.io/react';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import { currentColor } from '../../atoms/theme';
 import { useRecoilValue } from 'recoil';
 
@@ -29,7 +29,7 @@ function ModalChatBot({ intl = '', isOpen = false, setIsOpen = () => {} }) {
               setIsOpen(!isOpen);
             }}
           >
-            Fechar
+            {messages['message.close']}
           </Button>
         </ModalFooter>
       </Modal>

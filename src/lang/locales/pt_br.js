@@ -15,12 +15,14 @@ export default {
   'message.password': 'Senha',
   'message.passwordConfirm': 'Confirme a senha',
   'message.confirm': 'Confirmar',
+  'message.name': 'Nome ou apelido',
 
   // Tela login
   'message.errorLogin': 'Houve um erro ao realizar o login!',
   'message.entering': 'Entrando...',
   'message.keepSession': 'Manter sessão',
   'message.access': 'Acessar',
+  'message.forgotPassword': 'Esqueci a senha',
 
   // Footer e TopNav
   'message.home': 'Início',
@@ -56,6 +58,11 @@ export default {
   'message.goodMorning': 'Bom dia,',
   'message.goodAfternoon': 'Boa tarde,',
   'message.goodNight': 'Boa noite,',
+  'message.registerUpdateSuccess': 'Registro atualizado com sucesso!',
+  'message.registerUpdateError': 'Houve um erro ao atualizar o registro!',
+
+  // Filtros
+  'message.year': 'Ano',
 
   // Tela início
 
@@ -74,13 +81,21 @@ export default {
   'message.dec': 'Dezembro',
   'message.totalBalance': 'Saldo total',
   'message.entries': 'Entradas',
+  'message.exits': 'Saídas',
   'message.payable': 'A pagar',
-  'message.investees': 'Investidos',
+  'message.investes': 'Investidos',
   'message.paidOut': 'Pago',
   'message.myCards': 'Meus cartões',
   'message.add': 'Adicionar',
   'message.noCardRegistered': 'Nenhum cartão cadastrado!',
   'message.myAccounts': 'Minhas contas',
+  'message.cardName': 'Nome do cartão',
+  'message.closingDay': 'Dia de fechamento',
+  'message.dueDateHome': 'Dia de vencimento',
+  'message.limitCard': 'Limite',
+  'message.accountName': 'Nome da conta:',
+  'message.accountBalance': 'Saldo:',
+  'message.noAccountRegistered': 'Nenhuma conta cadastrada!',
 
   // Modal adicionar informações
 
@@ -89,6 +104,8 @@ export default {
   'message.payments': 'Pagamentos',
   'message.enterTheValue': 'Insira o valor',
   'message.close': 'Fechar',
+  'message.valueSaveSuccess': 'Valor salvo com sucesso!',
+  'message.valueSaveError': 'Houve um erro ao salvar o valor!',
 
   // Modal criar contas
 
@@ -104,18 +121,40 @@ export default {
   'message.selectAccountIcon': 'Selecione o ícone da conta',
   'message.titleAccount': 'Título da conta, Ex: "Nubank"',
   'message.balanceAccount': 'Saldo da conta, Ex: "100,00"',
+  'message.userNotAccess': 'Usuário não autenticado',
+  'message.accountEditSuccess': 'Conta editada com sucesso!',
+  'message.accountSaveSuccess': 'Conta salva com sucesso!',
+  'message.accountEditError': 'Houve um erro ao editar a conta!',
+  'message.accountSaveError': 'Houve um erro ao salvar a conta!',
+  'message.createdAccount': 'Criar nova conta',
+  'message.editAccount': 'Editar conta',
 
   // Modal criar cartões
   'message.notData': 'Nenhum dado disponível',
   'message.createCard': 'Criar novo cartão',
   'message.paymentAccount': 'Conta de pagamento',
   'message.cardIcon': 'Ícone do cartão',
-  'message.cardName': 'Nome do cartão',
   'message.totalLimit': 'Limite total',
-  'message.closingDay': 'Fecha dia',
   'message.dueDate': 'Vence dia',
+  'message.cardSaveSuccess': 'Cartão salvo com sucesso!',
+  'message.cardSaveError': 'Houve um erro ao salvar o cartão!',
+  'message.editCard': 'Editar cartão',
 
   // Modal confirmação
   'message.confirmDelete': 'Tem certeza que deseja excluir o registro abaixo?',
-  // Finalizar !!
+  'message.registerDeleteSuccess': 'Registro removido com sucesso!',
+  'message.registerDeleteError': 'Houve um erro ao remover o registro!',
+  'message.attention': 'Atenção',
+  'message.yes': 'Sim',
+  'message.no': 'Não',
+
+  // Tela histórico
+  'message.type': 'Tipo',
+  'message.value': 'Valor',
+  'message.date': 'Data',
+  'message.informValue': 'Informe o valor',
+
+  // Painel total valores
+  'messages.accountBalance': 'Saldo em contas',
+  'message.titlePanel': 'O saldo total é composto pelos seguintes valores:',
 };

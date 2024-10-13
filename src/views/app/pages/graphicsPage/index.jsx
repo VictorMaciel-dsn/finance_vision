@@ -78,10 +78,10 @@ function GraphicsPage({ intl }) {
   function processChartData(data) {
     const sumValues = (items) => Object.values(items || {}).reduce((acc, item) => acc + parseFloat(item.value), 0);
     return [
-      { id: 'Entradas', value: sumValues(data.entries) },
-      { id: 'Investimentos', value: sumValues(data.invested) },
-      { id: 'Pagamentos', value: sumValues(data.payments) },
-      { id: 'A pagar', value: sumValues(data.payable) },
+      { id: messages['message.entries'], value: sumValues(data.entries) },
+      { id: messages['message.investments'], value: sumValues(data.invested) },
+      { id: messages['message.payments'], value: sumValues(data.payments) },
+      { id: messages['message.payable'], value: sumValues(data.payable) },
     ];
   }
 
@@ -99,7 +99,7 @@ function GraphicsPage({ intl }) {
         <div className="container-filter">
           <InputText
             className="input-form"
-            placeholder="Ano"
+            placeholder={messages['message.year']}
             type="number"
             value={currentYear}
             onChange={(e) => e.target.value.length <= 4 && setCurrentYear(e.target.value)}

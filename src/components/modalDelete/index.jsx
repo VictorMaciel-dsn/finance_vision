@@ -61,7 +61,7 @@ function ModalDelete({
         saveMethod(dataRef, data)
           .then(() => {
             toast({
-              message: 'Registro removido com sucesso!',
+              message: messages['message.registerDeleteSuccess'],
               duration: 2000,
               position: 'bottom',
             });
@@ -72,7 +72,7 @@ function ModalDelete({
           .catch((error) => {
             console.error('Erro ao atualizar a lista no Firebase:', error);
             toast({
-              message: 'Houve um erro ao remover o registro!',
+              message: messages['message.registerDeleteError'],
               duration: 2000,
               position: 'bottom',
             });
@@ -115,13 +115,13 @@ function ModalDelete({
       return (
         <>
           <div>
-            <b>Tipo:</b> {item?.label}
+            <b>{messages['message.type']}:</b> {item?.label}
           </div>
           <div>
-            <b>Valor:</b> {item?.value}
+            <b>{messages['message.value']}:</b> {item?.value}
           </div>
           <div>
-            <b>Data:</b> {item?.date}
+            <b>{messages['message.date']}:</b> {item?.date}
           </div>
         </>
       );
@@ -129,10 +129,10 @@ function ModalDelete({
       return (
         <>
           <div>
-            <b>Nome da conta:</b> {item?.name}
+            <b>{messages['message.accountName']}</b> {item?.name}
           </div>
           <div>
-            <b>Saldo:</b> {item?.balance}
+            <b>{messages['message.accountBalance']}</b> {item?.balance}
           </div>
         </>
       );
@@ -140,16 +140,16 @@ function ModalDelete({
       return (
         <>
           <div>
-            <b>Nome do cartão:</b> {item?.nameCard}
+            <b>{messages['message.cardName']}:</b> {item?.nameCard}
           </div>
           <div>
-            <b>Dia de fechamento:</b> {item?.closingDay}
+            <b>{messages['message.closingDay']}:</b> {item?.closingDay}
           </div>
           <div>
-            <b>Data de vencimento:</b> {item?.dueDate}
+            <b>{messages['message.dueDateHome']}:</b> {item?.dueDate}
           </div>
           <div>
-            <b>Limite:</b> {item?.limitCard}
+            <b>{messages['message.limitCard']}:</b> {item?.limitCard}
           </div>
         </>
       );
@@ -169,7 +169,7 @@ function ModalDelete({
         }}
       >
         <ModalHeader>
-          <i className="pi pi-exclamation-triangle" /> Atenção
+          <i className="pi pi-exclamation-triangle" /> {messages['message.attention']}
         </ModalHeader>
         <ModalBody>
           <div className="title">{messages['message.confirmDelete']}</div>
@@ -182,7 +182,7 @@ function ModalDelete({
               confirmDelete();
             }}
           >
-            Sim
+            {messages['message.yes']}
           </Button>
           <Button
             className="btn-no"
@@ -191,7 +191,7 @@ function ModalDelete({
               setIsOpen(!isOpen);
             }}
           >
-            Não
+            {messages['message.no']}
           </Button>
         </ModalFooter>
       </Modal>

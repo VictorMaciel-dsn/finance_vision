@@ -200,7 +200,7 @@ function LoginPage({ intl }) {
                   setIsChangePassword(!isChangePassword);
                 }}
               >
-                Esqueci a senha
+                {messages['message.forgotPassword']}
               </Label>
             </Colxx>
           </Row>

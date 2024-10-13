@@ -135,7 +135,7 @@ function HomePage({ intl }) {
 
       isFirst.current = false;
     }
-  }, [updateList, selectedMonth, currentYear]); // Agora escuta também o mês e ano selecionados
+  }, [updateList, selectedMonth, currentYear]);
 
   function getUserId(userToken, _userToken) {
     const user = userToken || _userToken;
@@ -219,7 +219,7 @@ function HomePage({ intl }) {
           <div className="container-filter mb-2">
             <InputText
               className="input-form"
-              placeholder="Ano"
+              placeholder={messages['message.year']}
               type="number"
               value={currentYear}
               onChange={(e) => {
@@ -297,7 +297,7 @@ function HomePage({ intl }) {
                   <i className="null pi pi-check-circle" />
                 </div>
                 <div>
-                  <div>{messages['message.investees']}</div>
+                  <div>{messages['message.investes']}</div>
                   <strong>R$ {investedTotal.toFixed(2)}</strong>
                 </div>
               </Card>
@@ -339,19 +339,19 @@ function HomePage({ intl }) {
                         <div key={x.id} className="container-card">
                           <Row>
                             <Colxx xxs={12}>
-                              Nome do cartão: <b>{x.nameCard}</b>
+                              {messages['message.cardName']}: <b>{x.nameCard}</b>
                             </Colxx>
                           </Row>
                           <Row>
                             <Colxx xxs={7}>
                               <div>
-                                Dia de fechamento: <b>{x.closingDay}</b>
+                                {messages['message.closingDay']}: <b>{x.closingDay}</b>
                               </div>
                               <div>
-                                Dia de vencimento: <b>{x.dueDate}</b>
+                                {messages['message.dueDateHome']}: <b>{x.dueDate}</b>
                               </div>
                               <div>
-                                Limite: <b>{x.limitCard}</b>
+                                {messages['message.limitCard']}: <b>{x.limitCard}</b>
                               </div>
                             </Colxx>
                             <Colxx xxs={5}>
@@ -412,13 +412,13 @@ function HomePage({ intl }) {
                         <div key={x.id} className="container-card">
                           <Row>
                             <Colxx xxs={12}>
-                              Nome da conta: <b>{x.name}</b>
+                              {messages['message.accountName']} <b>{x.name}</b>
                             </Colxx>
                           </Row>
                           <Row>
                             <Colxx xxs={7}>
                               <div>
-                                Saldo: <b>{x.balance}</b>
+                                {messages['message.accountBalance']} <b>{x.balance}</b>
                               </div>
                             </Colxx>
                             <Colxx xxs={5}>
@@ -447,7 +447,7 @@ function HomePage({ intl }) {
                     </>
                   ) : (
                     <div className="no-data">
-                      <i className="pi pi-exclamation-circle" /> Nenhuma conta cadastrada!
+                      <i className="pi pi-exclamation-circle" /> {messages['message.noAccountRegistered']}
                     </div>
                   )}
                 </CardBody>

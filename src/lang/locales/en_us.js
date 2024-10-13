@@ -15,12 +15,14 @@ export default {
   'message.password': 'Password',
   'message.passwordConfirm': 'Confirm password',
   'message.confirm': 'Confirm',
+  'message.name': 'Name or nickname',
 
   // Login screen
   'message.errorLogin': 'There was an error logging in!',
   'message.entering': 'Entering...',
   'message.keepSession': 'Keep session',
   'message.access': 'Access',
+  'message.forgotPassword': 'Forgot password',
 
   // Footer and TopNav
   'message.home': 'Home',
@@ -56,6 +58,11 @@ export default {
   'message.goodMorning': 'Good morning,',
   'message.goodAfternoon': 'Good afternoon,',
   'message.goodNight': 'Good night,',
+  'message.registerUpdateSuccess': 'Registration updated successfully!',
+  'message.registerUpdateError': 'There was an error updating the registration!',
+
+  // Filters
+  'message.year': 'Year',
 
   // Home screen
 
@@ -74,13 +81,21 @@ export default {
   'message.dec': 'December',
   'message.totalBalance': 'Total balance',
   'message.entries': 'Entries',
+  'message.exits': 'Exits',
   'message.payable': 'Payable',
-  'message.investees': 'Invested',
+  'message.investes': 'Invested',
   'message.paidOut': 'Paid',
   'message.myCards': 'My Cards',
   'message.add': 'Add',
   'message.noCardRegistered': 'No card registered!',
   'message.myAccounts': 'My Accounts',
+  'message.cardName': 'Card Name',
+  'message.closingDay': 'Closing Day',
+  'message.dueDateHome': 'Due Day',
+  'message.limitCard': 'Limit',
+  'message.accountName': 'Account Name:',
+  'message.accountBalance': 'Balance:',
+  'message.noAccountRegistered': 'No account registered!',
 
   // Modal add information
 
@@ -89,6 +104,8 @@ export default {
   'message.payments': 'Payments',
   'message.enterTheValue': 'Enter the value',
   'message.close': 'Close',
+  'message.valueSaveSuccess': 'Value saved successfully!',
+  'message.valueSaveError': 'There was an error saving the value!',
 
   // Create accounts modal
 
@@ -104,18 +121,40 @@ export default {
   'message.selectAccountIcon': 'Select Account Icon',
   'message.titleAccount': 'Account Title, Ex: "Nubank"',
   'message.balanceAccount': 'Account Balance, Ex: "100.00"',
+  'message.userNotAccess': 'User not authenticated',
+  'message.accountEditSuccess': 'Account edited successfully!',
+  'message.accountSaveSuccess': 'Account saved successfully!',
+  'message.accountEditError': 'There was an error editing the account!',
+  'message.accountSaveError': 'There was an error saving the account!',
+  'message.createdAccount': 'Create new account',
+  'message.editAccount': 'Edit account',
 
   // Modal to create cards
   'message.notData': 'No data available',
   'message.createCard': 'Create new card',
   'message.paymentAccount': 'Payment account',
   'message.cardIcon': 'Card icon',
-  'message.cardName': 'Card name',
   'message.totalLimit': 'Total limit',
-  'message.closingDay': 'Closes day',
   'message.dueDate': 'Expires day',
+  'message.cardSaveSuccess': 'Card saved successfully!',
+  'message.cardSaveError': 'There was an error saving the card!',
+  'message.editCard': 'Edit card',
 
   // Modal confirmação
   'message.confirmDelete': 'Are you sure you want to delete the record below?',
-  // Finalizar !!
+  'message.registerDeleteSuccess': 'Registration successfully removed!',
+  'message.registerDeleteError': 'There was an error deleting the registration!',
+  'message.attention': 'Attention',
+  'message.yes': 'Yes',
+  'message.no': 'No',
+
+  // History screen
+  'message.type': 'Type',
+  'message.value': 'Value',
+  'message.date': 'Date',
+  'message.informValue': 'Inform the value',
+
+  // Total values ​​panel
+  'messages.accountBalance': 'Account balance',
+  'message.titlePanel': 'The total balance is composed of the following values:',
 };

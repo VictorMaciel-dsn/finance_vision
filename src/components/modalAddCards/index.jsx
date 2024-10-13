@@ -7,11 +7,8 @@ import { Colxx } from '../common/customBootstrap';
 import { Dropdown } from 'primereact/dropdown';
 import { ChevronUpIcon } from 'primereact/icons/chevronup';
 import { ChevronDownIcon } from 'primereact/icons/chevrondown';
-import { /* getTranslatedBanks */ parseJwt } from '../../helpers/format';
-import {
-  /* bankOptionTemplate */ createDaysOptions,
-  getCurrentUser /* selectedBankTemplate */,
-} from '../../helpers/utils';
+import { parseJwt } from '../../helpers/format';
+import { createDaysOptions, getCurrentUser } from '../../helpers/utils';
 import { InputText } from 'primereact/inputtext';
 import { useIonToast } from '@ionic/react';
 import { listUpdate, tokenUser } from '../../atoms/user';
@@ -27,9 +24,7 @@ function ModalAddCard({
 }) {
   const { messages } = intl;
   const theme = useRecoilValue(currentColor);
-  // const translatedBanks = getTranslatedBanks(intl);
   const daysOptions = createDaysOptions();
-  // const [selectedCardIcon, setSelectedCardIcon] = useState(null);
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [nameCard, setNameCard] = useState('');
   const [limitCard, setLimitCard] = useState('');
@@ -52,11 +47,8 @@ function ModalAddCard({
           }));
 
           setAccountOptions(_result);
-          // console.log(_result);
-          // setIsLoading(false);
         })
         .catch((error) => {
-          // setIsLoading(false);
           console.error('Erro ao obter as contas:', error);
         });
     }
@@ -74,7 +66,6 @@ function ModalAddCard({
 
   const toggle = () => {
     setIsOpen(!isOpen);
-    // setSelectedCardIcon(null);
     setSelectedAccount(null);
     setSelectedCard(null);
     setNameCard('');
@@ -92,7 +83,7 @@ function ModalAddCard({
       const user = parseJwt(_userToken || userToken);
 
       if (!user) {
-        throw new Error('Usuário não autenticado');
+        throw new Error(messages['message.userNotAccess']);
       }
 
       const userId = user.user_id;
@@ -113,14 +104,14 @@ function ModalAddCard({
       toggle();
       setUpdateList(true);
       toast({
-        message: 'Cartão salvo com sucesso!',
+        message: messages['message.cardSaveSuccess'],
         duration: 2000,
         position: 'bottom',
       });
     } catch (error) {
       console.error(error);
       toast({
-        message: 'Houve um erro ao salvar o cartão!',
+        message: messages['message.cardSaveError'],
         duration: 2000,
         position: 'bottom',
       });
@@ -161,7 +152,7 @@ function ModalAddCard({
             onSubmitForm(e);
           }}
         >
-          <ModalHeader>{!selectedCard ? messages['message.createCard'] : 'Editar cartão'}</ModalHeader>
+          <ModalHeader>{!selectedCard ? messages['message.createCard'] : messages['message.editCard']}</ModalHeader>
           <ModalBody>
             <Row className="mb-2">
               <Colxx xxs={12}>
@@ -169,7 +160,7 @@ function ModalAddCard({
                   emptyMessage={messages['message.notData']}
                   value={selectedAccount}
                   onChange={(e) => setSelectedAccount(e.value)}
-                  options={accountOptions} // Contas cadastradas no sistema
+                  options={accountOptions}
                   optionLabel="label"
                   optionValue="value"
                   className="w-100"
@@ -185,29 +176,6 @@ function ModalAddCard({
                 />
               </Colxx>
             </Row>
-            {/* <Row className="mb-2">
-              <Colxx xxs={12}>
-                <Dropdown
-                  emptyMessage={messages['message.notData']}
-                  appendTo={document.getElementsByClassName('main')[0]}
-                  value={selectedCardIcon}
-                  onChange={(e) => setSelectedCardIcon(e.value)}
-                  options={translatedBanks}
-                  optionLabel="name"
-                  placeholder={messages['message.cardIcon']}
-                  valueTemplate={selectedBankTemplate}
-                  itemTemplate={bankOptionTemplate}
-                  className="w-100"
-                  dropdownIcon={(opts) => {
-                    return opts.iconProps['data-pr-overlay-visible'] ? (
-                      <ChevronUpIcon {...opts.iconProps} />
-                    ) : (
-                      <ChevronDownIcon {...opts.iconProps} />
-                    );
-                  }}
-                />
-              </Colxx>
-            </Row> */}
             <Row className="mb-2">
               <Colxx xxs={12}>
                 <InputText
@@ -233,7 +201,6 @@ function ModalAddCard({
             <Row>
               <Colxx xxs={6}>
                 <Dropdown
-                  // filter
                   emptyMessage={messages['message.notData']}
                   value={closingDay}
                   onChange={(e) => setClosingDay(e.value)}
@@ -254,7 +221,6 @@ function ModalAddCard({
               </Colxx>
               <Colxx xxs={6}>
                 <Dropdown
-                  // filter
                   emptyMessage={messages['message.notData']}
                   value={dueDate}
                   onChange={(e) => setDueDate(e.value)}

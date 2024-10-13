@@ -67,7 +67,7 @@ function ModalAddAccounts({
         const user = parseJwt(_userToken || userToken);
 
         if (!user) {
-          throw new Error('Usuário não autenticado');
+          throw new Error(messages['message.userNotAccess']);
         }
 
         const userId = user.user_id;
@@ -86,14 +86,14 @@ function ModalAddAccounts({
         toggle();
         setUpdateList(true);
         toast({
-          message: selectedAccount ? 'Conta editada com sucesso!' : 'Conta salva com sucesso!',
+          message: selectedAccount ? messages['message.accountEditSuccess'] : messages['message.accountSaveSuccess'],
           duration: 2000,
           position: 'bottom',
         });
       } catch (error) {
         console.error(error);
         toast({
-          message: selectedAccount ? 'Houve um erro ao editar a conta!' : 'Houve um erro ao salvar a conta!',
+          message: selectedAccount ? messages['message.accountEditError'] : messages['message.accountSaveError'],
           duration: 2000,
           position: 'bottom',
         });
@@ -119,7 +119,9 @@ function ModalAddAccounts({
             onSubmitForm(e);
           }}
         >
-          <ModalHeader>{!selectedAccount ? 'Criar nova conta' : 'Editar conta'}</ModalHeader>
+          <ModalHeader>
+            {!selectedAccount ? messages['message.createdAccount'] : messages['message.editAccount']}
+          </ModalHeader>
           <ModalBody>
             <Row className="mb-2">
               <Colxx xxs={12}>

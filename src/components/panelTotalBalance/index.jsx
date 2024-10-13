@@ -7,11 +7,11 @@ function PanelTotalBalance({ intl, op }) {
   return (
     <>
       <OverlayPanel className="panel-total-balance" ref={op} appendTo={document.getElementsByClassName('main')[0]}>
-        <div>O "Saldo total" é composto pelos seguintes valores:</div>
+        <div>{messages['message.titlePanel']}</div>
         <ul>
-          <li>Entradas</li>
-          <li>Investidos</li>
-          <li>Saldo em contas</li>
+          <li>{messages['message.entries']}</li>
+          <li>{messages['message.investes']}</li>
+          <li>{messages['messages.accountBalance']}</li>
         </ul>
       </OverlayPanel>
     </>

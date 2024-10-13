@@ -33,7 +33,7 @@ function ModalAddInfos({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
       const user = parseJwt(_userToken || userToken);
 
       if (!user) {
-        throw new Error('Usuário não autenticado');
+        throw new Error(messages['message.userNotAccess']);
       }
 
       const userId = user.user_id;
@@ -51,14 +51,14 @@ function ModalAddInfos({ isOpen = false, setIsOpen = () => {}, intl = '' }) {
       setValue('');
       setUpdateList(true);
       toast({
-        message: 'Valor salvo com sucesso!',
+        message: messages['message.valueSaveSuccess'],
         duration: 2000,
         position: 'bottom',
       });
     } catch (error) {
       console.error(error);
       toast({
-        message: 'Houve um erro ao salvar o valor!',
+        message: messages['message.valueSaveError'],
         duration: 2000,
         position: 'bottom',
       });

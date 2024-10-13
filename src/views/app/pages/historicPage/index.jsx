@@ -143,7 +143,7 @@ function HistoricPage({ intl }) {
           .then(() => {
             setIsLoading(false);
             toast({
-              message: 'Registro atualizado com sucesso!',
+              message: messages['message.registerUpdateSuccess'],
               duration: 2000,
               position: 'bottom',
             });
@@ -154,7 +154,7 @@ function HistoricPage({ intl }) {
           .catch((error) => {
             setIsLoading(false);
             toast({
-              message: 'Houve um erro ao atualizar o registro!',
+              message: messages['message.registerUpdateError'],
               duration: 2000,
               position: 'bottom',
             });
@@ -179,7 +179,7 @@ function HistoricPage({ intl }) {
           <div className="container-filter">
             <InputText
               className="input-form"
-              placeholder="Ano"
+              placeholder={messages['message.year']}
               type="number"
               value={currentYear}
               onChange={(e) => {
@@ -209,10 +209,10 @@ function HistoricPage({ intl }) {
           </div>
           <Row className="total-balance">
             <Colxx xxs={6}>
-              Entradas: <span className="positive">R$ {totalEntries.toFixed(2)}</span>
+              {messages['message.entries']}: <span className="positive">R$ {totalEntries.toFixed(2)}</span>
             </Colxx>
             <Colxx xxs={6}>
-              Saídas: <span className="negative">R$ {totalExits.toFixed(2)}</span>
+              {messages['message.exits']}: <span className="negative">R$ {totalExits.toFixed(2)}</span>
             </Colxx>
           </Row>
           <div className="container-historic">
@@ -224,16 +224,17 @@ function HistoricPage({ intl }) {
                     <Row>
                       <Colxx xxs={isEdit ? 7 : 8}>
                         <div>
-                          <b>Tipo:</b> <span className={`label ${item.label.toLowerCase()}`}>{item.label}</span>
+                          <b>{messages['message.type']}:</b>
+                          <span className={`label ${item.label.toLowerCase()}`}>{item.label}</span>
                         </div>
                         <div>
-                          <b>Valor:</b>{' '}
+                          <b>{messages['message.value']}:</b>
                           {isEdit ? (
                             <InputText
                               required
                               type="number"
                               className="input-form"
-                              placeholder="Informe o valor"
+                              placeholder={messages['message.informValue']}
                               value={editedItem.value}
                               onChange={(e) => handleEditChange('value', e.target.value)}
                             />
@@ -242,7 +243,7 @@ function HistoricPage({ intl }) {
                           )}
                         </div>
                         <div>
-                          <b>Data:</b> {item.date}
+                          <b>{messages['message.date']}:</b> {item.date}
                         </div>
                       </Colxx>
                       <Colxx xxs={isEdit ? 5 : 4}>
