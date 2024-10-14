@@ -168,7 +168,7 @@ function GraphicsPage({ intl }) {
                   data={chartData}
                   keys={['value']}
                   indexBy="id"
-                  margin={{ top: 10, right: 10, bottom: 100, left: 50 }}
+                  margin={{ top: 5, right: 10, bottom: 110, left: 50 }}
                   padding={0.4}
                   colors={({ data }) => {
                     if (currentLang === 'pt-br' && data.id) {
