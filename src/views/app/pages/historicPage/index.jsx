@@ -224,11 +224,11 @@ function HistoricPage({ intl }) {
                     <Row>
                       <Colxx xxs={isEdit ? 7 : 8}>
                         <div>
-                          <b>{messages['message.type']}:</b>
+                          <b>{messages['message.type']}: </b>
                           <span className={`label ${item.label.toLowerCase()}`}>{item.label}</span>
                         </div>
                         <div>
-                          <b>{messages['message.value']}:</b>
+                          <b>{messages['message.value']}: </b>
                           {isEdit ? (
                             <InputText
                               required

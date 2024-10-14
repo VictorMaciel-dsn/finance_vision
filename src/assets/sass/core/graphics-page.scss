@@ -24,26 +24,24 @@
         flex-direction: column;
         align-items: center;
         justify-content: space-around;
-        max-height: 100%; // Corrigir o tamanho total
-        overflow: hidden;
+        overflow: auto;
+        height: calc(100vh - 185px);
+        max-height: calc(100vh - 185px);
     }
 
-    /* Ajustes para o gráfico circular (donut) */
     .donut-chart-container {
         width: 90%;
         max-width: 400px;
-        height: 40vh; // Ajuste a altura do gráfico em donut
+        height: 40vh;
     }
 
-    /* Ajustes para o gráfico de barras */
     .bar-chart-container {
         width: 90%;
         max-width: 400px;
-        height: 40vh; // Ajuste a altura do gráfico de barras para dividir o espaço com o gráfico em donut
+        height: 40vh;
         margin-top: 20px;
     }
 
-    /* Adiciona um breakpoint para melhor responsividade em telas menores */
     @media (max-width: 768px) {
         .container-graphics {
             flex-direction: column;
@@ -51,7 +49,7 @@
 
         .donut-chart-container,
         .bar-chart-container {
-            width: 100%; // Ocupa toda a largura da tela em dispositivos menores
+            width: 100%;
         }
     }
 }

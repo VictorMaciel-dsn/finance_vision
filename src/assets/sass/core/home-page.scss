@@ -6,6 +6,9 @@
     .container-home {
         padding-left: 20px;
         padding-right: 20px;
+        height: calc(100vh - 155px);
+        max-height: calc(100vh - 155px);
+        overflow: auto;
 
         .container-filter {
             display: flex;
@@ -74,9 +77,6 @@
             }
 
             .card-body {
-                height: calc(100vh - 685px);
-                max-height: calc(100vh - 685px);
-                overflow: auto;
                 padding: 0px 10px;
 
                 .container-card {
