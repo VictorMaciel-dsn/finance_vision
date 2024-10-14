@@ -6,7 +6,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { useEffect, useRef, useState } from 'react';
 import { InputText } from 'primereact/inputtext';
 import { get, getDatabase, ref } from 'firebase/database';
-import { getCurrentUser } from '../../../../helpers/utils';
+import { getCurrentLanguage, getCurrentUser } from '../../../../helpers/utils';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { ResponsiveBar } from '@nivo/bar';
 import { ResponsivePie } from '@nivo/pie';
@@ -27,6 +27,7 @@ function GraphicsPage({ intl }) {
   const setIsLoading = useSetRecoilState(currentIsLoad);
   const [chartData, setChartData] = useState(null);
   const isFirst = useRef(true);
+  const currentLang = getCurrentLanguage();
 
   useEffect(() => {
     const fetchAndProcessData = async () => {
@@ -127,14 +128,28 @@ function GraphicsPage({ intl }) {
                   padAngle={0.7}
                   cornerRadius={3}
                   activeOuterRadiusOffset={8}
-                  colors={({ id }) =>
-                    ({
-                      Entradas: 'var(--theme-color-3)',
-                      'A pagar': 'var(--color-red)',
-                      Investimentos: 'var(--theme-color-2)',
-                      Pagamentos: 'var(--color-red)',
-                    })[id] || '#ccc'
-                  }
+                  colors={({ id }) => {
+                    if (currentLang === 'pt-br' && id) {
+                      return (
+                        {
+                          Entradas: 'var(--theme-color-3)',
+                          'A pagar': 'var(--color-red)',
+                          Investimentos: 'var(--theme-color-2)',
+                          Pagamentos: 'var(--color-red)',
+                        }[id] || '#ccc'
+                      );
+                    } else if (currentLang === 'en' && id) {
+                      return (
+                        {
+                          Entries: 'var(--theme-color-3)',
+                          Payable: 'var(--color-red)',
+                          Investments: 'var(--theme-color-2)',
+                          Payments: 'var(--color-red)',
+                        }[id] || '#ccc'
+                      );
+                    }
+                    return '#ccc';
+                  }}
                   borderWidth={1}
                   borderColor="#cccccc4d"
                   arcLinkLabelsTextColor={theme === 'dark' ? '#acacac' : '#333333'}
@@ -155,14 +170,28 @@ function GraphicsPage({ intl }) {
                   indexBy="id"
                   margin={{ top: 10, right: 10, bottom: 100, left: 50 }}
                   padding={0.4}
-                  colors={({ data }) =>
-                    ({
-                      Entradas: 'var(--theme-color-3)',
-                      'A pagar': 'var(--color-red)',
-                      Investimentos: 'var(--theme-color-2)',
-                      Pagamentos: 'var(--color-red)',
-                    })[data.id] || '#ccc'
-                  }
+                  colors={({ data }) => {
+                    if (currentLang === 'pt-br' && data.id) {
+                      return (
+                        {
+                          Entradas: 'var(--theme-color-3)',
+                          'A pagar': 'var(--color-red)',
+                          Investimentos: 'var(--theme-color-2)',
+                          Pagamentos: 'var(--color-red)',
+                        }[data.id] || '#ccc'
+                      );
+                    } else if (currentLang === 'en' && data.id) {
+                      return (
+                        {
+                          Entries: 'var(--theme-color-3)',
+                          Payable: 'var(--color-red)',
+                          Investments: 'var(--theme-color-2)',
+                          Payments: 'var(--color-red)',
+                        }[data.id] || '#ccc'
+                      );
+                    }
+                    return '#ccc';
+                  }}
                   borderColor="#cccccc4d"
                   axisBottom={{
                     tickSize: 5,
